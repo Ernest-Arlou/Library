@@ -1,7 +1,8 @@
 package by.jwd.registration.dao;
 
-import by.jwd.registration.bean.RegisterBean;
+import by.jwd.registration.bean.Register;
 import by.jwd.registration.dao.connectionpool.ConnectionPool;
+import by.jwd.registration.dao.connectionpool.ConnectionPoolManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,18 +10,16 @@ import java.sql.PreparedStatement;
 public class RegisterDao {
 
 
-    public String authorizeRegister(RegisterBean registerBean) {
+    public String authorizeRegister(Register register) {
 
-        String firstname = registerBean.getFirstname();
-        String lastname = registerBean.getLastname();
-        String username = registerBean.getUsername();
-        String password = registerBean.getPassword();
+        String firstname = register.getFirstname();
+        String lastname = register.getLastname();
+        String username = register.getUsername();
+        String password = register.getPassword();
 
         try {
 
-            ConnectionPool connectionPool = new ConnectionPool();
-            connectionPool.initPoolData();
-            Connection con = connectionPool.takeConnection();
+            Connection con = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             PreparedStatement pstmt = null;
 
             pstmt = con.prepareStatement("insert into users(firstname,lastname,username,password) values(?,?,?,?)");
@@ -33,7 +32,7 @@ public class RegisterDao {
             pstmt.close();
             con.close();
 
-            connectionPool.dispose();
+
 
             return "You are registered";
         } catch (Exception e) {

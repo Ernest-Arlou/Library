@@ -1,28 +1,27 @@
 package by.jwd.registration.dao;
 
-import by.jwd.registration.bean.LoginBean;
+import by.jwd.registration.bean.Login;
 import by.jwd.registration.dao.connectionpool.ConnectionPool;
+import by.jwd.registration.dao.connectionpool.ConnectionPoolManager;
 
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class LoginDao {
 
 
-    public String authorizeLogin(LoginBean loginBean) {
-        String username = loginBean.getUsername();
-        String password = loginBean.getPassword();
+    public String authorizeLogin(Login login) {
+        String username = login.getUsername();
+        String password = login.getPassword();
 
         String dbusername = "";
         String dbpassword = "";
 
         try {
-            ConnectionPool connectionPool = new ConnectionPool();
-            connectionPool.initPoolData();
-            Connection con = connectionPool.takeConnection();
+
+            Connection con = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
             PreparedStatement pstmt = null;
 
@@ -42,7 +41,6 @@ public class LoginDao {
 
             pstmt.close();
             con.close();
-            connectionPool.dispose();
 
         } catch (Exception e) {
             e.printStackTrace();

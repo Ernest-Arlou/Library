@@ -1,7 +1,6 @@
 package by.jwd.registration.dao.connectionpool;
 
 import java.sql.*;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -31,7 +30,6 @@ public final class ConnectionPool {
     }
 
     public void initPoolData () throws ConnectionPoolException{
-        Locale.setDefault(Locale.ENGLISH);
         try {
             Class.forName(driverName);
             givenAwayConQueue = new
@@ -49,17 +47,13 @@ public final class ConnectionPool {
         }
     }
 
-    public void dispose (){
+    public void dispose () throws SQLException{
         clearConnectionQueue();
     }
 
-    private void clearConnectionQueue (){
-        try {
-            closeConnectionsQueue(givenAwayConQueue);
-            closeConnectionsQueue(connectionQueue);
-        } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Error closing the connection.", e); }
-        }
+    private void clearConnectionQueue () throws SQLException{
+        closeConnectionsQueue(givenAwayConQueue);
+        closeConnectionsQueue(connectionQueue);
     }
 
     private void closeConnectionsQueue (BlockingQueue<Connection> connectionQueue) throws SQLException{
@@ -67,8 +61,7 @@ public final class ConnectionPool {
                 connectionQueue) {
             if (con.getClass() == PooledConnection.class) {
                 ((PooledConnection) con).reallyClose();
-            }
-            else {
+            } else {
                 con.close();
             }
             connectionQueue.remove(con);

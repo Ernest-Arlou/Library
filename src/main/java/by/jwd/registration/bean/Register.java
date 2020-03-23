@@ -2,7 +2,7 @@ package by.jwd.registration.bean;
 
 import java.util.Objects;
 
-public class RegisterBean {
+public class Register {
 
     private String firstname;
     private String lastname;
@@ -45,7 +45,7 @@ public class RegisterBean {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RegisterBean that = (RegisterBean) o;
+        Register that = (Register) o;
         return Objects.equals(firstname, that.firstname) &&
                 Objects.equals(lastname, that.lastname) &&
                 Objects.equals(username, that.username) &&

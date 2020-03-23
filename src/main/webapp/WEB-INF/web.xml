@@ -12,33 +12,13 @@
     </servlet>
 
     <servlet>
-        <servlet-name>PageRegistration</servlet-name>
-        <jsp-file>/WEB-INF/jsp/register.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>PageLogOut</servlet-name>
-        <jsp-file>/WEB-INF/jsp/logout.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>Welcome</servlet-name>
-        <jsp-file>/WEB-INF/jsp/welcome.jsp</jsp-file>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>by.jwd.registration.controller.Controller</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Welcome</servlet-name>
-        <url-pattern>/welcome</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>PageLogOut</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>PageRegistration</servlet-name>
-        <url-pattern>/registration</url-pattern>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -53,7 +33,7 @@
 
     <session-config>
         <session-timeout>
-            30
+        33
         </session-timeout>
     </session-config>
 </web-app>

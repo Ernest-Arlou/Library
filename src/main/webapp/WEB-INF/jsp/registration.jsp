@@ -64,7 +64,7 @@
 
         <input type="submit" name="btn_register" value="Register">
 
-        <h3>You have a account? <a href="index.jsp">Login</a></h3>
+        <h3>You have a account? <a href="../../index.jsp">Login</a></h3>
 
     </form>
 

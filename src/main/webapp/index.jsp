@@ -1,6 +1,6 @@
 <%
     if (session.getAttribute("login") != null) {
-        response.sendRedirect("welcome"); //session login user not back to index.jsp page or not type direct in url
+        response.sendRedirect("/WEB-INF/jsp/welcome.jsp"); //session login user not back to index.jsp page or not type direct in url
     }
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
@@ -35,15 +35,20 @@
 
     <h2>Login</h2>
 
+    <form method="post" action="Controller" name="login_form" onsubmit="return validate();">
+
+        Login :<input type="text" name="login">
+        Password :<input type="password" name="password">
+
+        <input type="submit" name="command" value="log_in">
+
+
+    </form>
+
+    <h3>Your don't have an account? <a href="WEB-INF/jsp/registration.jsp">Registration</a></h3>
+
     <form method="post" action="LoginController" name="LoginForm" onsubmit="return validate();">
-
-        Username :<input type="text" name="txt_username">
-        Password :<input type="password" name="txt_password">
-
-        <input type="submit" name="btn_login" value="Login">
-
-        <h3>Your don't have a account? <a href="registration">Registration</a></h3>
-
+    <input type="submit" name="btn_register" value="Register">
     </form>
 
     <h3 style="color:green">
