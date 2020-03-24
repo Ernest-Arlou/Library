@@ -17,7 +17,6 @@ public class LogIn implements Command {
 
     @Override
     public void execute (HttpServletRequest request, HttpServletResponse response) throws CommandException{
-        System.out.println("Login");
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         LoginInfo loginInfo = new LoginInfo(login, password);
