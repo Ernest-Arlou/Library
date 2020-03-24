@@ -1,9 +1,9 @@
 package by.jwd.registration.controller.command;
 
 public enum CommandName {
-    REGISTER_USER,
-    REGISTER_ADMIN,
-    LOG_IN,
+    REGISTRATION,
+    LOGIN,
+    REDIRECT,
     LOG_OUT,
     EDIT_NAME,
     EDIT_LOGIN,

@@ -55,16 +55,17 @@
 
     <h2>Register</h2>
 
-    <form method="post" action="RegisterController" onsubmit="return validate();">
+    <form method="post" action="Controller" onsubmit="return validate();">
 
         Firstname <input type="text" name="txt_firstname" id="fname"></br></br>
         Lastname <input type="text" name="txt_lastname" id="lname"></br></br>
         Username <input type="text" name="txt_username" id="uname"></br></br>
         Password <input type="password" name="txt_password" id="password"></br></br>
 
+        <input type="hidden" name="command" value="registration">
         <input type="submit" name="btn_register" value="Register">
 
-        <h3>You have a account? <a href="../../index.jsp">Login</a></h3>
+        <h3>You have a account? <a href="index.jsp">Login</a></h3>
 
     </form>
 

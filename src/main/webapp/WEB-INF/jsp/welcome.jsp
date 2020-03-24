@@ -11,8 +11,14 @@
     </h2>
 
     <h3>
-        <a href="logout">Logout</a>
+        <a>Logout</a>
+        <form method="post" action="Controller" name="welcome">
+            <input type="hidden" name="command" value="redirect">
+            <input type="hidden" name="redirect" value="logout">
+            <input type="submit" name="logout_button" value="Logout">
+        </form>
     </h3>
+
 
 </div>
 

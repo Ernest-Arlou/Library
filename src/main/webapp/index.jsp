@@ -3,7 +3,7 @@
         response.sendRedirect("/WEB-INF/jsp/welcome.jsp"); //session login user not back to index.jsp page or not type direct in url
     }
 %>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,22 +39,26 @@
 
         Login :<input type="text" name="login">
         Password :<input type="password" name="password">
-
-        <input type="submit" name="command" value="log_in">
+        <input type="hidden" name="command" value="login">
+        <input type="submit" name="log_button" value="Login">
 
 
     </form>
 
-    <h3>Your don't have an account? <a href="WEB-INF/jsp/registration.jsp">Registration</a></h3>
 
-    <form method="post" action="LoginController" name="LoginForm" onsubmit="return validate();">
-    <input type="submit" name="btn_register" value="Register">
+
+    <h3>Your don't have an account?</h3>
+
+    <form method="post" action="Controller" name="registration">
+        <input type="hidden" name="command" value="redirect">
+        <input type="hidden" name="redirect" value="registration">
+        <input type="submit" name="reg_button" value="Registration">
     </form>
 
     <h3 style="color:green">
         <%
-            if (request.getAttribute("RegiseterSuccessMsg") != null) {
-                out.println(request.getAttribute("RegiseterSuccessMsg")); //get register success message from RegisterController
+            if (request.getAttribute("RegisterSuccessMsg") != null) {
+                out.println(request.getAttribute("RegisterSuccessMsg")); //get register success message from RegisterController
             }
         %>
     </h3>

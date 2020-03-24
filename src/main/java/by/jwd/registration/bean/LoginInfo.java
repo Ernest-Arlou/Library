@@ -2,16 +2,16 @@ package by.jwd.registration.bean;
 
 import java.util.Objects;
 
-public class Login {
+public class LoginInfo {
     private String username;
     private String password;
 
-    public Login(){
+    public LoginInfo (){
 
     }
 
-    public Login(String username, String password){
-        setUsername(username);
+    public LoginInfo (String username, String password){
+        setLogin(username);
         setPassword(password);
     }
 
@@ -19,7 +19,7 @@ public class Login {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setLogin (String username) {
         this.username = username;
     }
 
@@ -35,7 +35,7 @@ public class Login {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Login login = (Login) o;
+        LoginInfo login = (LoginInfo) o;
         return Objects.equals(username, login.username) &&
                 Objects.equals(password, login.password);
     }
