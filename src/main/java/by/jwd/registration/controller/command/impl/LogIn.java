@@ -1,6 +1,7 @@
 package by.jwd.registration.controller.command.impl;
 
 import by.jwd.registration.bean.LoginInfo;
+import by.jwd.registration.controller.JSPPagePath;
 import by.jwd.registration.controller.command.Command;
 import by.jwd.registration.controller.command.CommandException;
 import by.jwd.registration.service.ServiceException;
@@ -26,11 +27,10 @@ public class LogIn implements Command {
             if (authorize.equals("SUCCESS LOGIN")) {
                 HttpSession session = request.getSession();
                 session.setAttribute("login", login);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/jsp/welcome.jsp");
-                requestDispatcher.forward(request, response);
+                response.sendRedirect("/Controller?command=user_info");
             } else {
                 request.setAttribute("WrongLoginMsg", authorize);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(JSPPagePath.INDEX);
                 requestDispatcher.include(request, response);
             }
         } catch (ServletException | IOException | ServiceException e) {

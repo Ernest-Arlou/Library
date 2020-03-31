@@ -5,6 +5,8 @@ public enum CommandName {
     LOGIN,
     REDIRECT,
     LOG_OUT,
+    USER_INFO,
+    SWITCH_LOCALE,
     EDIT_NAME,
     EDIT_LOGIN,
     EDIT_PASSWORD,

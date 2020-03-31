@@ -8,15 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class Redirect implements Command {
+public class SwitchLocale implements Command {
     @Override
     public void execute (HttpServletRequest request, HttpServletResponse response) throws CommandException{
-        String jspname;
-        jspname = request.getParameter("redirect");
+        request.getSession().setAttribute("local", request.getParameter("local"));
+
         try {
-            request.getRequestDispatcher("WEB-INF/jsp/" + jspname + ".jsp").forward(request, response);
-        } catch (ServletException | IOException e) {
-            throw new CommandException(e);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+//            response.sendRedirect(String.valueOf(request.getRequestURL()));
+        } catch (IOException | ServletException e) {
+           throw new CommandException(e);
         }
+
     }
 }

@@ -1,106 +1,172 @@
 package by.jwd.registration.dao;
 
 import by.jwd.registration.bean.LoginInfo;
-import by.jwd.registration.bean.RegistrationInfo;
+import by.jwd.registration.bean.User;
 import by.jwd.registration.dao.connectionpool.ConnectionPoolException;
 import by.jwd.registration.dao.connectionpool.ConnectionPoolManager;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LibraryDAOImpl implements LibraryDAO {
+    private static final String REGISTER_USER =
+            "insert into users(name,email,login,password) values(?,?,?,?)";
+    private static final String GET_USER_BY_LOG_AND_PASS =
+            "select * from users join `users-have-roles` on users.`user-id` = `Users-have-Roles`.`user-id` where login=? and password=?";
+    private static final String GET_USER_BY_LOG =
+            "select * from users join `users-have-roles` on users.`user-id` = `Users-have-Roles`.`user-id` where login=?";
+    private static final String GET_USER_BY_EMAIL =
+            "select * from users join `users-have-roles` on users.`user-id` = `Users-have-Roles`.`user-id` where email=?";
 
-    private boolean checkUserExistence (String login) throws ConnectionPoolException, SQLException{
-        Connection con = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
-        PreparedStatement pstmt = null;
+    @Override
+    public User getUserByEmail (String email) throws DAOException{
 
-        pstmt = con.prepareStatement("select * from users where username=?");
-        pstmt.setString(1, login);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()){
-            pstmt.close();
-            con.close();
-            return true;
-        }
-        else {
-            pstmt.close();
-            con.close();
-            return false;
-        }
-
+        return getUser(email, GET_USER_BY_EMAIL);
     }
 
     @Override
-    public String registerUser (RegistrationInfo register) throws DAOException{
+    public User getUserByLogin (String login) throws DAOException{
 
-        String firstname = register.getFirstname();
-        String lastname = register.getLastname();
-        String username = register.getUsername();
-        String password = register.getPassword();
+        return getUser(login, GET_USER_BY_LOG);
+    }
+
+    private User getUser (String value, String query) throws DAOException{
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
-            if (checkUserExistence(username)){
-                return "User with this login already exists";
-            }
-            Connection con = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
-            PreparedStatement pstmt = null;
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, value);
+            resultSet = preparedStatement.executeQuery();
+            return createUser(resultSet);
 
-            pstmt = con.prepareStatement("insert into users(firstname,lastname,username,password) values(?,?,?,?)");
-            pstmt.setString(1, firstname);
-            pstmt.setString(2, lastname);
-            pstmt.setString(3, username);
-            pstmt.setString(4, password);
-            pstmt.executeUpdate();
-
-            pstmt.close();
-            con.close();
-
-            return "You are registered";
         } catch (SQLException e) {
-            throw new DAOException("SQL error",e);
+            throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
-        }
 
-    }
-
-    @Override
-    public String loginUser (LoginInfo login) throws DAOException{
-
-        String username = login.getUsername();
-        String password = login.getPassword();
-
-        String dbusername = "";
-        String dbpassword = "";
-
-        try {
-
-            Connection con = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
-
-            PreparedStatement pstmt = null;
-
-            pstmt = con.prepareStatement("select * from users where username=? and password=?");
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                dbusername = rs.getString("username");
-                dbpassword = rs.getString("password");
-
-                if (username.equals(dbusername) && password.equals(dbpassword)) {
-                    return "SUCCESS LOGIN";
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
                 }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                //log
             }
+        }
+    }
 
-            pstmt.close();
-            con.close();
+
+
+    private User createUser (ResultSet resultSet) throws SQLException{
+        if (resultSet.next()) {
+            boolean isAdmin;
+            if (resultSet.getString("role-id").equals("1")) {
+                isAdmin = true;
+            } else {
+                isAdmin = false;
+            }
+            return new User(resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("login"),
+                    resultSet.getString("password"),
+                    isAdmin);
+        } else {
+            return null;
+        }
+    }
+
+
+    @Override
+    public void registerUser (User user) throws DAOException{
+
+        String name = user.getName();
+        String email = user.getEmail();
+        String login = user.getLogin();
+        String password = user.getPassword();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            preparedStatement = connection.prepareStatement(REGISTER_USER);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, login);
+            preparedStatement.setString(4, password);
+            preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            connection.close();
 
         } catch (SQLException e) {
-            throw new DAOException("SQL error",e);
+            throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                //log
+            }
         }
 
-        return "WRONG USERNAME OR PASSWORD";
+    }
+
+    @Override
+    public User loginUser (LoginInfo loginInfo) throws DAOException{
+
+        String login = loginInfo.getUsername();
+        String password = loginInfo.getPassword();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            preparedStatement = connection.prepareStatement(GET_USER_BY_LOG_AND_PASS);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            resultSet = preparedStatement.executeQuery();
+
+            return createUser(resultSet);
+
+        } catch (SQLException e) {
+            throw new DAOException("SQL error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                //log
+            }
+        }
     }
 }

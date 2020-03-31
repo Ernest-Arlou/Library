@@ -19,11 +19,11 @@ public class Controller extends HttpServlet {
     @Override
     public void init () throws ServletException{
         super.init();
-        try {
-            ConnectionPoolManager.getInstance().initConnectionPool();
-        } catch (DAOException e) {
-            //log
-        }
+//        try {
+//            ConnectionPoolManager.getInstance().initConnectionPool();
+//        } catch (DAOException e) {
+//            //log
+//        }
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Controller extends HttpServlet {
             command.execute(request, response);
         } catch (CommandException e) {
             //log
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorpage.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("error.jsp");
             if (requestDispatcher != null) {
                 requestDispatcher.forward(request, response);
             }
@@ -58,10 +58,10 @@ public class Controller extends HttpServlet {
     @Override
     public void destroy (){
         super.destroy();
-        try {
-            ConnectionPoolManager.getInstance().disposeConnectionPull();
-        } catch (DAOException e) {
-            //log
-        }
+//        try {
+//            ConnectionPoolManager.getInstance().disposeConnectionPull();
+//        } catch (DAOException e) {
+//            //log
+//        }
     }
 }

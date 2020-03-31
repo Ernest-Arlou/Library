@@ -1,6 +1,7 @@
 package by.jwd.registration.controller.command.impl;
 
-import by.jwd.registration.bean.RegistrationInfo;
+import by.jwd.registration.bean.User;
+import by.jwd.registration.controller.JSPPagePath;
 import by.jwd.registration.controller.command.Command;
 import by.jwd.registration.controller.command.CommandException;
 import by.jwd.registration.service.ServiceException;
@@ -16,28 +17,24 @@ public class Registration implements Command {
 
     @Override
     public void execute (HttpServletRequest request, HttpServletResponse response) throws CommandException{
-        String firstname = request.getParameter("txt_firstname");
-        String lastname = request.getParameter("txt_lastname");
-        String username = request.getParameter("txt_username");
+        String name = request.getParameter("txt_name");
+        String email = request.getParameter("txt_email");
+        String login = request.getParameter("txt_login");
         String password = request.getParameter("txt_password");
 
-        RegistrationInfo registrationInfo = new RegistrationInfo();
-
-        registrationInfo.setFirstname(firstname);
-        registrationInfo.setLastname(lastname);
-        registrationInfo.setUsername(username);
-        registrationInfo.setPassword(password);
+        User user = new User(name, email, login, password, false);
 
         String registerValidate = null;
         try {
-            registerValidate = ServiceFactory.getInstance().getLibraryService().register(registrationInfo);
+            registerValidate = ServiceFactory.getInstance().getLibraryService().register(user);
             if (registerValidate.equals("You are registered")) {
                 request.setAttribute("RegisterSuccessMsg", registerValidate);
-                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher(JSPPagePath.INDEX);
                 rd.include(request, response);
+
             } else {
                 request.setAttribute("RegisterErrorMsg", registerValidate);
-                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/registration.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher(JSPPagePath.REGISTRATION);
                 rd.include(request, response);
             }
         } catch (ServletException | IOException | ServiceException e) {

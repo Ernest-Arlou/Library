@@ -19,8 +19,9 @@ public class User implements Serializable, Cloneable {
         isAdmin = false;
     }
 
-    public User (String name, String login, String password, boolean isAdmin){
+    public User (String name, String email, String login, String password, boolean isAdmin){
         setName(name);
+        setEmail(email);
         setLogin(login);
         setPassword(password);
         setAdmin(isAdmin);

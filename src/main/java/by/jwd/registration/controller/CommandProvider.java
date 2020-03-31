@@ -2,9 +2,7 @@ package by.jwd.registration.controller;
 
 import by.jwd.registration.controller.command.Command;
 import by.jwd.registration.controller.command.CommandName;
-import by.jwd.registration.controller.command.impl.LogIn;
-import by.jwd.registration.controller.command.impl.Redirect;
-import by.jwd.registration.controller.command.impl.Registration;
+import by.jwd.registration.controller.command.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +14,11 @@ final class CommandProvider {
         repository.put(CommandName.LOGIN, new LogIn());
         repository.put(CommandName.REGISTRATION, new Registration());
         repository.put(CommandName.REDIRECT, new Redirect());
+        repository.put(CommandName.LOG_OUT, new LogOut());
+        repository.put(CommandName.USER_INFO, new UserInfo());
+        repository.put(CommandName.SWITCH_LOCALE, new SwitchLocale());
 
-//        repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
+        repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }
 
     Command getCommand (String name){

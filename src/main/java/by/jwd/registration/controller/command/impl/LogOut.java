@@ -3,19 +3,19 @@ package by.jwd.registration.controller.command.impl;
 import by.jwd.registration.controller.command.Command;
 import by.jwd.registration.controller.command.CommandException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class Redirect implements Command {
+public class LogOut implements Command {
     @Override
     public void execute (HttpServletRequest request, HttpServletResponse response) throws CommandException{
-        String jspname;
-        jspname = request.getParameter("redirect");
+        HttpSession session = request.getSession();
+        session.invalidate();
         try {
-            request.getRequestDispatcher("WEB-INF/jsp/" + jspname + ".jsp").forward(request, response);
-        } catch (ServletException | IOException e) {
+            response.sendRedirect("index.jsp");
+        } catch (IOException e) {
             throw new CommandException(e);
         }
     }

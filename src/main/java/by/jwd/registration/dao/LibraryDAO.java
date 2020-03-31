@@ -1,10 +1,14 @@
 package by.jwd.registration.dao;
 
 import by.jwd.registration.bean.LoginInfo;
-import by.jwd.registration.bean.RegistrationInfo;
+import by.jwd.registration.bean.User;
 
 public interface LibraryDAO {
-    String registerUser (RegistrationInfo register) throws DAOException;
+    User getUserByEmail (String email) throws DAOException;
 
-    String loginUser(LoginInfo login) throws DAOException;
+    User getUserByLogin (String login) throws DAOException;
+
+    void registerUser (User user) throws DAOException;
+
+    User loginUser (LoginInfo login) throws DAOException;
 }
