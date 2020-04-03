@@ -29,6 +29,7 @@ public class Registration implements Command {
             registerValidate = ServiceFactory.getInstance().getLibraryService().register(user);
             if (registerValidate.equals("You are registered")) {
                 request.setAttribute("RegisterSuccessMsg", registerValidate);
+//                response.sendRedirect(JSPPagePath.INDEX);
                 RequestDispatcher rd = request.getRequestDispatcher(JSPPagePath.INDEX);
                 rd.include(request, response);
 

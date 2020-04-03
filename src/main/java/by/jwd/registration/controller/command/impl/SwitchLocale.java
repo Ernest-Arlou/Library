@@ -14,6 +14,14 @@ public class SwitchLocale implements Command {
         request.getSession().setAttribute("local", request.getParameter("local"));
 
         try {
+
+
+
+
+
+
+
+
             request.getRequestDispatcher("index.jsp").forward(request, response);
 //            response.sendRedirect(String.valueOf(request.getRequestURL()));
         } catch (IOException | ServletException e) {

@@ -10,14 +10,15 @@
     <title>Title</title>
 
     <fmt:setLocale value="${sessionScope.local}" />
-    <fmt:setBundle basename="by.jwd.registration.localization.local" var="loc" />
+    <fmt:setBundle basename="local" var="loc" />
     <fmt:message bundle="${loc}" key="local.message" var="message" />
     <fmt:message bundle="${loc}" key="local.locbutton.name.ru"
                  var="ru_button" />
     <fmt:message bundle="${loc}" key="local.locbutton.name.en"
                  var="en_button" />
 
-    <c:out value="${message}" />
+<%--    <c:out value="${message}" />--%>
+<%--    <c:out value="${sessionScope.local}" />--%>
 
     <script language="javascript">
         function validate() {
@@ -47,12 +48,12 @@
 
     <form action="Controller" method="post">
         <input type="hidden" name="command" value="switch_locale" />
-        <input type="hidden" name="local" value="ru" />
+        <input type="hidden" name="local" value="ru_RU" />
         <input type="submit" value="${ru_button}" /><br />
     </form>
     <form action="Controller" method="post">
         <input type="hidden" name="command" value="switch_locale" />
-        <input type="hidden" name="local" value="en" />
+        <input type="hidden" name="local" value="en_US" />
         <input type="submit" value="${en_button}" /><br />
     </form>
 

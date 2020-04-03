@@ -12,13 +12,13 @@ import java.sql.SQLException;
 
 public class LibraryDAOImpl implements LibraryDAO {
     private static final String REGISTER_USER =
-            "insert into users(name,email,login,password) values(?,?,?,?)";
+            "insert into users(name,email,login,password,role) values(?,?,?,?,?)";
     private static final String GET_USER_BY_LOG_AND_PASS =
-            "select * from users join `users-have-roles` on users.`user-id` = `Users-have-Roles`.`user-id` where login=? and password=?";
+            "select * from users where login=? and password=?";
     private static final String GET_USER_BY_LOG =
-            "select * from users join `users-have-roles` on users.`user-id` = `Users-have-Roles`.`user-id` where login=?";
+            "select * from users where login=?";
     private static final String GET_USER_BY_EMAIL =
-            "select * from users join `users-have-roles` on users.`user-id` = `Users-have-Roles`.`user-id` where email=?";
+            "select * from users where email=?";
 
     @Override
     public User getUserByEmail (String email) throws DAOException{
@@ -71,7 +71,7 @@ public class LibraryDAOImpl implements LibraryDAO {
     private User createUser (ResultSet resultSet) throws SQLException{
         if (resultSet.next()) {
             boolean isAdmin;
-            if (resultSet.getString("role-id").equals("1")) {
+            if (resultSet.getString("role").equals("admin")) {
                 isAdmin = true;
             } else {
                 isAdmin = false;
@@ -105,6 +105,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, login);
             preparedStatement.setString(4, password);
+            preparedStatement.setString(5, "user");
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
