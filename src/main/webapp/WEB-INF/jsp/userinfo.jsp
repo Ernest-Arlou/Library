@@ -5,7 +5,7 @@
     <title>Title</title>
 
     <h2>
-    <c:out value="${login}, Hello!"/>
+    <c:out value="${name}, Hello!"/>
     </h2>
 
 
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <jsp:useBean id="user" scope="request" type="by.jwd.registration.bean.User"/>
+    <jsp:useBean id="user" scope="request" type="by.jwd.library.bean.User"/>
     Your name: <c:out value="${user.name}"/> <br>
     Your email: <c:out value="${user.email}"/> <br>
     Your login: <c:out value="${user.login}"/> <br>

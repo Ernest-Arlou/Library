@@ -10,7 +10,7 @@
     <title>Title</title>
 
     <fmt:setLocale value="${sessionScope.local}" />
-    <fmt:setBundle basename="local" var="loc" />
+    <fmt:setBundle basename="local/local" var="loc" />
     <fmt:message bundle="${loc}" key="local.message" var="message" />
     <fmt:message bundle="${loc}" key="local.locbutton.name.ru"
                  var="ru_button" />
@@ -77,8 +77,8 @@
     </h1>
 
     <h1 style="color: darkred">
-    <c:if test = "${WrongLoginMsg != null}">
-    <p><c:out value = "${WrongLoginMsg}"/><p>
+    <c:if test = "${LoginFailMsg != null}">
+    <p><c:out value = "${LoginFailMsg}"/><p>
     </c:if>
         </b>
     </h1>

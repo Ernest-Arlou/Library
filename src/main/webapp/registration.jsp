@@ -54,10 +54,10 @@
 
     <form method="post" action="Controller" onsubmit="return validate();">
 
-        Name <input type="text" name="txt_name" id="name"></br></br>
-        Email <input type="text" name="txt_email" id="email"></br></br>
-        Login <input type="text" name="txt_login" id="login"></br></br>
-        Password <input type="password" name="txt_password" id="password"></br></br>
+        Name <input type="text" name="name" id="name"></br></br>
+        Email <input type="text" name="email" id="email"></br></br>
+        Login <input type="text" name="login" id="login"></br></br>
+        Password <input type="password" name="password" id="password"></br></br>
 
         <input type="hidden" name="command" value="registration">
         <input type="submit" name="btn_register" value="Register">
