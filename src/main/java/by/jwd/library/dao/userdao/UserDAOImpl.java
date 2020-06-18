@@ -14,13 +14,15 @@ import java.sql.SQLException;
 
 public class UserDAOImpl implements UserDAO {
     private static final String ADD_USER =
-            "insert into users(name,email,login,password,role) values(?,?,?,?,?)";
+            "insert into users(name,email,login,password,`passport-id`,role) values(?,?,?,?,?,?)";
     private static final String GET_USER_BY_LOG_AND_PASS =
             "select * from users where login=? and password=?";
     private static final String GET_USER_BY_LOGIN =
             "select * from users where login=?";
     private static final String GET_USER_BY_EMAIL =
             "select * from users where email=?";
+    private static final String GET_USER_BY_PASSPORT_ID =
+            "select * from users where `passport-id`=?";
     private static final String ROLE_USER = "user";
     private static final String ROLE_ADMIN = "admin";
     private static final String USER_ROLE = "role";
@@ -28,6 +30,8 @@ public class UserDAOImpl implements UserDAO {
     private static final String USER_EMAIL = "email";
     private static final String USER_LOGIN = "login";
     private static final String USER_PASSWORD = "password";
+    private static final String USER_PASSPORT_ID = "passport-id";
+
 
     @Override
     public User getUserByEmail(String email) throws DAOException {
@@ -39,6 +43,12 @@ public class UserDAOImpl implements UserDAO {
     public User getUserByLogin(String login) throws DAOException {
 
         return getUserByParameter(login, GET_USER_BY_LOGIN);
+    }
+
+    @Override
+    public User getUserByPassportId(String passportId) throws DAOException {
+
+        return getUserByParameter(passportId, GET_USER_BY_LOGIN);
     }
 
 
@@ -53,7 +63,8 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setString(3, user.getLogin());
             preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, ROLE_USER);
+            preparedStatement.setString(5, user.getPassportId());
+            preparedStatement.setString(6, user.getRole());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("SQL error", e);
@@ -119,17 +130,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     private User buildUser(ResultSet resultSet) throws SQLException {
-        boolean isAdmin;
-        if (resultSet.getString(USER_ROLE).equals(ROLE_ADMIN)) {
-            isAdmin = true;
-        } else {
-            isAdmin = false;
-        }
         return new User(resultSet.getString(USER_NAME),
                 resultSet.getString(USER_EMAIL),
                 resultSet.getString(USER_LOGIN),
                 resultSet.getString(USER_PASSWORD),
-                isAdmin);
+                resultSet.getString(USER_PASSPORT_ID),
+                resultSet.getString(USER_ROLE)
+                );
     }
 
 }

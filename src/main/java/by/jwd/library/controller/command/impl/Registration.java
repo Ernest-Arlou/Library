@@ -5,8 +5,8 @@ import by.jwd.library.controller.JSPPath;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.dao.DAOException;
-import by.jwd.library.service.UserService;
 import by.jwd.library.service.ServiceException;
+import by.jwd.library.service.UserService;
 import by.jwd.library.service.factory.ServiceFactory;
 
 import javax.servlet.RequestDispatcher;
@@ -20,11 +20,13 @@ public class Registration implements Command {
     private static final String REQUEST_PARAM_EMAIL = "email";
     private static final String REQUEST_PARAM_LOGIN = "login";
     private static final String REQUEST_PARAM_PASSWORD = "password";
+    private static final String REQUEST_PARAM_PASSPORT_ID = "passport-id";
     private static final String REQUEST_ATTRIBUTE_REGISTRATION_FAIL = "RegisterErrorMsg";
-    private static final String REQUEST_ATTRIBUTE_REGISTRATION_SUCCESS = "RegisterSuccessMsg";
+    private static final String REQUEST_ATTRIBUTE_REGISTRATION_SUCCESS = "RegistrationSuccessMsg";
     private static final String EMAIL_EXISTS_MSG = "User with this email already exists!";
     private static final String LOGIN_EXISTS_MSG = "User with this login already exists!";
-    private static final String REGISTRATION_SUCCESS_MSG = "You are registered!";
+    private static final String PASSPORT_ID_EXISTS_MSG = "User with this passportID already exists!";
+    private static final String REGISTRATION_SUCCESS_MSG = "User registered!";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -32,27 +34,32 @@ public class Registration implements Command {
         String email = request.getParameter(REQUEST_PARAM_EMAIL);
         String login = request.getParameter(REQUEST_PARAM_LOGIN);
         String password = request.getParameter(REQUEST_PARAM_PASSWORD);
-        User user = new User(name, email, login, password, false);
+        String passportId = request.getParameter(REQUEST_PARAM_PASSPORT_ID);
+        User user = new User(name, email, login, password, passportId, "user");
+
+        System.out.println(user);
 
         UserService userService = ServiceFactory.getInstance().getUserService();
         RequestDispatcher requestDispatcher = null;
         try {
             if (userService.emailExists(user)) {
                 request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_FAIL, EMAIL_EXISTS_MSG);
-                requestDispatcher = request.getRequestDispatcher(JSPPath.REGISTRATION);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
+                requestDispatcher.forward(request, response);
+            } else if (userService.loginExists(user)) {
+                request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_FAIL, LOGIN_EXISTS_MSG);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
+                requestDispatcher.forward(request, response);
+            } else if (userService.passportIdExists(user)) {
+                request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_FAIL, PASSPORT_ID_EXISTS_MSG);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
                 requestDispatcher.forward(request, response);
             } else {
-                if (userService.loginExists(user)) {
-                    request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_FAIL, LOGIN_EXISTS_MSG);
-                    requestDispatcher = request.getRequestDispatcher(JSPPath.REGISTRATION);
-                    requestDispatcher.forward(request, response);
-                }
+                ServiceFactory.getInstance().getUserService().register(user);
+                request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_SUCCESS, REGISTRATION_SUCCESS_MSG);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
+                requestDispatcher.forward(request, response);
             }
-
-            ServiceFactory.getInstance().getUserService().register(user);
-            request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_SUCCESS, REGISTRATION_SUCCESS_MSG);
-            requestDispatcher = request.getRequestDispatcher(JSPPath.INDEX);
-            requestDispatcher.forward(request, response);
 
 
         } catch (ServletException | IOException | ServiceException | DAOException e) {

@@ -29,7 +29,6 @@ public class LogIn implements Command {
         String password = request.getParameter(REQUEST_PARAM_PASSWORD);
         LoginInfo loginInfo = new LoginInfo(login, password);
         User user = null;
-        System.out.println(request.getQueryString());
         try {
             user = ServiceFactory.getInstance().getUserService().login(loginInfo);
             if (user != null) {
@@ -38,7 +37,7 @@ public class LogIn implements Command {
                 response.sendRedirect(JSPPath.CONTROLLER + USER_INFO_COMMAND);
             } else {
                 request.setAttribute(LOGIN_FAIL_ATTRIBUTE, LOGIN_FAIL_MSG);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher(JSPPath.INDEX);
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(JSPPath.LOGIN);
                 requestDispatcher.forward(request, response);
             }
         } catch (ServletException | IOException | ServiceException e) {

@@ -16,7 +16,7 @@ public class SwitchLocale implements Command {
 
         try {
 
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("index1.jsp").forward(request, response);
 
 //            response.sendRedirect(String.valueOf(request.getRequestURL()));
         } catch (IOException | ServletException e) {

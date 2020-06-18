@@ -1,6 +1,7 @@
 package by.jwd.library.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 
 public class User implements Serializable, Cloneable {
@@ -9,22 +10,26 @@ public class User implements Serializable, Cloneable {
     private String email;
     private String login;
     private String password;
-    private boolean isAdmin;
+    private String role;
+    private String passportId;
 
     public User (){
         name = "Name";
         email = "Email";
         login = "login";
         password = "password";
-        isAdmin = false;
+        role = "user";
+        passportId = "000000000000";
+
     }
 
-    public User (String name, String email, String login, String password, boolean isAdmin){
+    public User (String name, String email, String login, String password, String passportId, String role){
         setName(name);
         setEmail(email);
         setLogin(login);
         setPassword(password);
-        setAdmin(isAdmin);
+        setRole(role);
+        setPassportId(passportId);
     }
 
     public User (User user){
@@ -32,14 +37,31 @@ public class User implements Serializable, Cloneable {
         this.email = user.getEmail();
         this.login = user.getLogin();
         this.password = user.getPassword();
-        this.isAdmin = user.isAdmin();
+        this.role = user.getRole();
+        this.passportId= user.getPassportId();
     }
 
-    public String getEmail (){
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getPassportId() {
+        return passportId;
+    }
+
+    public void setPassportId(String passportId) {
+        this.passportId = passportId;
+    }
+
+    final public String getEmail (){
         return email;
     }
 
-    public void setEmail (String email){
+    final public void setEmail (String email){
         this.email = email;
     }
 
@@ -67,39 +89,34 @@ public class User implements Serializable, Cloneable {
         this.password = password;
     }
 
-    final public boolean isAdmin (){
-        return isAdmin;
-    }
-
-    final public void setAdmin (boolean admin){
-        isAdmin = admin;
-    }
-
     @Override
-    public boolean equals (Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (this == obj) return true;
         if ((obj.getClass() != this.getClass())) return false;
         User user = (User) obj;
         return name.equals(user.name) &&
+                email.equals(user.email) &&
                 login.equals(user.login) &&
-                password.equals(user.password);
+                password.equals(user.password) &&
+                role.equals(user.role);
     }
 
     @Override
-    public int hashCode (){
-        return name.hashCode() + login.hashCode() + password.hashCode();
+    public int hashCode() {
+        return Objects.hash(name, email, login, password, role);
     }
 
     @Override
-    public String toString (){
+    public String toString() {
         return getClass().getName() + "@" + Integer.toHexString(hashCode()) +
                 "User{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", isAdmin=" + isAdmin +
+                ", role='" + role + '\'' +
+                ", passportId='" + passportId + '\'' +
                 '}';
     }
 

@@ -41,7 +41,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean emailExists(User user) throws DAOException {
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
-        return userDAO.getUserByEmail(user.getLogin()) != null;
+        return userDAO.getUserByEmail(user.getEmail()) != null;
+    }
+
+    @Override
+    public boolean passportIdExists(User user) throws DAOException {
+        UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+        return userDAO.getUserByPassportId(user.getPassportId()) != null;
     }
 
     @Override

@@ -13,5 +13,7 @@ public interface UserService {
 
     boolean emailExists(User user) throws DAOException;
 
+    boolean passportIdExists(User user) throws DAOException;
+
     void register (User user) throws ServiceException;
 }

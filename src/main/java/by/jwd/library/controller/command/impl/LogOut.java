@@ -15,7 +15,7 @@ public class LogOut implements Command {
         HttpSession session = request.getSession();
         session.invalidate();
         try {
-            response.sendRedirect(JSPPath.INDEX);
+            response.sendRedirect(JSPPath.CONTROLLER);
         } catch (IOException e) {
             throw new CommandException(e);
         }

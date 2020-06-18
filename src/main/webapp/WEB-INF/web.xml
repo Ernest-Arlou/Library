@@ -10,7 +10,11 @@
         <servlet-name>Controller</servlet-name>
         <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
-    
+
+    <welcome-file-list>
+        <welcome-file>Controller</welcome-file>
+    </welcome-file-list>
+
     <filter>
         <display-name>CharsetFilter</display-name>
         <filter-name>CharsetFilter</filter-name>
