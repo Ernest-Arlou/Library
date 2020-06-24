@@ -2,6 +2,7 @@ package by.jwd.library.controller.command.impl;
 
 import by.jwd.library.bean.LoginInfo;
 import by.jwd.library.bean.User;
+import by.jwd.library.controller.CommandURL;
 import by.jwd.library.controller.JSPPath;
 import by.jwd.library.controller.SessionAttributes;
 import by.jwd.library.controller.command.Command;
@@ -21,7 +22,7 @@ public class LogIn implements Command {
     private static final String LOGIN_FAIL_ATTRIBUTE = "LoginFailMsg";
     private static final String REQUEST_PARAM_LOGIN = "login";
     private static final String REQUEST_PARAM_PASSWORD = "password";
-    private static final String USER_INFO_COMMAND = "?command=user_info";
+
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -33,8 +34,10 @@ public class LogIn implements Command {
             user = ServiceFactory.getInstance().getUserService().login(loginInfo);
             if (user != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute(SessionAttributes.LOGIN, login);
-                response.sendRedirect(JSPPath.CONTROLLER + USER_INFO_COMMAND);
+                session.setAttribute(SessionAttributes.LOGIN, user.getLogin());
+                session.setAttribute(SessionAttributes.USER_ID, user.getUserId());
+                session.setAttribute(SessionAttributes.USER_ROLE, user.getRole());
+                response.sendRedirect(CommandURL.PROFILE);
             } else {
                 request.setAttribute(LOGIN_FAIL_ATTRIBUTE, LOGIN_FAIL_MSG);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(JSPPath.LOGIN);

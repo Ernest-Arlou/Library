@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
 
     <!-- Start: Css Section -->
-    <jsp:include page="parts/css.jsp"/>
+    <jsp:include page="WEB-INF/jsp/parts/css.jsp"/>
     <!-- End: Css Section -->
 
     <script language="javascript">
@@ -24,7 +24,7 @@
             let valid_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             let valid_login = /^[a-z A-Z0-9_]{4,12}$/;
             let valid_password = /^[A-Z a-z0-9]{4,12}$/;
-            let valid_passport = /^(?!^0+$)[a-zA-Z0-9]{9,20}$/;
+            let valid_passport = /^(?!^0+$)[a-zA-Z0-9]{14,20}$/;
 
 
             let name = document.getElementById("name");
@@ -34,28 +34,28 @@
             let passport = document.getElementById("passport");
 
 
-            if (!valid_name.test(name.value) || name.value == '') {//apply if condition using test() method match the parameter for pattern allow alphabet only
-                alert("Enter name alphabet only 4 to 12 characters!"); //alert message
+            if (!valid_name.test(name.value) || name.value == '') {
+                alert("Enter name alphabet only 4 to 12 characters!");
                 name.focus();
-                name.style.background = '#f08080'; //set textbox color
+                name.style.background = '#f08080';
                 return false;
             }
-            if (!valid_email.test(email.value) || email.value == '') {//apply if condition using test() method match the parameter for pattern allow alphabet only
-                alert("Wrong Email....!"); //alert message
+            if (!valid_email.test(email.value) || email.value == '') {
+                alert("Wrong Email....!");
                 email.focus();
-                email.style.background = '#f08080'; //set textbox color
+                email.style.background = '#f08080';
                 return false;
             }
-            if (!valid_login.test(login.value) || login.value == '') { //apply if condition using test() method match the parameter for pattern allow alphabet only
-                alert("Login must be 4 to 12 characters!"); //alert message
+            if (!valid_login.test(login.value) || login.value == '') {
+                alert("Login must be 4 to 12 characters!");
                 login.focus();
-                login.style.background = '#f08080'; //set textbox color
+                login.style.background = '#f08080';
                 return false;
             }
-            if (!valid_password.test(password.value) || password.value == '') {//apply if condition using test() method match the parameter for pattern passoword allow 6 to 12 range
-                alert("Password Must Be 4 to 12 characters"); //alert message
+            if (!valid_password.test(password.value) || password.value == '') {
+                alert("Password Must Be 4 to 12 characters");
                 password.focus();
-                password.style.background = '#f08080'; //set textbox color
+                password.style.background = '#f08080';
                 return false;
             }
             if (!valid_passport.test(passport.value) || passport.value == '') {
@@ -72,7 +72,7 @@
 <body>
 
 <!-- Start: Header Section -->
-<jsp:include page="parts/header.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/header.jsp"/>
 <!-- End: Header Section -->
 
 <!-- Start: Page Banner -->
@@ -121,41 +121,46 @@
                                     </c:if>
                                     <div class="col-md-12">
                                         <div class="contact-form bg-light margin-right">
-                                            <h2>Library user registration</h2>
+                                            <h2>User registration</h2>
                                             <span class="underline left"></span>
                                             <div class="contact-fields">
                                                 <form action="Controller" method="post" onsubmit="return validate();">
-                                                    <input type="hidden" name="command" value="USER_REGISTRATION">
+                                                    <input type="hidden" name="command" value="registration">
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <b>Name</b>
                                                                 <input class="form-control" type="text" id="name"
-                                                                       placeholder="Name" name="name"/>
+                                                                       name="name"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <b>Email</b>
                                                                 <input class="form-control" type="text" id="email"
-                                                                       placeholder="Email" name="email"/>
+                                                                       name="email"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <b>Login</b>
                                                                 <input class="form-control" type="text" id="login"
-                                                                       placeholder="Login" name="login"/>
+                                                                       name="login"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <b>Password</b>
                                                                 <input class="form-control" type="text" id="password"
-                                                                       placeholder="Password" name="password"/>
+                                                                       name="password"/>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md12 col-sm-12">
                                                             <div class="form-group">
+                                                                <b>Passport ID</b>
                                                                 <input class="form-control" type="text" id="passport"
-                                                                       placeholder="PassportID" name="passport-id"/>
+                                                                       name="passport-id"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-12">
@@ -181,11 +186,11 @@
 <!-- End: Login Section -->
 
 <!-- Start: Footer -->
-<jsp:include page="parts/footer.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/footer.jsp"/>
 <!-- End: Footer -->
 
 <!-- Start: Scripts -->
-<jsp:include page="parts/scripts.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/scripts.jsp"/>
 <!-- End: Scripts -->
 
 </body>

@@ -1,6 +1,8 @@
 package by.jwd.library.controller.command.impl;
 
+import by.jwd.library.controller.CommandURL;
 import by.jwd.library.controller.JSPPath;
+import by.jwd.library.controller.SessionAttributes;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 
@@ -11,11 +13,13 @@ import java.io.IOException;
 
 public class LogOut implements Command {
     @Override
-    public void execute (HttpServletRequest request, HttpServletResponse response) throws CommandException{
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         HttpSession session = request.getSession();
-        session.invalidate();
+        session.setAttribute(SessionAttributes.LOGIN, null);
+        session.setAttribute(SessionAttributes.USER_ID, null);
+        session.setAttribute(SessionAttributes.USER_ROLE, null);
         try {
-            response.sendRedirect(JSPPath.CONTROLLER);
+            response.sendRedirect(CommandURL.CONTROLLER);
         } catch (IOException e) {
             throw new CommandException(e);
         }

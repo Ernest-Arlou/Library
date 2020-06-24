@@ -4,12 +4,23 @@ import by.jwd.library.bean.LoginInfo;
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
 
-public interface UserDAO {
-    User getUserByEmail (String email) throws DAOException;
+import java.util.List;
 
-    User getUserByLogin (String login) throws DAOException;
+public interface UserDAO {
+
+    User getUserById(int userId) throws DAOException;
+
+    User getUserByEmail(String email) throws DAOException;
+
+    User getUserByLogin(String login) throws DAOException;
 
     User getUserByPassportId(String passportId) throws DAOException;
+
+    List<User> searchUnverifiedUsers(String searchStr) throws DAOException;
+
+    List<User> getUnverifiedUsers() throws DAOException;
+
+    void updateUser(User user) throws DAOException;
 
     void addUser(User user) throws DAOException;
 

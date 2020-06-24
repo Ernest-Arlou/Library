@@ -27,6 +27,8 @@ public class Registration implements Command {
     private static final String LOGIN_EXISTS_MSG = "User with this login already exists!";
     private static final String PASSPORT_ID_EXISTS_MSG = "User with this passportID already exists!";
     private static final String REGISTRATION_SUCCESS_MSG = "User registered!";
+    private static final String USER_ROLE_USER = "user";
+    private static final String USER_STATUS_UNVERIFIED = "Unverified";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -35,34 +37,41 @@ public class Registration implements Command {
         String login = request.getParameter(REQUEST_PARAM_LOGIN);
         String password = request.getParameter(REQUEST_PARAM_PASSWORD);
         String passportId = request.getParameter(REQUEST_PARAM_PASSPORT_ID);
-        User user = new User(name, email, login, password, passportId, "user");
 
-        System.out.println(user);
+        User user = new User();
+
+        user.setName(name);
+        user.setEmail(email);
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setPassportId(passportId);
+        user.setRole(USER_ROLE_USER);
+        user.setStatus(USER_STATUS_UNVERIFIED);
 
         UserService userService = ServiceFactory.getInstance().getUserService();
         RequestDispatcher requestDispatcher = null;
         try {
-            if (userService.emailExists(user)) {
+            if (userService.emailExists(email)) {
                 request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_FAIL, EMAIL_EXISTS_MSG);
-                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.REGISTRATION);
                 requestDispatcher.forward(request, response);
-            } else if (userService.loginExists(user)) {
+            } else if (userService.loginExists(login)) {
                 request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_FAIL, LOGIN_EXISTS_MSG);
-                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.REGISTRATION);
                 requestDispatcher.forward(request, response);
-            } else if (userService.passportIdExists(user)) {
+            } else if (userService.passportIdExists(passportId)) {
                 request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_FAIL, PASSPORT_ID_EXISTS_MSG);
-                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.REGISTRATION);
                 requestDispatcher.forward(request, response);
             } else {
                 ServiceFactory.getInstance().getUserService().register(user);
                 request.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_SUCCESS, REGISTRATION_SUCCESS_MSG);
-                requestDispatcher = request.getRequestDispatcher(JSPPath.USER_REGISTRATION);
+                requestDispatcher = request.getRequestDispatcher(JSPPath.REGISTRATION);
                 requestDispatcher.forward(request, response);
             }
 
 
-        } catch (ServletException | IOException | ServiceException | DAOException e) {
+        } catch (ServletException | IOException | ServiceException e) {
             throw new CommandException(e);
         }
     }

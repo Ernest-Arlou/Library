@@ -14,6 +14,7 @@ import java.io.IOException;
 public class MediaDetail implements Command {
     private final static String REQUEST_PARAM_MEDIA_TYPE_ID = "media_type_id";
     private final static String REQUEST_ATTR_MEDIA_DETAIL = "mediaDetail";
+    private final static String REQUEST_ATTR_RESERVATION_MSG = "reservationMsg";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -21,9 +22,13 @@ public class MediaDetail implements Command {
             int mediaTypeID = Integer.parseInt(request.getParameter(REQUEST_PARAM_MEDIA_TYPE_ID));
             by.jwd.library.bean.MediaDetail mediaDetail = ServiceFactory.getInstance().getLibraryService().getMediaDetail(mediaTypeID);
 
-            System.out.println(mediaDetail);
-            request.setAttribute(REQUEST_ATTR_MEDIA_DETAIL, mediaDetail);
 
+            String reservationMsg = request.getParameter(REQUEST_ATTR_RESERVATION_MSG);
+            if (reservationMsg != null) {
+                request.setAttribute(REQUEST_ATTR_RESERVATION_MSG, reservationMsg);
+            }
+
+            request.setAttribute(REQUEST_ATTR_MEDIA_DETAIL, mediaDetail);
             request.getRequestDispatcher(JSPPath.DETAIL).forward(request, response);
 
         } catch (ServiceException | IOException | ServletException e) {

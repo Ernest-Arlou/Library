@@ -8,11 +8,11 @@ public class DBResourceManager {
     private final static DBResourceManager instance = new DBResourceManager();
     ResourceBundle resourceBundle = ResourceBundle.getBundle(DB_PROPERTIES);
 
-    public static DBResourceManager getInstance (){
+    public static DBResourceManager getInstance() {
         return instance;
     }
 
-    public String getValue (String key){
+    public String getValue(String key) {
         return resourceBundle.getString(key);
     }
 }

@@ -8,7 +8,7 @@ import javax.servlet.ServletContextListener;
 
 public class LibraryRequestListener implements ServletContextListener {
     @Override
-    public void contextInitialized (ServletContextEvent servletContextEvent){
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
         try {
             ConnectionPoolManager.getInstance().initConnectionPool();
         } catch (DAOException e) {
@@ -18,7 +18,7 @@ public class LibraryRequestListener implements ServletContextListener {
     }
 
     @Override
-    public void contextDestroyed (ServletContextEvent servletContextEvent){
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
         try {
             ConnectionPoolManager.getInstance().disposeConnectionPull();
         } catch (DAOException e) {

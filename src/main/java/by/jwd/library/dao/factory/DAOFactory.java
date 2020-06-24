@@ -11,18 +11,18 @@ public final class DAOFactory {
     private final UserDAO userDAO = new UserDAOImpl();
     private final LibraryDAO libraryDAO = new LibraryDAOImpl();
 
-    private DAOFactory (){
+    private DAOFactory() {
     }
 
-    public static DAOFactory getInstance (){
+    public static DAOFactory getInstance() {
         return instance;
     }
 
-    public UserDAO getUserDAO(){
+    public UserDAO getUserDAO() {
         return userDAO;
     }
 
-    public LibraryDAO getLibraryDAO(){
+    public LibraryDAO getLibraryDAO() {
         return libraryDAO;
     }
 

@@ -10,30 +10,30 @@ public final class ConnectionPoolManager {
 
     private final ConnectionPool connectionPool = new ConnectionPool();
 
-    private ConnectionPoolManager (){
+    private ConnectionPoolManager() {
     }
 
-    public void initConnectionPool() throws DAOException{
-        try {
-            connectionPool.initPoolData();
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection pool initiation error",e);
-        }
-    }
-
-    public void disposeConnectionPull() throws DAOException{
-        try {
-            connectionPool.dispose();
-        } catch (SQLException e) {
-            throw new DAOException("Connection pool dispose error",e);
-        }
-    }
-
-    public static ConnectionPoolManager getInstance (){
+    public static ConnectionPoolManager getInstance() {
         return instance;
     }
 
-    public ConnectionPool getConnectionPool (){
+    public void initConnectionPool() throws DAOException {
+        try {
+            connectionPool.initPoolData();
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Connection pool initiation error", e);
+        }
+    }
+
+    public void disposeConnectionPull() throws DAOException {
+        try {
+            connectionPool.dispose();
+        } catch (SQLException e) {
+            throw new DAOException("Connection pool dispose error", e);
+        }
+    }
+
+    public ConnectionPool getConnectionPool() {
         return connectionPool;
     }
 

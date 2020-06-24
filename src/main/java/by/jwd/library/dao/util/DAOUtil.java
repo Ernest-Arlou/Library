@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAOUtil {
-    public static void closeConnection(Connection connection){
+    public static void closeConnection(Connection connection) {
         try {
             if (connection != null) {
                 connection.close();
@@ -15,7 +15,8 @@ public class DAOUtil {
             //log
         }
     }
-    public static void closePreparedStatement(PreparedStatement preparedStatement){
+
+    public static void closePreparedStatement(PreparedStatement preparedStatement) {
         try {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -25,7 +26,7 @@ public class DAOUtil {
         }
     }
 
-    public static void closeResultSet(ResultSet resultSet){
+    public static void closeResultSet(ResultSet resultSet) {
         try {
             if (resultSet != null) {
                 resultSet.close();

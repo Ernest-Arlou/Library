@@ -11,24 +11,24 @@ public class Author implements Serializable {
     private String fullName;
     private String penName;
 
-    public Author(){
+    public Author() {
         setId(-1);
         setFullName("NoName");
         setPenName("NoPenName");
     }
 
-    public Author(int id, String fullName, String penName){
+    public Author(int id, String fullName, String penName) {
         setId(id);
         setFullName(fullName);
         setPenName(penName);
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFullName() {

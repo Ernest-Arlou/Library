@@ -6,11 +6,11 @@ public class LoginInfo {
     private String username;
     private String password;
 
-    public LoginInfo (){
+    public LoginInfo() {
 
     }
 
-    public LoginInfo (String username, String password){
+    public LoginInfo(String username, String password) {
         setLogin(username);
         setPassword(password);
     }
@@ -19,7 +19,7 @@ public class LoginInfo {
         return username;
     }
 
-    public void setLogin (String username) {
+    public void setLogin(String username) {
         this.username = username;
     }
 

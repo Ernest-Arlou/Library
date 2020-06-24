@@ -12,18 +12,19 @@ public final class ServiceFactory {
     private final UserService userService = new UserServiceImpl();
     private final LibraryService libraryService = new LibraryServiceImpl();
 
-    private ServiceFactory (){
+    private ServiceFactory() {
     }
 
-    public static ServiceFactory getInstance (){
+    public static ServiceFactory getInstance() {
         return instance;
     }
 
 
-    public UserService getUserService(){
+    public UserService getUserService() {
         return userService;
     }
-    public LibraryService getLibraryService(){
+
+    public LibraryService getLibraryService() {
         return libraryService;
     }
 

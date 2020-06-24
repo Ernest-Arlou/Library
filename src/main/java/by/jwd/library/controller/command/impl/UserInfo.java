@@ -19,10 +19,10 @@ public class UserInfo implements Command {
     private static final String REQUEST_ATTRIBUTE_USER = "user";
 
     @Override
-    public void execute (HttpServletRequest request, HttpServletResponse response) throws CommandException{
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String login = (String) request.getSession().getAttribute(SessionAttributes.LOGIN);
         try {
-            User user = ServiceFactory.getInstance().getUserService().getUser(login);
+            User user = ServiceFactory.getInstance().getUserService().getUserByLogin(login);
             request.setAttribute(REQUEST_ATTRIBUTE_NAME, user.getName());
             request.setAttribute(REQUEST_ATTRIBUTE_USER, user);
 

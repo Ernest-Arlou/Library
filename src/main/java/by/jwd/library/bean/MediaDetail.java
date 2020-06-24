@@ -30,7 +30,7 @@ public class MediaDetail implements Serializable {
     List<Author> authors;
     List<Genre> genres;
 
-    public MediaDetail(){
+    public MediaDetail() {
         setMediaID(-1);
         setMediaTypeID(-1);
 
@@ -60,7 +60,7 @@ public class MediaDetail implements Serializable {
                        double price,
                        String title, String summary, String iSBN, String picture,
                        String publisher, String materialType, String language, String restriction,
-                       List<Author> authors, List<Genre> genres){
+                       List<Author> authors, List<Genre> genres) {
         setMediaID(mediaID);
         setMediaTypeID(mediaTypeID);
 

@@ -18,50 +18,32 @@
     <jsp:include page="parts/css.jsp"/>
     <!-- End: Css Section -->
 
-    <script language="javascript">
+    <script>
         function validate() {
             let valid_name = /^[a-z A-Z]{4,12}$/;
             let valid_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             let valid_login = /^[a-z A-Z0-9_]{4,12}$/;
-            let valid_password = /^[A-Z a-z0-9]{4,12}$/;
-            let valid_passport = /^(?!^0+$)[a-zA-Z0-9]{9,20}$/;
-
 
             let name = document.getElementById("name");
             let email = document.getElementById("email");
             let login = document.getElementById("login");
-            let password = document.getElementById("password");
-            let passport = document.getElementById("passport");
 
-
-            if (!valid_name.test(name.value) || name.value == '') {//apply if condition using test() method match the parameter for pattern allow alphabet only
-                alert("Enter name alphabet only 4 to 12 characters!"); //alert message
+            if (!valid_name.test(name.value) || name.value === '') {
+                alert("Enter name alphabet only 4 to 12 characters!");
                 name.focus();
-                name.style.background = '#f08080'; //set textbox color
+                name.style.background = '#f08080';
                 return false;
             }
-            if (!valid_email.test(email.value) || email.value == '') {//apply if condition using test() method match the parameter for pattern allow alphabet only
-                alert("Wrong Email....!"); //alert message
+            if (!valid_email.test(email.value) || email.value === '') {
+                alert("Wrong Email....!");
                 email.focus();
-                email.style.background = '#f08080'; //set textbox color
+                email.style.background = '#f08080';
                 return false;
             }
-            if (!valid_login.test(login.value) || login.value == '') { //apply if condition using test() method match the parameter for pattern allow alphabet only
-                alert("Login must be 4 to 12 characters!"); //alert message
+            if (!valid_login.test(login.value) || login.value === '') {
+                alert("Login must be 4 to 12 characters!");
                 login.focus();
-                login.style.background = '#f08080'; //set textbox color
-                return false;
-            }
-            if (!valid_password.test(password.value) || password.value == '') {//apply if condition using test() method match the parameter for pattern passoword allow 6 to 12 range
-                alert("Password Must Be 4 to 12 characters"); //alert message
-                password.focus();
-                password.style.background = '#f08080'; //set textbox color
-                return false;
-            }
-            if (!valid_passport.test(passport.value) || passport.value == '') {
-                alert("Passport ID is incorrect");
-                passport.focus();
-                passport.style.background = '#f08080';
+                login.style.background = '#f08080';
                 return false;
             }
         }
@@ -79,14 +61,15 @@
 <section class="page-banner services-banner">
     <div class="container">
         <div class="banner-header">
-            <h2>User registration</h2>
+            <h2>Edit profile</h2>
             <span class="underline center"></span>
             <p class="lead"></p>
         </div>
         <div class="breadcrumb">
             <ul>
                 <li><a href="${pageContext.request.contextPath}/Controller">Home</a></li>
-                <li>User registration</li>
+                <li><a href="${pageContext.request.contextPath}/Controller?command=profile">Profile</a></li>
+                <li>Edit profile</li>
             </ul>
         </div>
     </div>
@@ -103,65 +86,47 @@
                         <div class="row">
                             <div class="contact-area">
                                 <div class="container">
-                                    <c:if test="${RegistrationSuccessMsg != null}">
-                                        <div class="container">
-                                            <div class="center-content">
-                                                <h1>
-                                                    <c:out value="${RegistrationSuccessMsg}"/>
-                                                </h1>
-                                            </div>
+                                    <c:if test="${requestScope.userInfoEditMSG != null}">
+                                        <div class="center-content">
+                                            <div class="clear"></div>
+                                            <br>
+                                            <h3 class="section-title"><c:out value="${userInfoEditMSG}"/></h3>
                                         </div>
                                     </c:if>
-                                    <c:if test="${RegisterErrorMsg != null}">
-                                        <div class="container">
-                                            <div class="center-content">
-                                                <h1><c:out value="${RegisterErrorMsg}"/></h1>
-                                            </div>
-                                        </div>
-                                    </c:if>
+                                    <jsp:useBean id="user" scope="request" type="by.jwd.library.bean.User"/>
                                     <div class="col-md-12">
                                         <div class="contact-form bg-light margin-right">
-                                            <h2>Library user registration</h2>
+                                            <h2>Edit profile</h2>
                                             <span class="underline left"></span>
                                             <div class="contact-fields">
                                                 <form action="Controller" method="post" onsubmit="return validate();">
-                                                    <input type="hidden" name="command" value="USER_REGISTRATION">
+                                                    <input type="hidden" name="command" value="edit_user_info">
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <b>Name</b>
                                                                 <input class="form-control" type="text" id="name"
-                                                                       placeholder="Name" name="name"/>
+                                                                       placeholder="Name" name="name" value="${user.name}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <b>Email</b>
                                                                 <input class="form-control" type="text" id="email"
-                                                                       placeholder="Email" name="email"/>
+                                                                       placeholder="Email" name="email" value="${user.email}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <b>Login</b>
                                                                 <input class="form-control" type="text" id="login"
-                                                                       placeholder="Login" name="login"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <div class="form-group">
-                                                                <input class="form-control" type="text" id="password"
-                                                                       placeholder="Password" name="password"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md12 col-sm-12">
-                                                            <div class="form-group">
-                                                                <input class="form-control" type="text" id="passport"
-                                                                       placeholder="PassportID" name="passport-id"/>
+                                                                       placeholder="Login" name="login" value="${user.login}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <div class="form-group form-submit">
                                                                 <input class="btn btn-default" type="submit"
-                                                                       name="submit" value="Register user"/>
+                                                                       name="submit" value="Edit info"/>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <header id="header-v1" class="navbar-wrapper inner-navbar-wrapper">
     <div class="container">
@@ -8,7 +9,7 @@
                         <div class="navbar-header">
                             <div class="navbar-brand">
                                 <h1>
-                                    <a href="index-2.html">
+                                    <a href="${pageContext.request.contextPath}/Controller">
                                         <img src="${pageContext.request.contextPath}/resources/images/libraria-logo-v1.png" alt="LIBRARIA" />
                                     </a>
                                 </h1>
@@ -28,11 +29,20 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="topbar-links">
-                                        <a href="signin.html"><i class="fa"></i>EN / RU</a>
-                                        <span>|</span>
-                                        <a href="signin.html"><i class="fa"></i>Register</a>
-                                        <span>|</span>
-                                        <a href="login.jsp"><i class="fa"></i>Login</a>
+                                        <c:choose>
+                                            <c:when test="${login != null}">
+                                                <a href="${pageContext.request.contextPath}/Controller?command=profile"><i class="fa"></i>Your profile</a>
+                                                <span>|</span>
+                                                <a href="${pageContext.request.contextPath}/Controller?command=log_out"><i class="fa"></i>Sign out</a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="signin.html"><i class="fa"></i>EN / RU</a>
+                                                <span>|</span>
+                                                <a href="${pageContext.request.contextPath}/registration.jsp"><i class="fa"></i>Register</a>
+                                                <span>|</span>
+                                                <a href="login.jsp"><i class="fa"></i>Login</a>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>
@@ -46,8 +56,13 @@
                                     <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=page&page=1">Books &amp; Media</a>
                                 </li>
                                 <li class="dropdown">
-                                    <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=user_registration_page">Register user</a>
+                                    <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=user_verification">User verification</a>
                                 </li>
+                                <c:if test="${role == 'librarian'}">
+                                    <li class="dropdown">
+                                        <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=user_verification">Verify user</a>
+                                    </li>
+                                </c:if>
                             </ul>
                         </div>
                     </div>

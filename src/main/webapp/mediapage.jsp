@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
 
     <!-- Start: Css Section -->
-    <jsp:include page="parts/css.jsp"/>
+    <jsp:include page="WEB-INF/jsp/parts/css.jsp"/>
     <!-- End: Css Section -->
 
 </head>
@@ -21,7 +21,7 @@
 <body>
 
 <!-- Start: Header Section -->
-<jsp:include page="parts/header.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/header.jsp"/>
 <!-- End: Header Section -->
 
 
@@ -83,6 +83,14 @@
                     <div class="booksmedia-fullwidth">
 
                         <jsp:useBean id="mediapage" scope="request" type="by.jwd.library.bean.MediaPage"/>
+                        <c:if test="${mediapage.totalItems == 0}">
+                            <div class="container">
+                                <div class="center-content">
+                                    <h3>No results</h3>
+                                </div>
+                            </div>
+                        </c:if>
+
                         <c:if test="${not empty mediapage}">
                             <ul>
                                 <c:forEach var="item" items="${mediapage.mediaDisplay}">
@@ -169,11 +177,11 @@
 <!-- End: Products Section -->
 
 <!-- Start: Footer -->
-<jsp:include page="parts/footer.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/footer.jsp"/>
 <!-- End: Footer -->
 
 <!-- Start: Scripts -->
-<jsp:include page="parts/scripts.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/scripts.jsp"/>
 <!-- End: Scripts -->
 
 </body>

@@ -13,7 +13,7 @@ public class MediaDisplay implements Serializable {
     String publisher;
     String language;
 
-    public MediaDisplay(){
+    public MediaDisplay() {
         setMediaTypeID(-1);
         setPicture("NoPicture");
         setMaterialType("NoType");
@@ -22,7 +22,8 @@ public class MediaDisplay implements Serializable {
         setPublisher("NoPublisher");
         setLanguage("NoLanguage");
     }
-    public MediaDisplay(int mediaTypeID, String picture, String materialType, String title, String summary, String publisher, String language){
+
+    public MediaDisplay(int mediaTypeID, String picture, String materialType, String title, String summary, String publisher, String language) {
         setMediaTypeID(mediaTypeID);
         setPicture(picture);
         setMaterialType(materialType);

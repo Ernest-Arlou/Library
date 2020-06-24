@@ -75,20 +75,20 @@
                                     <div class="row">
                                         <div class="company-detail bg-dark margin-left">
                                             <div class="signin-head">
-                                                <h2>Sign in</h2>
+                                                <h2>Login</h2>
                                                 <span class="underline left"></span>
                                             </div>
                                             <form class="login" method="post" action="Controller" name="login_form" onsubmit="return validate();">
                                                 <p class="form-row form-row-first input-required">
                                                 <label>
-                                                    <span class="first-letter">Barcode or Username</span>
+                                                    <span class="first-letter">Login</span>
                                                     <span class="second-letter">*</span>
                                                 </label>
                                                 <input type="text" name="login">
                                                 </p>
                                                 <p class="form-row form-row-last input-required">
                                                 <label>
-                                                    <span class="first-letter">Pin</span>
+                                                    <span class="first-letter">Password</span>
                                                     <span class="second-letter">*</span>
                                                 </label>
                                                 <input type="password" name="password">

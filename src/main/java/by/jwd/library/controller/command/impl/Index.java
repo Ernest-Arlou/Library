@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class Index implements Command {
     private final static String REQUEST_ATTR_PAGE_ITEMS = "mediapage";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {

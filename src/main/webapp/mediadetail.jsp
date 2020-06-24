@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
 
     <!-- Start: Css Section -->
-    <jsp:include page="parts/css.jsp"/>
+    <jsp:include page="WEB-INF/jsp/parts/css.jsp"/>
     <!-- End: Css Section -->
 
 </head>
@@ -23,7 +23,7 @@
 <body>
 
 <!-- Start: Header Section -->
-<jsp:include page="parts/header.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/header.jsp"/>
 <!-- End: Header Section -->
 
 <!-- Start: Page Banner -->
@@ -156,7 +156,32 @@
                                         <p><strong>Reserved: </strong>${mediaDetail.reservedCopies}</p>
                                         <p><strong>Loaned: </strong>${mediaDetail.loanedCopies}</p>
 
-                                        <a href="#." class="btn btn-dark-gray">Place a Hold</a>
+                                        <c:if test="${not empty requestScope.reservationMsg}">
+                                            <div class="center-content">
+                                                <br>
+                                                <h3 class="section-title"><c:out value="${reservationMsg}"/></h3>
+                                            </div>
+                                        </c:if>
+
+                                        <c:choose>
+                                            <c:when test="${not empty sessionScope.userId}">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.role.equalsIgnoreCase('user')}">
+                                                       <c:if test="${mediaDetail.availableCopies > 0}">
+                                                        <c:if test="${empty requestScope.reservationMsg}">
+                                                        <a href="${pageContext.request.contextPath}/Controller?command=reserve&media_type_id=${mediaDetail.mediaTypeID}" class="btn btn-dark-gray">Place a Hold</a>
+                                                        </c:if>
+                                                       </c:if>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <h4>Staff can't place holds</h4>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h4>You need to login in order to place a hold</h4>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -164,131 +189,6 @@
                             <div class="clearfix"></div>
                             <p><strong>Summary: </strong>${mediaDetail.summary}</p>
                         </c:if>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <div class="table-tabs" id="responsiveTabs">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><b class="arrow-up"></b><a data-toggle="tab" href="#sectionA">Copies: 05</a></li>
-                                <li><b class="arrow-up"></b><a data-toggle="tab" href="#sectionB">Reviews (12)</a></li>
-                                <li><b class="arrow-up"></b><a data-toggle="tab" href="#sectionC">Table of Contents</a></li>
-                                <li><b class="arrow-up"></b><a data-toggle="tab" href="#sectionD">Novelist Recommendations</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div id="sectionA" class="tab-pane fade in active">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                        <tr>
-                                            <th>Library Name</th>
-                                            <th>Shelf Number</th>
-                                            <th>Material Type</th>
-                                            <th>Status </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>Oak Park Public Library Main Branch</td>
-                                            <td>B PURMORT</td>
-                                            <td>Book</td>
-                                            <td>In Processing</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bedford Park Public Library District</td>
-                                            <td>616.99 PUR</td>
-                                            <td>Book</td>
-                                            <td>Due 8/24/16</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Blue Island Public Library</td>
-                                            <td>BIO PUR</td>
-                                            <td>eBook</td>
-                                            <td>Due 8/24/16</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bridgeview Public Library</td>
-                                            <td>B PUR</td>
-                                            <td>DVD</td>
-                                            <td>In Processing</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Eisenhower Public Library District</td>
-                                            <td>616.994 PUR</td>
-                                            <td>Magazine</td>
-                                            <td>Checked In</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Forest Park Public Library</td>
-                                            <td>BIO PURMORT</td>
-                                            <td>Magazine</td>
-                                            <td>Checked In</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Hinsdale Public Library</td>
-                                            <td>B PUR</td>
-                                            <td>Audio</td>
-                                            <td>Checked In</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Oak Park Public Library Maze Branch</td>
-                                            <td>616.99 PUR</td>
-                                            <td>Audio</td>
-                                            <td>Due 9/10/16</td>
-                                        </tr>
-                                        <tr>
-                                            <td>River Grove Public Library District</td>
-                                            <td>616.994 PURMORT</td>
-                                            <td>Book</td>
-                                            <td>Due 9/10/16</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div id="sectionB" class="tab-pane fade in">
-                                    <h5>Lorem Ipsum Dolor</h5>
-                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
-                                </div>
-                                <div id="sectionC" class="tab-pane fade in">
-                                    <h5>Lorem Ipsum Dolor</h5>
-                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
-                                </div>
-                                <div id="sectionD" class="tab-pane fade in">
-                                    <h5>Lorem Ipsum Dolor</h5>
-                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
-                                </div>
-                                <div id="sectionE" class="tab-pane fade in">
-                                    <h5>Lorem Ipsum Dolor</h5>
-                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
-                                </div>
-                                <div id="sectionF" class="tab-pane fade in">
-                                    <h5>Lorem Ipsum Dolor</h5>
-                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -298,11 +198,11 @@
 <!-- End: Products Section -->
 
 <!-- Start: Footer -->
-<jsp:include page="parts/footer.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/footer.jsp"/>
 <!-- End: Footer -->
 
 <!-- Start: Scripts -->
-<jsp:include page="parts/scripts.jsp"/>
+<jsp:include page="WEB-INF/jsp/parts/scripts.jsp"/>
 <!-- End: Scripts -->
 
 </body>

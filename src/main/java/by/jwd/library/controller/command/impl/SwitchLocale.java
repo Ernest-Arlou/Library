@@ -6,12 +6,11 @@ import by.jwd.library.controller.command.CommandException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class SwitchLocale implements Command {
     @Override
-    public void execute (HttpServletRequest request, HttpServletResponse response) throws CommandException{
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         request.getSession().setAttribute("local", request.getParameter("local"));
 
         try {
@@ -20,7 +19,7 @@ public class SwitchLocale implements Command {
 
 //            response.sendRedirect(String.valueOf(request.getRequestURL()));
         } catch (IOException | ServletException e) {
-           throw new CommandException(e);
+            throw new CommandException(e);
         }
 
     }

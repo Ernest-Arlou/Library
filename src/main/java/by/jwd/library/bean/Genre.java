@@ -10,22 +10,22 @@ public class Genre implements Serializable {
 
     private String genre;
 
-    public Genre(){
+    public Genre() {
         setId(-1);
         setGenre("NoGenre");
     }
 
-    public Genre(int id, String genre){
+    public Genre(int id, String genre) {
         setId(id);
         setGenre(genre);
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getGenre() {

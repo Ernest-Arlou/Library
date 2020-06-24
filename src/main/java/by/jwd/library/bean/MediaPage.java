@@ -18,7 +18,7 @@ public class MediaPage implements Serializable {
     List<MediaDisplay> mediaDisplay;
     List<Integer> navigationPages;
 
-    public MediaPage(){
+    public MediaPage() {
         setPage(-1);
         setItemsPerPage(-1);
         setTotalItems(-1);
@@ -30,7 +30,7 @@ public class MediaPage implements Serializable {
         navigationPages = new ArrayList<>();
     }
 
-    public MediaPage(int page, int itemsPerPage, int totalItems, int totalPages, List <MediaDisplay> mediaDisplay, List <Integer> navigationPages){
+    public MediaPage(int page, int itemsPerPage, int totalItems, int totalPages, List<MediaDisplay> mediaDisplay, List<Integer> navigationPages) {
         setPage(page);
         setItemsPerPage(itemsPerPage);
         setTotalItems(totalItems);
