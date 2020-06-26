@@ -1,9 +1,9 @@
 package by.jwd.library.dao.factory;
 
 import by.jwd.library.dao.LibraryDAO;
-import by.jwd.library.dao.LibraryDAOImpl;
-import by.jwd.library.dao.userdao.UserDAO;
-import by.jwd.library.dao.userdao.UserDAOImpl;
+import by.jwd.library.dao.impl.LibraryDAOImpl;
+import by.jwd.library.dao.UserDAO;
+import by.jwd.library.dao.impl.UserDAOImpl;
 
 public final class DAOFactory {
     private static final DAOFactory instance = new DAOFactory();

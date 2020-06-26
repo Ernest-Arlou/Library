@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class MediaDisplay implements Serializable {
     private static final long serialVersionUID = -7015771668470127450L;
-    int mediaTypeID;
-    String picture;
-    String materialType;
-    String title;
-    String summary;
-    String publisher;
-    String language;
+    private int mediaTypeID;
+    private String picture;
+    private String materialType;
+    private String title;
+    private String summary;
+    private String publisher;
+    private String language;
 
     public MediaDisplay() {
         setMediaTypeID(-1);

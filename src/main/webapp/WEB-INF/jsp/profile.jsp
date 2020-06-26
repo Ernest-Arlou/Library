@@ -126,8 +126,8 @@
                                                             <tr>
                                                                 <th class="product-name"></th>
                                                                 <th class="product-name">Media details</th>
-                                                                <th class="product-price">Start data</th>
-                                                                <th class="product-price">End data</th>
+                                                                <th class="product-price">Start date</th>
+                                                                <th class="product-price">End date</th>
                                                                 <th class="product-subtotal">Action</th>
                                                             </tr>
                                                             </thead>
@@ -164,7 +164,9 @@
                                                                     <td data-title="Price" class="product-price"
                                                                         data-th="Pickup Location ">
                                                                 <span class="bt-content">
-                                                                            <p>Delete</p>
+                                                                          <div><a onClick="return window.confirm('Delete?');"
+                                                                                  href="${pageContext.request.contextPath}/Controller?command=delete_reservation&reservation_id=${reservation.loanTypeId}&from=profile"
+                                                                                  class="btn btn-dark-gray">Delete</a></div>
                                                                 </span>
                                                                     </td>
                                                                 </tr>

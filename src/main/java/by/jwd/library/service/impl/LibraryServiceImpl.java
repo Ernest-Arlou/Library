@@ -1,5 +1,6 @@
 package by.jwd.library.service.impl;
 
+import by.jwd.library.bean.DeliveryType;
 import by.jwd.library.bean.LoanType;
 import by.jwd.library.bean.MediaDetail;
 import by.jwd.library.bean.MediaPage;
@@ -13,13 +14,22 @@ import by.jwd.library.service.util.Pagination;
 import java.util.List;
 
 public class LibraryServiceImpl implements LibraryService {
-    private static final String STATUS_ACTIVE = "Active";
-    private static final String STATUS_LOANED = "Loaned";
-    private static final String STATUS_RESERVED = "Reserved";
-
     private final static int RESERVATION_DURATION_DAYS = 3;
-
     private final static int MAX_LOANS = 3;
+
+
+    @Override
+    public void deleteReservation(int reservationId) throws ServiceException {
+        try {
+            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LoanType reservation = libraryDAO.getReservationById(reservationId);
+            libraryDAO.cancelCopyReservation(reservation.getCopyId());
+            libraryDAO.deleteReservation(reservationId);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during reservation delete", e);
+        }
+
+    }
 
     @Override
     public void reserveMedia(int userId, int mediaTypeId) throws ServiceException {
@@ -27,7 +37,7 @@ public class LibraryServiceImpl implements LibraryService {
         try {
             int copyId = libraryDAO.getAvailableCopyId(mediaTypeId);
             if (copyId > 0) {
-                libraryDAO.setCopyStatus(copyId, STATUS_RESERVED);
+                libraryDAO.reserveCopy(copyId);
                 libraryDAO.addReservation(RESERVATION_DURATION_DAYS, userId, copyId);
             }
         } catch (DAOException e) {
@@ -106,6 +116,24 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    public List<DeliveryType> searchReservations(String searchStr) throws ServiceException {
+        try {
+            return DAOFactory.getInstance().getLibraryDAO().searchReservations(searchStr);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during reservations load", e);
+        }
+    }
+
+    @Override
+    public List<DeliveryType> getAllReservations() throws ServiceException {
+        try {
+            return DAOFactory.getInstance().getLibraryDAO().getAllReservations();
+        } catch (DAOException e) {
+            throw new ServiceException("Error during reservations load", e);
+        }
+    }
+
+    @Override
     public List<LoanType> getUserReservations(int userId) throws ServiceException {
         try {
             return DAOFactory.getInstance().getLibraryDAO().getUserReservations(userId);
@@ -119,7 +147,7 @@ public class LibraryServiceImpl implements LibraryService {
         try {
             return DAOFactory.getInstance().getLibraryDAO().getUserLoans(userId);
         } catch (DAOException e) {
-            throw new ServiceException("Error during user reservations load", e);
+            throw new ServiceException("Error during user loans load", e);
         }
     }
 

@@ -58,9 +58,15 @@
                                 <li class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=user_verification">User verification</a>
                                 </li>
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=delivery">Delivery</a>
+                                </li>
                                 <c:if test="${role == 'librarian'}">
                                     <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=user_verification">Verify user</a>
+                                        <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=user_verification">User verification</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a data-toggle="dropdown" class="dropdown-toggle disabled" href="${pageContext.request.contextPath}/Controller?command=delivery">Delivery</a>
                                     </li>
                                 </c:if>
                             </ul>

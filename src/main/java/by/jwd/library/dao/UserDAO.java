@@ -1,4 +1,4 @@
-package by.jwd.library.dao.userdao;
+package by.jwd.library.dao;
 
 import by.jwd.library.bean.LoginInfo;
 import by.jwd.library.bean.User;

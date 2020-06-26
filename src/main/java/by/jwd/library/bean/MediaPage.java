@@ -8,15 +8,15 @@ import java.util.Objects;
 public class MediaPage implements Serializable {
     private static final long serialVersionUID = 6165757400781068605L;
 
-    int page;
-    int itemsPerPage;
-    int totalItems;
-    int totalPages;
+    private int page;
+    private int itemsPerPage;
+    private int totalItems;
+    private int totalPages;
 
-    String search;
+    private String search;
 
-    List<MediaDisplay> mediaDisplay;
-    List<Integer> navigationPages;
+    private List<MediaDisplay> mediaDisplay;
+    private List<Integer> navigationPages;
 
     public MediaPage() {
         setPage(-1);

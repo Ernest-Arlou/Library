@@ -8,27 +8,27 @@ import java.util.Objects;
 public class MediaDetail implements Serializable {
     private static final long serialVersionUID = 7759631852833962220L;
 
-    int mediaID;
-    int mediaTypeID;
+    private int mediaID;
+    private int mediaTypeID;
 
-    int totalCopies;
-    int availableCopies;
-    int reservedCopies;
-    int loanedCopies;
+    private int totalCopies;
+    private int availableCopies;
+    private int reservedCopies;
+    private int loanedCopies;
 
-    double price;
+    private double price;
 
-    String title;
-    String summary;
-    String iSBN;
-    String picture;
-    String publisher;
-    String materialType;
-    String language;
-    String restriction;
+    private String title;
+    private String summary;
+    private String iSBN;
+    private String picture;
+    private String publisher;
+    private String materialType;
+    private String language;
+    private String restriction;
 
-    List<Author> authors;
-    List<Genre> genres;
+    private List<Author> authors;
+    private List<Genre> genres;
 
     public MediaDetail() {
         setMediaID(-1);

@@ -1,10 +1,9 @@
-package by.jwd.library.dao.userdao;
+package by.jwd.library.dao.impl;
 
 import by.jwd.library.bean.LoginInfo;
-import by.jwd.library.bean.MediaDisplay;
-import by.jwd.library.bean.MediaPage;
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
+import by.jwd.library.dao.UserDAO;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
 import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
 import by.jwd.library.dao.util.DAOUtil;
@@ -24,8 +23,7 @@ public class UserDAOImpl implements UserDAO {
             "select * from users where login=? and password=?";
     private static final String GET_USER_BY_LOGIN =
             "select * from users where login=? and status !='deleted'";
-    private static final String GET_USER_BY_ID =
-            "select * from users where `user-id`=? and status !='deleted'";
+
     private static final String GET_USER_BY_EMAIL =
             "select * from users where email=? and status !='deleted'";
     private static final String GET_USER_BY_PASSPORT_ID =
@@ -36,32 +34,11 @@ public class UserDAOImpl implements UserDAO {
     private static final String SEARCH_UNVERIFIED_USERS = "select * from users where status = 'Unverified' and login like ? or status = 'Unverified' and email like ? or status = 'Unverified' and `passport-id` like ?;";
     private static final String ROLE_USER = "user";
     private static final String ROLE_ADMIN = "admin";
-    private static final String USER_ROLE = "role";
-    private static final String USER_NAME = "name";
-    private static final String USER_EMAIL = "email";
-    private static final String USER_LOGIN = "login";
-    private static final String USER_PASSWORD = "password";
-    private static final String USER_PASSPORT_ID = "passport-id";
-    private static final String USER_STATUS = "status";
-    private static final String USER_USER_ID = "user-id";
+
 
     @Override
     public User getUserById(int userId) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
-            preparedStatement = connection.prepareStatement(GET_USER_BY_ID);
-            preparedStatement.setInt(1, userId);
-            return getUserFromPreparedStatement(preparedStatement);
-        } catch (SQLException e) {
-            throw new DAOException("SQL error", e);
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("ConnectionPool error", e);
-        } finally {
-            DAOUtil.closePreparedStatement(preparedStatement);
-            DAOUtil.closeConnection(connection);
-        }
+        return DAOUtil.getUserById(userId);
     }
 
     @Override
@@ -101,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
 
             List<User> userList = new ArrayList<>();
             while (usersSet.next()) {
-                userList.add(buildUser(usersSet));
+                userList.add(DAOUtil.buildUser(usersSet));
             }
 
             return userList;
@@ -129,7 +106,7 @@ public class UserDAOImpl implements UserDAO {
             resultSet = preparedStatement.executeQuery();
             List<User> users = new ArrayList<>();
             while (resultSet.next()){
-                users.add(buildUser(resultSet));
+                users.add(DAOUtil.buildUser(resultSet));
             }
             return users;
         } catch (SQLException e) {
@@ -202,7 +179,7 @@ public class UserDAOImpl implements UserDAO {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, paramValue);
-            return getUserFromPreparedStatement(preparedStatement);
+            return DAOUtil.getUserFromPreparedStatement(preparedStatement);
         } catch (SQLException e) {
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
@@ -222,7 +199,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement = connection.prepareStatement(GET_USER_BY_LOG_AND_PASS);
             preparedStatement.setString(1, loginInfo.getUsername());
             preparedStatement.setString(2, loginInfo.getPassword());
-            return getUserFromPreparedStatement(preparedStatement);
+            return DAOUtil.getUserFromPreparedStatement(preparedStatement);
         } catch (SQLException e) {
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
@@ -233,29 +210,8 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    private User getUserFromPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
-        ResultSet resultSet = null;
-        try {
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return buildUser(resultSet);
-            } else {
-                return null;
-            }
-        } finally {
-            DAOUtil.closeResultSet(resultSet);
-        }
-    }
 
-    private User buildUser(ResultSet resultSet) throws SQLException {
-        return new User(resultSet.getInt(USER_USER_ID),
-                resultSet.getString(USER_NAME),
-                resultSet.getString(USER_EMAIL),
-                resultSet.getString(USER_LOGIN),
-                resultSet.getString(USER_PASSWORD),
-                resultSet.getString(USER_PASSPORT_ID),
-                resultSet.getString(USER_ROLE),
-                resultSet.getString(USER_STATUS));
-    }
+
+
 
 }

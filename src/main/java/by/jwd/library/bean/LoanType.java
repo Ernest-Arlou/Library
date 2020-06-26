@@ -7,15 +7,17 @@ import java.util.Objects;
 public class LoanType implements Serializable {
     private static final long serialVersionUID = 4964287832198817363L;
 
-    int loanTypeId;
-    int copyId;
-    int duration;
-    LocalDate startDate;
-    LocalDate endDate;
-    String status;
-    MediaDetail mediaDetail;
+    private int userId;
+    private int loanTypeId;
+    private int copyId;
+    private int duration;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String status;
+    private MediaDetail mediaDetail;
 
     public LoanType(){
+        setUserId(-1);
         setLoanTypeId(-1);
         setCopyId(-1);
         setDuration(-1);
@@ -25,7 +27,8 @@ public class LoanType implements Serializable {
         setMediaDetail(new MediaDetail());
     }
 
-    public LoanType(int reservationId, int copyId, int duration, LocalDate startDate, LocalDate endDate, String status, MediaDetail mediaDetail){
+    public LoanType(int userId, int reservationId, int copyId, int duration, LocalDate startDate, LocalDate endDate, String status, MediaDetail mediaDetail){
+        setUserId(userId);
         setLoanTypeId(reservationId);
         setCopyId(copyId);
         setDuration(duration);
@@ -33,6 +36,14 @@ public class LoanType implements Serializable {
         setEndDate(endDate);
         setStatus(status);
         setMediaDetail(mediaDetail);
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getStatus() {
@@ -97,7 +108,8 @@ public class LoanType implements Serializable {
         if (this == obj) return true;
         if ((obj.getClass() != this.getClass())) return false;
         LoanType loanType = (LoanType) obj;
-        return loanTypeId == loanType.loanTypeId &&
+        return userId == loanType.userId &&
+                loanTypeId == loanType.loanTypeId &&
                 copyId == loanType.copyId &&
                 duration == loanType.duration &&
                 Objects.equals(startDate, loanType.startDate) &&
@@ -108,14 +120,15 @@ public class LoanType implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(loanTypeId, copyId, duration, startDate, endDate, status, mediaDetail);
+        return Objects.hash(userId, loanTypeId, copyId, duration, startDate, endDate, status, mediaDetail);
     }
 
     @Override
     public String toString() {
         return getClass().getName() + "@" + Integer.toHexString(hashCode()) +
                 "LoanType{" +
-                "loanTypeId=" + loanTypeId +
+                "userId=" + userId +
+                ", loanTypeId=" + loanTypeId +
                 ", copyId=" + copyId +
                 ", duration=" + duration +
                 ", startDate=" + startDate +

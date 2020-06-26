@@ -28,6 +28,8 @@ final class CommandProvider {
         repository.put(CommandName.EDIT_USER_PASSWORD_FORM, new EditUserPasswordForm());
         repository.put(CommandName.EDIT_USER_PASSWORD, new EditUserPassword());
         repository.put(CommandName.RESERVE, new Reserve());
+        repository.put(CommandName.DELIVERY, new Delivery());
+        repository.put(CommandName.DELETE_RESERVATION, new DeleteReservation());
 
 
         repository.put(CommandName.WRONG_REQUEST, new WrongRequest());

@@ -12,6 +12,7 @@ public class JSPPath {
     public static final String USER_VERIFICATION = "/WEB-INF/jsp/userverification.jsp";
     public static final String EDIT_USER_INFO_FORM = "/WEB-INF/jsp/edituserinfo.jsp";
     public static final String EDIT_USER_PASSWORD_FORM = "/WEB-INF/jsp/edituserpassword.jsp";
+    public static final String DELIVERY = "/WEB-INF/jsp/delivery.jsp";
 
 
 

@@ -4,7 +4,7 @@ import by.jwd.library.bean.LoginInfo;
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.factory.DAOFactory;
-import by.jwd.library.dao.userdao.UserDAO;
+import by.jwd.library.dao.UserDAO;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
 
