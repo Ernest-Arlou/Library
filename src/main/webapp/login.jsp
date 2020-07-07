@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="local/local" var="loc" />
 
+<fmt:message bundle="${loc}" key="local.home" var="home" />
+<fmt:message bundle="${loc}" key="local.logIn" var="logIn" />
+<fmt:message bundle="${loc}" key="local.logInProcedure" var="logInProcedure" />
+<fmt:message bundle="${loc}" key="local.loginField" var="loginField" />
+<fmt:message bundle="${loc}" key="local.password" var="password" />
+<fmt:message bundle="${loc}" key="local.enterLogin" var="enterLogin" />
+<fmt:message bundle="${loc}" key="local.enterPassword" var="enterPassword" />
 <html lang="zxx">
 
 <head>
@@ -22,11 +32,11 @@
             let password = document.login_form.password;
 
             if (username.value == null || username.value === "") {
-                window.alert("please enter login !");
+                window.alert("${enterLogin}");
                 return false;
             }
             if (password.value == null || password.value === "") {
-                window.alert("please enter password !");
+                window.alert("${enterPassword}");
                 return false;
             }
         }
@@ -44,13 +54,13 @@
 <section class="page-banner services-banner">
     <div class="container">
         <div class="banner-header">
-            <h2>Login</h2>
+            <h2>${logInProcedure}</h2>
             <span class="underline center"></span>
         </div>
         <div class="breadcrumb">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/Controller">Home</a></li>
-                <li>Login</li>
+                <li><a href="${pageContext.request.contextPath}/Controller">${home}</a></li>
+                <li>${logInProcedure}</li>
             </ul>
         </div>
     </div>
@@ -75,27 +85,27 @@
                                     <div class="row">
                                         <div class="company-detail bg-dark margin-left">
                                             <div class="signin-head">
-                                                <h2>Login</h2>
+                                                <h2>${logInProcedure}</h2>
                                                 <span class="underline left"></span>
                                             </div>
                                             <form class="login" method="post" action="Controller" name="login_form" onsubmit="return validate();">
                                                 <p class="form-row form-row-first input-required">
                                                 <label>
-                                                    <span class="first-letter">Login</span>
+                                                    <span class="first-letter">${loginField}</span>
                                                     <span class="second-letter">*</span>
                                                 </label>
                                                 <input type="text" name="login">
                                                 </p>
                                                 <p class="form-row form-row-last input-required">
                                                 <label>
-                                                    <span class="first-letter">Password</span>
+                                                    <span class="first-letter">${password}</span>
                                                     <span class="second-letter">*</span>
                                                 </label>
                                                 <input type="password" name="password">
                                                 </p>
                                                 <input type="hidden" name="command" value="login">
                                                 <div class="clear"></div>
-                                                <input type="submit" name="log_button" value="Login" class="button btn btn-default">
+                                                <input type="submit" name="log_button" value="${logIn}" class="button btn btn-default">
                                                 <div class="clear"></div>
                                             </form>
                                         </div>

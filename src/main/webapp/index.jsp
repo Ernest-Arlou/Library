@@ -1,5 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="local/local" var="loc" />
+
+<fmt:message bundle="${loc}" key="local.welcome" var="welcome" />
+<fmt:message bundle="${loc}" key="local.searchQuestion" var="searchQuestion" />
+<fmt:message bundle="${loc}" key="local.button.search" var="searchButton" />
+
+<fmt:message bundle="${loc}" key="local.welcomeTo" var="welcomeTo" />
+<fmt:message bundle="${loc}" key="local.aboutMessage" var="aboutMessage" />
+<fmt:message bundle="${loc}" key="local.button.viewMore" var="viewMore" />
+<fmt:message bundle="${loc}" key="local.button.readMore" var="readMore" />
+<fmt:message bundle="${loc}" key="local.newReleases" var="newReleases" />
+<fmt:message bundle="${loc}" key="local.publisher" var="publisher" />
+<fmt:message bundle="${loc}" key="local.format" var="format" />
+
+
+
 
 
 <html lang="zxx">
@@ -31,7 +50,7 @@
 <section class="page-banner services-banner">
     <div class="container">
         <div class="banner-header">
-            <h2>WELCOME!!!</h2>
+            <h2>${welcome}</h2>
             <span class="underline center"></span>
         </div>
     </div>
@@ -49,12 +68,12 @@
 <!-- Start: Search Section -->
                     <section class="search-filters">
                         <div class="filter-box">
-                            <h3>What are you looking for at the library?</h3>
+                            <h3>${searchQuestion}</h3>
 
                             <form action="Controller" method="get">
                                 <div class="col-md-10 col-sm-6">
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Search by Keyword" id="keywords" name="search" type="text">
+                                        <input class="form-control" id="keywords" name="search" type="text">
                                         <input type="hidden" name="command" value="page">
                                         <input type="hidden" name="page" value="1">
                                     </div>
@@ -62,7 +81,7 @@
 
                                 <div class="col-md-2 col-sm-6">
                                     <div class="form-group">
-                                        <input class="form-control" type="submit" value="Search">
+                                        <input class="form-control" type="submit" value="${searchButton}">
                                     </div>
                                 </div>
                             </form>
@@ -78,10 +97,10 @@
                                 <div class="col-md-6">
                                     <div class="welcome-wrap">
                                         <div class="welcome-text">
-                                            <h2 class="section-title">Welcome to the libraria</h2>
+                                            <h2 class="section-title">${welcomeTo} libraria</h2>
                                             <span class="underline left"></span>
-                                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor, or randomized words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humor, or non-characteristic words etc.</p>
-                                            <a class="btn btn-dark-gray" href="#">Read More</a>
+                                            <p>${aboutMessage}</p>
+                                            <a class="btn btn-dark-gray" href="#">${readMore}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +116,7 @@
                             <div class="center-content">
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-3">
-                                        <h2 class="section-title">Check Out The New Releases</h2>
+                                        <h2 class="section-title">${newReleases}</h2>
                                         <br>
                                         <span class="underline center"></span>
                                     </div>
@@ -105,21 +124,21 @@
                             </div>
                         </div>
                         <div id="category-filter">
-                            <jsp:useBean id="mediapage" scope="request" type="by.jwd.library.bean.MediaPage"/>
-                            <c:if test="${not empty mediapage}">
+                            <jsp:useBean id="mediaPage" scope="request" type="by.jwd.library.bean.MediaPage"/>
+                            <c:if test="${not empty mediaPage}">
                                 <ul class="category-list">
-                                     <c:forEach var="item" items="${mediapage.mediaDisplay}">
+                                     <c:forEach var="item" items="${mediaPage.mediaDisplay}">
                                         <li class="category-item adults" style="display: inline-block;" data-bound="">
                                             <figure style=" max-height: 420px;">
                                                 <img src="${item.picture}" alt="New Releaase" />
                                                 <figcaption class="bg-orange">
                                                     <div class="info-block">
                                                         <h4>${item.title}</h4>
-                                                        <span class="author"><strong>Publisher: </strong>${item.publisher}</span>
-                                                        <span class="author"><strong>Format: </strong>${item.materialType}</span>
+                                                        <span class="author"><strong>${publisher}: </strong>${item.publisher}</span>
+                                                        <span class="author"><strong>${format}: </strong>${item.materialType}</span>
 
                                                         <p>${item.summary}</p>
-                                                        <a href="?command=media_detail&media_type_id=${item.mediaTypeID}">Read More <i class="fa fa-long-arrow-right"></i></a>
+                                                        <a href="?command=media_detail&mediaTypeId=${item.mediaTypeID}">${readMore} <i class="fa fa-long-arrow-right"></i></a>
                                                     </div>
                                                 </figcaption>
                                             </figure>
@@ -132,7 +151,7 @@
 
 
                             <div class="center-content">
-                                <a href="Controller?command=page&page=1" class="btn btn-primary">View More</a>
+                                <a href="Controller?command=page&page=1" class="btn btn-primary">${viewMore}</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>

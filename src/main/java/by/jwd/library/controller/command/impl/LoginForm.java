@@ -1,39 +1,30 @@
 package by.jwd.library.controller.command.impl;
 
-import by.jwd.library.bean.MediaPage;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.QueryCoder;
-import by.jwd.library.controller.constants.CommandURL;
 import by.jwd.library.controller.constants.JSPPath;
 import by.jwd.library.controller.constants.RequestAttribute;
 import by.jwd.library.controller.constants.RequestParameter;
-import by.jwd.library.service.ServiceException;
-import by.jwd.library.service.factory.ServiceFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class Page implements Command {
-    private final static int ITEMS_PER_PAGE = 1;
-
+public class LoginForm implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
         request.setAttribute(RequestAttribute.LAST_COMMAND, QueryCoder.code(request.getQueryString()));
 
         try {
-            String page = request.getParameter(RequestParameter.PAGE);
-            String search = request.getParameter(RequestParameter.SEARCH);
-            MediaPage mediaPageItems = ServiceFactory.getInstance().getLibraryService().getPageItems(Integer.parseInt(page), ITEMS_PER_PAGE, search);
+            if (request.getParameter(RequestParameter.LOGIN_FAIL_MSG) != null) {
+                request.setAttribute(RequestAttribute.LOGIN_FAIL_MSG, request.getParameter(RequestParameter.LOGIN_FAIL_MSG));
+            }
 
-            request.setAttribute(RequestAttribute.PAGE_ITEMS, mediaPageItems);
-
-            request.getRequestDispatcher(JSPPath.MEDIA).forward(request, response);
-
-        } catch (ServiceException | IOException | ServletException e) {
+            request.getRequestDispatcher(JSPPath.LOGIN).forward(request, response);
+        } catch (ServletException | IOException e) {
             throw new CommandException(e);
         }
     }

@@ -16,25 +16,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class VerifyUser implements Command {
+public class Loan implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
         SessionCheck.librarianOrAdmin(request);
 
-        String userId = request.getParameter(RequestParameter.USER_ID);
-        String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
-
         try {
-            ServiceFactory.getInstance().getUserService().verifyUser(Integer.parseInt(userId));
 
-            response.sendRedirect(CommandURL.USER_VERIFICATION + "&" + RequestAttribute.VERIFICATION_MSG
-                    + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.VERIFICATION_SUCCESS_MSG));
+            int userId = Integer.parseInt(request.getParameter(RequestParameter.USER_ID));
+            int copyId = Integer.parseInt(request.getParameter(RequestParameter.COPY_ID));
+            int reservationId = Integer.parseInt(request.getParameter(RequestParameter.RESERVATION_ID));
 
-        } catch (IOException | ServiceException e) {
+            String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
+
+            ServiceFactory.getInstance().getLibraryService().giveOutCopy(userId, copyId, reservationId);
+
+            response.sendRedirect(CommandURL.DELIVERY + "&" + RequestAttribute.DELIVERY_MSG
+                    + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.GIVE_OUT_SUCCESS_MSG));
+
+        } catch (ServiceException | IOException e) {
             throw new CommandException(e);
         }
-
     }
 }

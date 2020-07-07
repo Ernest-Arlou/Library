@@ -1,10 +1,15 @@
 package by.jwd.library.controller.command.impl;
 
 import by.jwd.library.bean.User;
-import by.jwd.library.controller.CommandURL;
-import by.jwd.library.controller.SessionAttributes;
+import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
+import by.jwd.library.controller.command.impl.util.SessionCheck;
+import by.jwd.library.controller.constants.CommandURL;
+import by.jwd.library.controller.constants.SessionAttributes;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
+import by.jwd.library.controller.constants.RequestAttribute;
+import by.jwd.library.controller.constants.RequestParameter;
+import by.jwd.library.controller.constants.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
 import by.jwd.library.service.factory.ServiceFactory;
@@ -15,41 +20,33 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class EditUserInfo implements Command {
-    private static final String REQUEST_PARAM_NAME = "name";
-    private static final String REQUEST_PARAM_EMAIL = "email";
-    private static final String REQUEST_PARAM_LOGIN = "login";
-    private static final String REQUEST_ATTRIBUTE_EDIT = "userInfoEditMSG";
-    private static final String EMAIL_EXISTS_MSG = "User with this email already exists!";
-    private static final String LOGIN_EXISTS_MSG = "User with this login already exists!";
-    private static final String EDIT_SUCCESS_MSG = "Info updated";
-
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String name = request.getParameter(REQUEST_PARAM_NAME);
-        String email = request.getParameter(REQUEST_PARAM_EMAIL);
-        String login = request.getParameter(REQUEST_PARAM_LOGIN);
 
+        SessionCheck.userLoggedIn(request);
+
+        String name = request.getParameter(RequestParameter.NAME);
+        String email = request.getParameter(RequestParameter.EMAIL);
+        String login = request.getParameter(RequestParameter.LOGIN);
 
         HttpSession session = request.getSession();
-
         int userID = (int) session.getAttribute(SessionAttributes.USER_ID);
-
-        if (session.getAttribute(SessionAttributes.USER_ROLE) == null) {
-            throw new CommandException("No Logged User");
-        }
+        String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
 
         UserService userService = ServiceFactory.getInstance().getUserService();
         try {
 
             User user = userService.getUserByEmail(email);
             if (user != null && user.getUserId() != userID) {
-                response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + REQUEST_ATTRIBUTE_EDIT + "=" + EMAIL_EXISTS_MSG);
+                response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
+                        LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.EMAIL_EXISTS_MSG));
             } else {
 
                 user = userService.getUserByLogin(login);
                 if (user != null && user.getUserId() != userID) {
-                    response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + REQUEST_ATTRIBUTE_EDIT + "=" + LOGIN_EXISTS_MSG);
+                    response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
+                            LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.LOGIN_EXISTS_MSG));
 
                 } else {
                     user = userService.getUserById(userID);
@@ -59,7 +56,8 @@ public class EditUserInfo implements Command {
 
                     userService.editUser(user);
 
-                    response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + REQUEST_ATTRIBUTE_EDIT + "=" + EDIT_SUCCESS_MSG);
+                    response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
+                            LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.EDIT_SUCCESS_MSG));
                 }
             }
 

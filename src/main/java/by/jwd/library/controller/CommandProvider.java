@@ -14,12 +14,11 @@ final class CommandProvider {
         repository.put(CommandName.LOGIN, new LogIn());
         repository.put(CommandName.REGISTRATION, new Registration());
         repository.put(CommandName.LOG_OUT, new LogOut());
-        repository.put(CommandName.USER_INFO, new UserInfo());
-        repository.put(CommandName.SWITCH_LOCALE, new SwitchLocale());
+        repository.put(CommandName.CHANGE_LOCAL, new ChangeLocale());
         repository.put(CommandName.PAGE, new Page());
         repository.put(CommandName.MEDIA_DETAIL, new MediaDetail());
         repository.put(CommandName.INDEX, new Index());
-        repository.put(CommandName.USER_VERIFICATION, new UserVerification());
+        repository.put(CommandName.USER_VERIFICATION, new VerifyUserForm());
         repository.put(CommandName.VERIFY_USER, new VerifyUser());
         repository.put(CommandName.CHANGE_PASSPORT_ID, new ChangePassportId());
         repository.put(CommandName.PROFILE, new Profile());
@@ -30,7 +29,9 @@ final class CommandProvider {
         repository.put(CommandName.RESERVE, new Reserve());
         repository.put(CommandName.DELIVERY, new Delivery());
         repository.put(CommandName.DELETE_RESERVATION, new DeleteReservation());
-
+        repository.put(CommandName.LOAN, new Loan());
+        repository.put(CommandName.REGISTRATION_FORM, new RegistrationForm());
+        repository.put(CommandName.LOGIN_FORM, new LoginForm());
 
         repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }

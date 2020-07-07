@@ -1,4 +1,4 @@
-package by.jwd.library.controller;
+package by.jwd.library.controller.constants;
 
 public class UserRole {
     public static final String ADMIN = "admin";

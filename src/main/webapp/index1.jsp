@@ -17,8 +17,7 @@
     <fmt:message bundle="${loc}" key="local.locbutton.name.en"
                  var="en_button" />
 
-<%--    <c:out value="${message}" />--%>
-<%--    <c:out value="${sessionScope.local}" />--%>
+
 
     <script>
         function validate() {
@@ -56,6 +55,7 @@
         <input type="hidden" name="local" value="en_US" />
         <input type="submit" value="${en_button}" /><br />
     </form>
+
 
     <h2>Login</h2>
 

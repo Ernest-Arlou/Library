@@ -1,5 +1,5 @@
 package by.jwd.library.dao.connectionpool;
-//
+
 
 public final class DBParameter {
     public static final String DB_DRIVER = "db.driver";

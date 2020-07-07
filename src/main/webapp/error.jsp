@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="local/local" var="loc" />
+
+<fmt:message bundle="${loc}" key="local.home" var="home" />
+<fmt:message bundle="${loc}" key="local.error404" var="error404" />
+<fmt:message bundle="${loc}" key="local.oops" var="oops" />
+<fmt:message bundle="${loc}" key="local.pageNotFound" var="pageNotFound" />
+<fmt:message bundle="${loc}" key="local.page404Text" var="page404Text" />
 
 
 <html lang="zxx">
@@ -28,14 +38,13 @@
 <section class="page-banner services-banner">
     <div class="container">
         <div class="banner-header">
-            <h2>Error 404</h2>
+            <h2>${error404}</h2>
             <span class="underline center"></span>
-            <p class="lead">Proin ac eros pellentesque dolor pharetra tempo.</p>
         </div>
         <div class="breadcrumb">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/Controller">Home</a></li>
-                <li>404</li>
+                <li><a href="${pageContext.request.contextPath}/Controller">${home}</a></li>
+                <li>${error404}</li>
             </ul>
         </div>
     </div>
@@ -64,9 +73,9 @@
                                     <div class="col-md-12">
                                         <div class="error-info bg-light margin-right text-center" >
                                             <br><br><br>
-                                            <h2>OOPS <small>Page Not Found!</small></h2>
-                                            <span>Take a moment and start from our homepage.</span>
-                                            <a href="${pageContext.request.contextPath}/Controller" class="btn btn-dark-gray">Home</a>
+                                            <h2>${oops} <small>${pageNotFound}!</small></h2>
+                                            <span>${page404Text}.</span>
+                                            <a href="${pageContext.request.contextPath}/Controller" class="btn btn-dark-gray">${home}</a>
                                             <br><br><br>
                                         </div>
                                     </div>

@@ -9,19 +9,14 @@ import by.jwd.library.bean.LoanType;
 import java.util.List;
 
 public interface LibraryDAO {
-    void reserveCopy(int copyId) throws DAOException;
-
-    void cancelCopyReservation(int copyId) throws DAOException;
 
     void deleteReservation(int reservationId) throws DAOException;
 
-    int getAvailableCopyId(int mediaTypeId) throws DAOException;
+    void giveOutCopy(int userId, int copyId, int reservationId, int daysDuration) throws DAOException;
 
-    void addReservation(int daysDuration, int userId, int copyId) throws DAOException;
+    void reserve(int daysDuration, int userId, int copyId) throws DAOException;
 
     MediaPage getMediaTypePage(int page, int itemsPerPage, String search) throws DAOException;
-
-    LoanType getReservationById(int reservationId) throws DAOException;
 
     List<DeliveryType> getAllReservations() throws DAOException;
 
@@ -32,10 +27,5 @@ public interface LibraryDAO {
     List<LoanType> getUserLoans(int userId) throws DAOException;
 
     MediaDetail getMediaDetail(int mediaTypeId) throws DAOException;
-//    List <MediaDisplay> getMediaDisplayItems(int numberPerPage, int pageNumb) throws DAOException;
 
-
-//    List <MediaDisplay> getMediaTypePage(int numberPerPage, int pageNumb) throws DAOException;
-
-//    List<Media> getAllMedia() throws DAOException;
 }

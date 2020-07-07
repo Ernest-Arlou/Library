@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="local/local" var="loc" />
+
+<fmt:message bundle="${loc}" key="local.home" var="home" />
+<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia" />
+<fmt:message bundle="${loc}" key="local.button.search" var="searchButton" />
+<fmt:message bundle="${loc}" key="local.searchQuestion" var="searchQuestion" />
+<fmt:message bundle="${loc}" key="local.noResults" var="noResults" />
+<fmt:message bundle="${loc}" key="local.publisher" var="publisher" />
+
+
 
 
 <html lang="zxx">
@@ -31,14 +44,13 @@
 <section class="page-banner services-banner">
     <div class="container">
         <div class="banner-header">
-            <h2>Books & Media Listing</h2>
+            <h2>${booksNMedia}</h2>
             <span class="underline center"></span>
-            <p class="lead">Proin ac eros pellentesque dolor pharetra tempo.</p>
         </div>
         <div class="breadcrumb">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/Controller">Home</a></li>
-                <li>Books & Media</li>
+                <li><a href="${pageContext.request.contextPath}/Controller">${home}</a></li>
+                <li>${booksNMedia}</li>
             </ul>
         </div>
     </div>
@@ -56,12 +68,12 @@
 <!-- Start: Search Section -->
                     <section class="search-filters">
                         <div class="filter-box">
-                            <h3>What are you looking for at the library?</h3>
-
+                            <h3>${searchQuestion}</h3>
+                            <jsp:useBean id="mediaPage" scope="request" type="by.jwd.library.bean.MediaPage"/>
                             <form action="Controller" method="get">
                                 <div class="col-md-10 col-sm-6">
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Search by Keyword" id="keywords" name="search" type="text">
+                                        <input class="form-control" value="${mediaPage.search}" id="keywords" name="search" type="text">
                                         <input type="hidden" name="command" value="page">
                                         <input type="hidden" name="page" value="1">
                                     </div>
@@ -69,7 +81,7 @@
 
                                 <div class="col-md-2 col-sm-6">
                                     <div class="form-group">
-                                        <input class="form-control" type="submit" value="Search">
+                                        <input class="form-control" type="submit" value="${searchButton}">
                                     </div>
                                 </div>
                             </form>
@@ -82,18 +94,18 @@
 <!-- Start: Books Media Section -->
                     <div class="booksmedia-fullwidth">
 
-                        <jsp:useBean id="mediapage" scope="request" type="by.jwd.library.bean.MediaPage"/>
-                        <c:if test="${mediapage.totalItems == 0}">
+
+                        <c:if test="${mediaPage.totalItems == 0}">
                             <div class="container">
                                 <div class="center-content">
-                                    <h3>No results</h3>
+                                    <h3>${noResults}</h3>
                                 </div>
                             </div>
                         </c:if>
 
-                        <c:if test="${not empty mediapage}">
+                        <c:if test="${not empty mediaPage}">
                             <ul>
-                                <c:forEach var="item" items="${mediapage.mediaDisplay}">
+                                <c:forEach var="item" items="${mediaPage.mediaDisplay}">
                                     <li>
                                         <c:choose>
                                             <c:when test="${item.materialType=='Hardcover'}">
@@ -120,11 +132,11 @@
                                         </c:choose>
 
                                         <figure>
-                                            <a href="${pageContext.request.contextPath}/Controller?command=media_detail&media_type_id=${item.mediaTypeID}"><img src="${item.picture}" alt="Book"></a>
+                                            <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${item.mediaTypeID}&lastPage=${requestScope.lastCommand}"><img src="${item.picture}" alt="Book"></a>
                                             <figcaption>
                                                 <header>
-                                                    <h4><a href="${pageContext.request.contextPath}/Controller?command=media_detail&media_type_id=${item.mediaTypeID}">${item.title}</a></h4>
-                                                    <p><strong>Publisher:</strong>  ${item.publisher}</p>
+                                                    <h4><a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${item.mediaTypeID}">${item.title}</a></h4>
+                                                    <p><strong>${publisher}:</strong>  ${item.publisher}</p>
                                                     <br>
                                                 </header>
                                                 <p>${item.summary}</p>
@@ -141,21 +153,21 @@
 
 <!-- Start: Pagination Section -->
 
-                    <c:if test="${mediapage.totalPages > 1}">
+                    <c:if test="${mediaPage.totalPages > 1}">
                     <nav class="navigation pagination text-center">
                         <h2 class="screen-reader-text">Posts navigation</h2>
                         <div class="nav-links">
-                            <c:forEach items="${mediapage.navigationPages}" var = "page">
+                            <c:forEach items="${mediaPage.navigationPages}" var = "page">
 
 
                                 <c:if test="${page != -1 }">
 
-                                    <c:if test="${page == mediapage.page}">
+                                    <c:if test="${page == mediaPage.page}">
                                         <span class="page-numbers current">${page}</span>
                                     </c:if>
 
-                                    <c:if test="${page != mediapage.page}">
-                                    <a class="page-numbers" href="${pageContext.request.contextPath}/Controller?command=page&page=${page}&search=${mediapage.search}">${page}</a>
+                                    <c:if test="${page != mediaPage.page}">
+                                    <a class="page-numbers" href="${pageContext.request.contextPath}/Controller?command=page&page=${page}&search=${mediaPage.search}">${page}</a>
                                     </c:if>
 
                                 </c:if>

@@ -126,6 +126,9 @@ public class UserDAOImpl implements UserDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(UPDATE_USER);
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
@@ -136,8 +139,17 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(7, user.getPassportId());
             preparedStatement.setInt(8,user.getUserId());
             preparedStatement.executeUpdate();
+
+            connection.commit();
+            connection.setAutoCommit(true);
+
         } catch (SQLException e) {
-            throw new DAOException("SQL error", e);
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                throw new DAOException("Impossible to rollback method updateUser", e);
+            }
+            throw new DAOException("SQLException in method deleteReservation", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
@@ -152,6 +164,9 @@ public class UserDAOImpl implements UserDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(ADD_USER);
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getEmail());
@@ -161,8 +176,17 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(6, user.getRole());
             preparedStatement.setString(7, user.getStatus());
             preparedStatement.executeUpdate();
+
+            connection.commit();
+            connection.setAutoCommit(true);
+
         } catch (SQLException e) {
-            throw new DAOException("SQL error", e);
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                throw new DAOException("Impossible to rollback method addUser", e);
+            }
+            throw new DAOException("SQLException in method deleteReservation", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
@@ -209,8 +233,6 @@ public class UserDAOImpl implements UserDAO {
             DAOUtil.closeConnection(connection);
         }
     }
-
-
 
 
 

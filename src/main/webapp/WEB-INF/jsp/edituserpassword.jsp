@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="local/local" var="loc" />
+<fmt:message bundle="${loc}" key="local.home" var="home" />
+<fmt:message bundle="${loc}" key="local.profile" var="profile" />
+<fmt:message bundle="${loc}" key="local.passwordTestMSG" var="passwordTestMSG" />
+<fmt:message bundle="${loc}" key="local.newPassword" var="newPassword" />
+<fmt:message bundle="${loc}" key="local.oldPassword" var="oldPassword" />
+<fmt:message bundle="${loc}" key="local.oldPasswordNotMatch" var="oldPasswordNotMatch" />
+<fmt:message bundle="${loc}" key="local.editPasswordPage" var="editPasswordPage" />
+<fmt:message bundle="${loc}" key="local.edit" var="edit" />
+
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -27,12 +40,12 @@
             let oldPassword1 = document.getElementById("old_password1");
 
             if (oldPassword.value !== oldPassword1.value){
-                alert("Old password doesn't match ");
+                alert("${oldPasswordNotMatch}");
                 return false;
             }
 
             if (!valid_password.test(password.value) || password.value === '') {
-                alert("Password Must Be 4 to 12 characters");
+                alert("${passwordTestMSG}");
                 password.focus();
                 password.style.background = '#f08080';
                 return false;
@@ -52,15 +65,15 @@
 <section class="page-banner services-banner">
     <div class="container">
         <div class="banner-header">
-            <h2>Edit password</h2>
+            <h2>${editPasswordPage}</h2>
             <span class="underline center"></span>
             <p class="lead"></p>
         </div>
         <div class="breadcrumb">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/Controller">Home</a></li>
-                <li><a href="${pageContext.request.contextPath}/Controller?command=profile">Profile</a></li>
-                <li>Edit password</li>
+                <li><a href="${pageContext.request.contextPath}/Controller">${home}</a></li>
+                <li><a href="${pageContext.request.contextPath}/Controller?command=profile">${profile}</a></li>
+                <li>${editPasswordPage}</li>
             </ul>
         </div>
     </div>
@@ -86,7 +99,7 @@
                                     </c:if>
                                     <div class="col-md-12">
                                         <div class="contact-form bg-light margin-right">
-                                            <h2>Edit password</h2>
+                                            <h2>${editPasswordPage}</h2>
                                             <span class="underline left"></span>
                                             <div class="contact-fields">
                                                 <form action="Controller" method="post" onsubmit="return validate();">
@@ -94,29 +107,29 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <b>Old password</b>
+                                                                <b>${oldPassword}</b>
                                                                 <input class="form-control" type="password" id="old_password"
-                                                                        name="old_password" />
+                                                                        name="oldPassword" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <b>Old password</b>
+                                                                <b>${oldPassword}</b>
                                                                 <input class="form-control" type="password" id="old_password1"
-                                                                        name="old_password1" />
+                                                                        name="oldPassword1" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <b>New password</b>
+                                                                <b>${newPassword}</b>
                                                                 <input class="form-control" type="password" id="new_password"
-                                                                        name="new_password" />
+                                                                        name="newPassword" />
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-12">
                                                             <div class="form-group form-submit">
                                                                 <input class="btn btn-default" type="submit"
-                                                                       name="submit" value="Edit info"/>
+                                                                       name="submit" value="${edit}"/>
                                                             </div>
                                                         </div>
                                                     </div>

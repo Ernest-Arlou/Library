@@ -1,8 +1,7 @@
 package by.jwd.library.controller.command.impl;
 
-import by.jwd.library.controller.CommandURL;
-import by.jwd.library.controller.JSPPath;
-import by.jwd.library.controller.SessionAttributes;
+import by.jwd.library.controller.constants.CommandURL;
+import by.jwd.library.controller.constants.SessionAttributes;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 

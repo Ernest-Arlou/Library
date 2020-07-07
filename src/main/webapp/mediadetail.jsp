@@ -1,5 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="local/local" var="loc" />
+
+<fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails" />
+<fmt:message bundle="${loc}" key="local.home" var="home" />
+<fmt:message bundle="${loc}" key="local.language" var="language" />
+<fmt:message bundle="${loc}" key="local.price" var="price" />
+<fmt:message bundle="${loc}" key="local.restriction" var="restriction" />
+<fmt:message bundle="${loc}" key="local.author" var="author" />
+<fmt:message bundle="${loc}" key="local.authors" var="authors" />
+<fmt:message bundle="${loc}" key="local.genres" var="genres" />
+<fmt:message bundle="${loc}" key="local.availableNow" var="availableNow" />
+<fmt:message bundle="${loc}" key="local.notAvailable" var="notAvailable" />
+<fmt:message bundle="${loc}" key="local.totalCopies" var="totalCopies" />
+<fmt:message bundle="${loc}" key="local.reserved" var="reserved" />
+<fmt:message bundle="${loc}" key="local.loaned" var="loaned" />
+<fmt:message bundle="${loc}" key="local.staffCanPlaceHolds" var="staffCanPlaceHolds" />
+<fmt:message bundle="${loc}" key="local.loginToPlaceHold" var="loginToPlaceHold" />
+<fmt:message bundle="${loc}" key="local.summary" var="summary" />
+<fmt:message bundle="${loc}" key="local.hold" var="hold" />
+<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia" />
+<fmt:message bundle="${loc}" key="local.publisher" var="publisher" />
+<fmt:message bundle="${loc}" key="local.format" var="format" />
+<fmt:message bundle="${loc}" key="local.available" var="available" />
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -30,15 +56,22 @@
 <section class="page-banner services-banner">
     <div class="container">
         <div class="banner-header">
-            <h2>Media detail</h2>
+            <h2>${mediaDetails}</h2>
             <span class="underline center"></span>
-            <p class="lead"></p>
+            <p class="lead">
+                ${requestScope.lastPage}
+            </p>
         </div>
         <div class="breadcrumb">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/Controller">Home</a></li>
-                <li><a href="index-2.html">Books & Media</a></li>
-                <li>Book Detail</li>
+                <li><a href="${pageContext.request.contextPath}/Controller">${home}</a></li>
+                <c:if test="${not empty requestScope.lastPage}">
+                    <li><a href="${pageContext.request.contextPath}/Controller?${requestScope.lastPage}">${booksNMedia}</a></li>
+                </c:if>
+                <c:if test="${empty requestScope.lastPage}">
+                    <li><a href="${pageContext.request.contextPath}/Controller?command=page&page=1">${booksNMedia}</a></li>
+                </c:if>
+                <li>${mediaDetails}</li>
             </ul>
         </div>
     </div>
@@ -51,8 +84,6 @@
         <main id="main" class="site-main">
             <div class="booksmedia-detail-main">
                 <div class="container">
-
-
                     <div class="booksmedia-detail-box">
                         <div class="detailed-box">
                             <jsp:useBean id="mediaDetail" scope="request" type="by.jwd.library.bean.MediaDetail"/>
@@ -91,19 +122,19 @@
                                     <div class="post-center-content">
                                         <h2>${mediaDetail.title}</h2>
                                         <p><strong>ISBN:</strong> ${mediaDetail.iSBN}</p>
-                                        <p><strong>Publisher:</strong> ${mediaDetail.publisher}</p>
-                                        <p><strong>Format:</strong> ${mediaDetail.materialType}</p>
-                                        <p><strong>Language:</strong> ${mediaDetail.language}</p>
-                                        <p><strong>Price:</strong> ${mediaDetail.price}</p>
+                                        <p><strong>${publisher}:</strong> ${mediaDetail.publisher}</p>
+                                        <p><strong>${format}:</strong> ${mediaDetail.materialType}</p>
+                                        <p><strong>${language}:</strong> ${mediaDetail.language}</p>
+                                        <p><strong>${price}:</strong> ${mediaDetail.price}</p>
                                         <c:if test="${not empty mediaDetail.restriction}">
-                                            <p style="color: #ff0000"><strong style="color: red">Restriction!!!:</strong> ${mediaDetail.restriction}</p>
+                                            <p style="color: #ff0000"><strong style="color: red">${restriction}:</strong> ${mediaDetail.restriction}</p>
                                         </c:if>
 
 
 
                                         <c:choose>
                                             <c:when test="${mediaDetail.authors.size() == 1}">
-                                                <p><strong>Author: </strong>
+                                                <p><strong>${author}: </strong>
                                                     <c:choose>
                                                         <c:when test="${not empty mediaDetail.authors.get(0).penName}">
                                                             ${mediaDetail.authors.get(0).penName}
@@ -115,7 +146,7 @@
                                                 </p>
                                             </c:when>
                                             <c:otherwise>
-                                                <p><strong>Authors: </strong>
+                                                <p><strong>${authors}: </strong>
                                                 <c:forEach var="item" items="${mediaDetail.authors}">
                                                     <c:choose>
                                                         <c:when test="${not empty item.penName}">
@@ -130,7 +161,7 @@
                                             </c:otherwise>
                                         </c:choose>
 
-                                        <p><strong>Genres: </strong>
+                                        <p><strong>${genres}: </strong>
                                             <c:forEach var="item" items="${mediaDetail.genres}">
                                                 ${item.genre}
                                             </c:forEach>
@@ -145,16 +176,16 @@
                                     <div class="post-right-content">
                                         <c:choose>
                                         <c:when test="${mediaDetail.availableCopies >= 1}">
-                                            <h4>Available now</h4>
+                                            <h4>${availableNow}</h4>
                                         </c:when>
                                         <c:otherwise>
-                                            <h4>Not available</h4>
+                                            <h4>${notAvailable}</h4>
                                         </c:otherwise>
                                         </c:choose>
-                                        <p><strong>Total Copies: </strong>${mediaDetail.totalCopies}</p>
-                                        <p><strong>Available: </strong>${mediaDetail.availableCopies}</p>
-                                        <p><strong>Reserved: </strong>${mediaDetail.reservedCopies}</p>
-                                        <p><strong>Loaned: </strong>${mediaDetail.loanedCopies}</p>
+                                        <p><strong>${totalCopies}: </strong>${mediaDetail.totalCopies}</p>
+                                        <p><strong>${available}: </strong>${mediaDetail.availableCopies}</p>
+                                        <p><strong>${reserved}: </strong>${mediaDetail.reservedCopies}</p>
+                                        <p><strong>${loaned}: </strong>${mediaDetail.loanedCopies}</p>
 
                                         <c:if test="${not empty requestScope.reservationMsg}">
                                             <div class="center-content">
@@ -169,17 +200,17 @@
                                                     <c:when test="${sessionScope.role.equalsIgnoreCase('user')}">
                                                        <c:if test="${mediaDetail.availableCopies > 0}">
                                                         <c:if test="${empty requestScope.reservationMsg}">
-                                                        <a href="${pageContext.request.contextPath}/Controller?command=reserve&media_type_id=${mediaDetail.mediaTypeID}" class="btn btn-dark-gray">Place a Hold</a>
+                                                        <a href="${pageContext.request.contextPath}/Controller?command=reserve&mediaTypeId=${mediaDetail.mediaTypeID}" class="btn btn-dark-gray">${hold}</a>
                                                         </c:if>
                                                        </c:if>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <h4>Staff can't place holds</h4>
+                                                        <h4>${staffCanPlaceHolds}</h4>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </c:when>
                                             <c:otherwise>
-                                                <h4>You need to login in order to place a hold</h4>
+                                                <h4>${loginToPlaceHold}</h4>
                                             </c:otherwise>
                                         </c:choose>
                                     </div>
@@ -187,7 +218,7 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="clearfix"></div>
-                            <p><strong>Summary: </strong>${mediaDetail.summary}</p>
+                            <p><strong>${summary}: </strong>${mediaDetail.summary}</p>
                         </c:if>
                     </div>
                 </div>

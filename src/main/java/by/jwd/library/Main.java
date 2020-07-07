@@ -1,21 +1,16 @@
 package by.jwd.library;
 
+import by.jwd.library.controller.constants.local.LocalParameter;
 import by.jwd.library.dao.DAOException;
-import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
-import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.service.ServiceException;
-import by.jwd.library.service.factory.ServiceFactory;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Calendar;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 public class Main {
-    private static String format = "hh:mm:ss dd.MM.yyyy";
-    private static String format1 = "dd.MM.yyyy";
+    private static final String format = "hh:mm:ss dd.MM.yyyy";
+    private static final String format1 = "dd.MM.yyyy";
 
 
 
@@ -25,8 +20,12 @@ public class Main {
 //        FormatStyle formatStyle = FormatStyle.valueOf(format1);
 //        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofLocalizedDate(formatStyle);
 
+//        Locale locale = new Locale("ru_RU");
 
-        LocalDate localDate = LocalDate.now();
-        System.out.println(localDate);
+        String s = "adasdaads+1=lastPage";
+        System.out.println(s.indexOf("lastPage"));
+        System.out.println(s.substring(0,s.indexOf("lastPage")));
+
+
     }
 }

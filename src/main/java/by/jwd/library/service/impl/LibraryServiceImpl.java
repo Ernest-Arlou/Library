@@ -15,16 +15,23 @@ import java.util.List;
 
 public class LibraryServiceImpl implements LibraryService {
     private final static int RESERVATION_DURATION_DAYS = 3;
+    private final static int LOAN_DURATION_DAYS = 20;
     private final static int MAX_LOANS = 3;
 
+    @Override
+    public void giveOutCopy(int userId, int copyId, int reservationId) throws ServiceException {
+        try {
+            DAOFactory.getInstance().getLibraryDAO().giveOutCopy(userId,copyId,reservationId,LOAN_DURATION_DAYS);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during media give out", e);
+        }
+
+    }
 
     @Override
     public void deleteReservation(int reservationId) throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
-            LoanType reservation = libraryDAO.getReservationById(reservationId);
-            libraryDAO.cancelCopyReservation(reservation.getCopyId());
-            libraryDAO.deleteReservation(reservationId);
+           DAOFactory.getInstance().getLibraryDAO().deleteReservation(reservationId);
         } catch (DAOException e) {
             throw new ServiceException("Error during reservation delete", e);
         }
@@ -35,11 +42,7 @@ public class LibraryServiceImpl implements LibraryService {
     public void reserveMedia(int userId, int mediaTypeId) throws ServiceException {
         LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
         try {
-            int copyId = libraryDAO.getAvailableCopyId(mediaTypeId);
-            if (copyId > 0) {
-                libraryDAO.reserveCopy(copyId);
-                libraryDAO.addReservation(RESERVATION_DURATION_DAYS, userId, copyId);
-            }
+            libraryDAO.reserve(RESERVATION_DURATION_DAYS, userId, mediaTypeId);
         } catch (DAOException e) {
             throw new ServiceException("Error during reservation", e);
         }
@@ -73,7 +76,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public boolean canReserve (int userId) throws ServiceException {
+    public boolean canReserve(int userId) throws ServiceException {
         return totalLoansReservations(userId) < MAX_LOANS;
     }
 

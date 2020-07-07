@@ -1,10 +1,9 @@
-package by.jwd.library.controller;
+package by.jwd.library.controller.constants;
 
 public class JSPPath {
     public static final String INDEX = "index.jsp";
     public static final String ERROR = "error.jsp";
     public static final String REGISTRATION = "registration.jsp";
-    public static final String USER_INFO = "/WEB-INF/jsp/userinfo.jsp";
     public static final String MEDIA = "mediapage.jsp";
     public static final String DETAIL = "mediadetail.jsp";
     public static final String LOGIN = "login.jsp";
@@ -15,7 +14,7 @@ public class JSPPath {
     public static final String DELIVERY = "/WEB-INF/jsp/delivery.jsp";
 
 
+    private JSPPath() {
 
-
-
+    }
 }

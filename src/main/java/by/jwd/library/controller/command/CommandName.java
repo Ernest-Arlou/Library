@@ -2,10 +2,11 @@ package by.jwd.library.controller.command;
 
 public enum CommandName {
     REGISTRATION,
+    REGISTRATION_FORM,
     LOGIN,
+    LOGIN_FORM,
     LOG_OUT,
-    USER_INFO,
-    SWITCH_LOCALE,
+    CHANGE_LOCAL,
     PAGE,
     MEDIA_DETAIL,
     INDEX,
@@ -20,6 +21,7 @@ public enum CommandName {
     RESERVE,
     DELIVERY,
     DELETE_RESERVATION,
+    LOAN,
 
     WRONG_REQUEST
 }
