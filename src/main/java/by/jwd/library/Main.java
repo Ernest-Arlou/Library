@@ -2,7 +2,10 @@ package by.jwd.library;
 
 import by.jwd.library.controller.constants.local.LocalParameter;
 import by.jwd.library.dao.DAOException;
+import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
+import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.service.ServiceException;
+import by.jwd.library.service.factory.ServiceFactory;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -15,16 +18,12 @@ public class Main {
 
 
     public static void main(String[] args) throws DAOException, ServiceException {
-//        ConnectionPoolManager.getInstance().initConnectionPool();
+        ConnectionPoolManager.getInstance().initConnectionPool();
 
-//        FormatStyle formatStyle = FormatStyle.valueOf(format1);
-//        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofLocalizedDate(formatStyle);
+        System.out.println(ServiceFactory.getInstance().getLibraryService().getMediaDetail(1));
 
-//        Locale locale = new Locale("ru_RU");
 
-        String s = "adasdaads+1=lastPage";
-        System.out.println(s.indexOf("lastPage"));
-        System.out.println(s.substring(0,s.indexOf("lastPage")));
+
 
 
     }

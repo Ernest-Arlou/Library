@@ -38,7 +38,7 @@
         function validate() {
             let valid_name = /^[a-z A-Zа-яА-Я]{4,20}$/;
             let valid_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            let valid_login = /^[a-z A-Zа-яА-Я0-9_]{4,20}$/;
+            let valid_login = /^[a-zA-Z0-9_-]{4,20}$/;
 
             let name = document.getElementById("name");
             let email = document.getElementById("email");

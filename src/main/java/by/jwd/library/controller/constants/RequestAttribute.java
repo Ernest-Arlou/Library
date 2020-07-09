@@ -8,16 +8,17 @@ public class RequestAttribute {
     public final static String USER = "user";
     public final static String EDIT_USER_PASSWORD_MSG = "editUserPassMSG";
     public final static String PAGE_ITEMS = "mediaPage";
-    public final static String LOGIN_FAIL_MSG = "LoginFailMsg";
+    public final static String LOGIN_FAIL_MSG = "loginFailMsg";
     public final static String MEDIA_DETAIL = "mediaDetail";
     public final static String RESERVATION_MSG = "reservationMsg";
     public final static String RESERVATIONS = "reservations";
     public final static String LOANS = "loans";
-    public final static String REGISTRATION_FAIL_MSG = "RegisterErrorMsg";
-    public final static String REGISTRATION_SUCCESS_MSG = "RegistrationSuccessMsg";
+    public final static String REGISTRATION_FAIL_MSG = "registerErrorMsg";
+    public final static String REGISTRATION_SUCCESS_MSG = "registrationSuccessMsg";
     public final static String UNVERIFIED_USERS = "unverifiedUsers";
     public final static String LAST_COMMAND = "lastCommand";
     public final static String LAST_PAGE = "lastPage";
+    public final static String ADD_MEDIA_MSG = "addMediaMsg";
 
 
 

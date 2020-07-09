@@ -6,7 +6,7 @@ import by.jwd.library.controller.command.impl.util.QueryCoder;
 import by.jwd.library.controller.command.impl.util.SessionCheck;
 import by.jwd.library.controller.constants.JSPPath;
 import by.jwd.library.controller.constants.SessionAttributes;
-import by.jwd.library.controller.constants.UserRole;
+import by.jwd.library.util.UserRole;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.constants.RequestAttribute;

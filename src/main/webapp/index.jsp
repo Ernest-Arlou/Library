@@ -16,8 +16,7 @@
 <fmt:message bundle="${loc}" key="local.newReleases" var="newReleases" />
 <fmt:message bundle="${loc}" key="local.publisher" var="publisher" />
 <fmt:message bundle="${loc}" key="local.format" var="format" />
-
-
+<fmt:message bundle="${loc}" key="local.language" var="language" />
 
 
 
@@ -129,16 +128,16 @@
                                 <ul class="category-list">
                                      <c:forEach var="item" items="${mediaPage.mediaDisplay}">
                                         <li class="category-item adults" style="display: inline-block;" data-bound="">
-                                            <figure style=" max-height: 420px;">
+                                            <figure style="max-height: 430px;">
                                                 <img src="${item.picture}" alt="New Releaase" />
                                                 <figcaption class="bg-orange">
                                                     <div class="info-block">
                                                         <h4>${item.title}</h4>
                                                         <span class="author"><strong>${publisher}: </strong>${item.publisher}</span>
                                                         <span class="author"><strong>${format}: </strong>${item.materialType}</span>
+                                                        <span class="author"><strong>${language}: </strong>${item.language}</span>
 
-                                                        <p>${item.summary}</p>
-                                                        <a href="?command=media_detail&mediaTypeId=${item.mediaTypeID}">${readMore} <i class="fa fa-long-arrow-right"></i></a>
+                                                        <a href="?command=media_detail&mediaId=${item.mediaID}">${readMore} <i class="fa fa-long-arrow-right"></i></a>
                                                     </div>
                                                 </figcaption>
                                             </figure>

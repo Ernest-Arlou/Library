@@ -19,11 +19,11 @@ public interface LibraryService {
 
     boolean canReserve(int userId) throws ServiceException;
 
-    boolean userReservedOrLoanedMediaType(int userId, int mediaTypeId) throws ServiceException;
+    boolean userReservedOrLoanedMedia(int userId, int mediaTypeId) throws ServiceException;
 
-    boolean userReservedMediaType(int userId, int mediaTypeId) throws ServiceException;
+    boolean userReservedMedia(int userId, int mediaTypeId) throws ServiceException;
 
-    boolean userLoanedMediaType(int userId, int mediaTypeId) throws ServiceException;
+    boolean userLoanedMedia(int userId, int mediaTypeId) throws ServiceException;
 
     MediaDetail getMediaDetail(int mediaID) throws ServiceException;
 

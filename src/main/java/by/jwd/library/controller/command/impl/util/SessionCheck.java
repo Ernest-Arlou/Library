@@ -1,7 +1,7 @@
 package by.jwd.library.controller.command.impl.util;
 
 import by.jwd.library.controller.constants.SessionAttributes;
-import by.jwd.library.controller.constants.UserRole;
+import by.jwd.library.util.UserRole;
 import by.jwd.library.controller.command.CommandException;
 
 import javax.servlet.http.HttpServletRequest;

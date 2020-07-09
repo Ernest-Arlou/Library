@@ -32,6 +32,7 @@ final class CommandProvider {
         repository.put(CommandName.LOAN, new Loan());
         repository.put(CommandName.REGISTRATION_FORM, new RegistrationForm());
         repository.put(CommandName.LOGIN_FORM, new LoginForm());
+        repository.put(CommandName.ADD_MEDIA_FORM, new AddMediaForm());
 
         repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }

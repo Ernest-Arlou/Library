@@ -139,7 +139,7 @@
                                                                 <tr class="cart_item">
                                                                     <td data-title="Product" class="product-name"
                                                                         data-th="Title">
-                                                                        <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${reservation.mediaDetail.mediaTypeID}"><img
+                                                                        <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${reservation.mediaDetail.mediaID}"><img
                                                                                 style="margin-right: 110px;"
                                                                                 src="${reservation.mediaDetail.picture}"
                                                                                 alt="cart-product-1"></a>
@@ -147,7 +147,7 @@
                                                                     <td data-title="Price" class="product-price"
                                                                         data-th="Pickup Location ">
                                                                         <span class="product-detail">
-                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${reservation.mediaDetail.mediaTypeID}">${reservation.mediaDetail.title}</a>
+                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${reservation.mediaDetail.mediaID}">${reservation.mediaDetail.title}</a>
                                                                                 <span><strong>${format}: </strong>${reservation.mediaDetail.materialType}</span>
                                                                                 <span><strong>ISBN: </strong>${reservation.mediaDetail.iSBN}</span>
                                                                         </span>
@@ -201,7 +201,7 @@
                                                             <tr class="cart_item">
                                                                 <td data-title="Product" class="product-name"
                                                                     data-th="Title">
-                                                                    <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${loan.mediaDetail.mediaTypeID}"><img
+                                                                    <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${loan.mediaDetail.mediaID}"><img
                                                                             style="margin-right: 110px;"
                                                                             src="${loan.mediaDetail.picture}"
                                                                             alt="cart-product-1"></a>
@@ -209,7 +209,7 @@
                                                                 <td data-title="Price" class="product-price"
                                                                     data-th="Pickup Location ">
                                                                         <span class="product-detail">
-                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${loan.mediaDetail.mediaTypeID}">${loan.mediaDetail.title}</a>
+                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${loan.mediaDetail.mediaID}">${loan.mediaDetail.title}</a>
                                                                                 <span><strong>${format}: </strong>${loan.mediaDetail.materialType}</span>
                                                                                 <span><strong>ISBN: </strong>${loan.mediaDetail.iSBN}</span>
                                                                         </span>

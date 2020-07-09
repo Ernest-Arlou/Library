@@ -9,18 +9,18 @@ public class Author implements Serializable {
     private int id;
 
     private String fullName;
-    private String penName;
+
 
     public Author() {
         setId(-1);
         setFullName("NoName");
-        setPenName("NoPenName");
+
     }
 
-    public Author(int id, String fullName, String penName) {
+    public Author(int id, String fullName) {
         setId(id);
         setFullName(fullName);
-        setPenName(penName);
+
     }
 
     public int getId() {
@@ -39,13 +39,6 @@ public class Author implements Serializable {
         this.fullName = fullName;
     }
 
-    public String getPenName() {
-        return penName;
-    }
-
-    public void setPenName(String penName) {
-        this.penName = penName;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -54,13 +47,12 @@ public class Author implements Serializable {
         if ((obj.getClass() != this.getClass())) return false;
         Author author = (Author) obj;
         return id == author.id &&
-                fullName.equals(author.fullName) &&
-                penName.equals(author.penName);
+                fullName.equals(author.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullName, penName);
+        return Objects.hash(id, fullName);
     }
 
     @Override
@@ -69,7 +61,6 @@ public class Author implements Serializable {
                 "Author{" +
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
-                ", penName='" + penName + '\'' +
                 '}';
     }
 }

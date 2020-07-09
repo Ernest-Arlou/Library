@@ -9,7 +9,6 @@ public class MediaDetail implements Serializable {
     private static final long serialVersionUID = 7759631852833962220L;
 
     private int mediaID;
-    private int mediaTypeID;
 
     private int totalCopies;
     private int availableCopies;
@@ -32,7 +31,6 @@ public class MediaDetail implements Serializable {
 
     public MediaDetail() {
         setMediaID(-1);
-        setMediaTypeID(-1);
 
         setTotalCopies(-1);
         setAvailableCopies(-1);
@@ -55,14 +53,13 @@ public class MediaDetail implements Serializable {
         genres = new ArrayList<>();
     }
 
-    public MediaDetail(int mediaID, int mediaTypeID,
+    public MediaDetail(int mediaID,
                        int totalCopies, int availableCopies, int reservedCopies, int loanedCopies,
                        double price,
                        String title, String summary, String iSBN, String picture,
                        String publisher, String materialType, String language, String restriction,
                        List<Author> authors, List<Genre> genres) {
         setMediaID(mediaID);
-        setMediaTypeID(mediaTypeID);
 
         setTotalCopies(totalCopies);
         setAvailableCopies(availableCopies);
@@ -138,14 +135,6 @@ public class MediaDetail implements Serializable {
 
     public void setMediaID(int mediaID) {
         this.mediaID = mediaID;
-    }
-
-    public int getMediaTypeID() {
-        return mediaTypeID;
-    }
-
-    public void setMediaTypeID(int mediaTypeID) {
-        this.mediaTypeID = mediaTypeID;
     }
 
     public double getPrice() {
@@ -227,7 +216,6 @@ public class MediaDetail implements Serializable {
         if ((obj.getClass() != this.getClass())) return false;
         MediaDetail that = (MediaDetail) obj;
         return mediaID == that.mediaID &&
-                mediaTypeID == that.mediaTypeID &&
                 totalCopies == that.totalCopies &&
                 availableCopies == that.availableCopies &&
                 reservedCopies == that.reservedCopies &&
@@ -247,7 +235,7 @@ public class MediaDetail implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mediaID, mediaTypeID, totalCopies, availableCopies, reservedCopies, loanedCopies, price, title, summary, iSBN, picture, publisher, materialType, language, restriction, authors, genres);
+        return Objects.hash(mediaID, totalCopies, availableCopies, reservedCopies, loanedCopies, price, title, summary, iSBN, picture, publisher, materialType, language, restriction, authors, genres);
     }
 
     @Override
@@ -255,7 +243,6 @@ public class MediaDetail implements Serializable {
         return getClass().getName() + "@" + Integer.toHexString(hashCode()) +
                 "MediaDetail{" +
                 "mediaID=" + mediaID +
-                ", mediaTypeID=" + mediaTypeID +
                 ", totalCopies=" + totalCopies +
                 ", availableCopies=" + availableCopies +
                 ", reservedCopies=" + reservedCopies +

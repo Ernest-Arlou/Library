@@ -23,7 +23,7 @@ public class User implements Serializable, Cloneable {
         login = "NoLogin";
         password = "NoPassword";
         role = "NoRole";
-        passportId = "000000000";
+        passportId = "00000000000000";
         status = "NoStatus";
 
     }

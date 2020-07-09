@@ -123,7 +123,7 @@
                                                             <tr class="cart_item">
                                                                 <td data-title="Product" class="product-name"
                                                                     data-th="Title">
-                                                                    <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${item.loanType.mediaDetail.mediaTypeID}"><img
+                                                                    <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.loanType.mediaDetail.mediaID}"><img
                                                                             style="margin-right: 1px; height: 180px;"
                                                                             src="${item.loanType.mediaDetail.picture}"
                                                                             alt="cart-product-1"></a>
@@ -131,7 +131,7 @@
                                                                 <td data-title="Price" class="product-price"
                                                                     data-th="Pickup Location ">
                                                                         <span class="product-detail">
-                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${item.loanType.mediaDetail.mediaTypeID}">${item.loanType.mediaDetail.title} </a>
+                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.loanType.mediaDetail.mediaID}">${item.loanType.mediaDetail.title} </a>
                                                                             <div>
                                                                             <span><strong>${format}: </strong>${item.loanType.mediaDetail.materialType}</span>
                                                                             </div>

@@ -76,9 +76,9 @@
                     <div class="woocommerce">
                         <div class="woocommerce-login">
                             <div class="company-info signin-register">
-                                <c:if test = "${LoginFailMsg != null}">
+                                <c:if test = "${loginFailMsg != null}">
                                 <div class="center-content">
-                                    <h3 class="section-title"><c:out value = "${LoginFailMsg}"/></h3>
+                                    <h3 class="section-title"><c:out value = "${loginFailMsg}"/></h3>
                                 </div>
                                 </c:if>
                                 <div class="col-md-5 col-md-offset-4">

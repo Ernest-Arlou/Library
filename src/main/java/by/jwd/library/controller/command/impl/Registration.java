@@ -9,15 +9,14 @@ import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
 import by.jwd.library.service.factory.ServiceFactory;
+import by.jwd.library.util.UserRole;
+import by.jwd.library.util.UserStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Registration implements Command {
-
-    private static final String USER_ROLE_USER = "user";
-    private static final String USER_STATUS_UNVERIFIED = "Unverified";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -35,8 +34,6 @@ public class Registration implements Command {
         user.setLogin(login);
         user.setPassword(password);
         user.setPassportId(passportId);
-        user.setRole(USER_ROLE_USER);
-        user.setStatus(USER_STATUS_UNVERIFIED);
 
         UserService userService = ServiceFactory.getInstance().getUserService();
 

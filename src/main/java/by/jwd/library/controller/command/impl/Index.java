@@ -19,7 +19,7 @@ public class Index implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
 
-            MediaPage mediaPageItems = ServiceFactory.getInstance().getLibraryService().getPageItems(1, 8, null);
+            MediaPage mediaPageItems = ServiceFactory.getInstance().getLibraryService().getPageItems(1, 4, null);
 
             request.setAttribute(RequestAttribute.PAGE_ITEMS, mediaPageItems);
 

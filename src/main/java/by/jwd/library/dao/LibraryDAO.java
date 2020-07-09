@@ -16,7 +16,7 @@ public interface LibraryDAO {
 
     void reserve(int daysDuration, int userId, int copyId) throws DAOException;
 
-    MediaPage getMediaTypePage(int page, int itemsPerPage, String search) throws DAOException;
+    MediaPage getMediaPage(int page, int itemsPerPage, String search) throws DAOException;
 
     List<DeliveryType> getAllReservations() throws DAOException;
 

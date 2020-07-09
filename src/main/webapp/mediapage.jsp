@@ -132,10 +132,10 @@
                                         </c:choose>
 
                                         <figure>
-                                            <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${item.mediaTypeID}&lastPage=${requestScope.lastCommand}"><img src="${item.picture}" alt="Book"></a>
+                                            <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.mediaID}&lastPage=${requestScope.lastCommand}"><img src="${item.picture}" alt="Book"></a>
                                             <figcaption>
                                                 <header>
-                                                    <h4><a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaTypeId=${item.mediaTypeID}">${item.title}</a></h4>
+                                                    <h4><a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.mediaID}&lastPage=${requestScope.lastCommand}">${item.title}</a></h4>
                                                     <p><strong>${publisher}:</strong>  ${item.publisher}</p>
                                                     <br>
                                                 </header>

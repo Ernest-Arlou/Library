@@ -1,11 +1,11 @@
 package by.jwd.library.dao.impl;
 
-import by.jwd.library.bean.LoginInfo;
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.UserDAO;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
 import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
+import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.dao.util.DAOUtil;
 
 import java.sql.Connection;
@@ -32,13 +32,13 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_USER = "update users set login = ?,password = ?,role = ?,status = ?," +
             "name = ?, email = ?,`passport-id` = ? where `user-id` = ?;";
     private static final String SEARCH_UNVERIFIED_USERS = "select * from users where status = 'Unverified' and login like ? or status = 'Unverified' and email like ? or status = 'Unverified' and `passport-id` like ?;";
-    private static final String ROLE_USER = "user";
-    private static final String ROLE_ADMIN = "admin";
+
+
 
 
     @Override
     public User getUserById(int userId) throws DAOException {
-        return DAOUtil.getUserById(userId);
+        return DAOFactory.getInstance().getDaoUtil().getUserById(userId);
     }
 
     @Override
@@ -62,9 +62,10 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> searchUnverifiedUsers(String searchStr) throws DAOException {
         Connection connection = null;
-
         PreparedStatement searchPrepStatement = null;
         ResultSet usersSet = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
 
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
@@ -78,7 +79,7 @@ public class UserDAOImpl implements UserDAO {
 
             List<User> userList = new ArrayList<>();
             while (usersSet.next()) {
-                userList.add(DAOUtil.buildUser(usersSet));
+                userList.add(daoUtil.buildUser(usersSet));
             }
 
             return userList;
@@ -88,9 +89,9 @@ public class UserDAOImpl implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            DAOUtil.closeResultSet(usersSet);
-            DAOUtil.closePreparedStatement(searchPrepStatement);
-            DAOUtil.closeConnection(connection);
+            daoUtil.closeResultSet(usersSet);
+            daoUtil.closePreparedStatement(searchPrepStatement);
+            daoUtil.closeConnection(connection);
         }
 
     }
@@ -100,13 +101,15 @@ public class UserDAOImpl implements UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             preparedStatement = connection.prepareStatement(GET_UNVERIFIED_USERS);
             resultSet = preparedStatement.executeQuery();
             List<User> users = new ArrayList<>();
             while (resultSet.next()){
-                users.add(DAOUtil.buildUser(resultSet));
+                users.add(daoUtil.buildUser(resultSet));
             }
             return users;
         } catch (SQLException e) {
@@ -114,9 +117,9 @@ public class UserDAOImpl implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            DAOUtil.closeResultSet(resultSet);
-            DAOUtil.closePreparedStatement(preparedStatement);
-            DAOUtil.closeConnection(connection);
+            daoUtil.closeResultSet(resultSet);
+            daoUtil.closePreparedStatement(preparedStatement);
+            daoUtil.closeConnection(connection);
         }
     }
 
@@ -124,6 +127,8 @@ public class UserDAOImpl implements UserDAO {
     public void updateUser(User user) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
@@ -153,8 +158,8 @@ public class UserDAOImpl implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            DAOUtil.closePreparedStatement(preparedStatement);
-            DAOUtil.closeConnection(connection);
+            daoUtil.closePreparedStatement(preparedStatement);
+            daoUtil.closeConnection(connection);
         }
     }
 
@@ -162,6 +167,8 @@ public class UserDAOImpl implements UserDAO {
     public void addUser(User user) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
@@ -190,8 +197,8 @@ public class UserDAOImpl implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            DAOUtil.closePreparedStatement(preparedStatement);
-            DAOUtil.closeConnection(connection);
+            daoUtil.closePreparedStatement(preparedStatement);
+            daoUtil.closeConnection(connection);
         }
 
     }
@@ -199,38 +206,42 @@ public class UserDAOImpl implements UserDAO {
     private User getUserByStringParameter(String paramValue, String query) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, paramValue);
-            return DAOUtil.getUserFromPreparedStatement(preparedStatement);
+            return daoUtil.getUserFromPreparedStatement(preparedStatement);
         } catch (SQLException e) {
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            DAOUtil.closePreparedStatement(preparedStatement);
-            DAOUtil.closeConnection(connection);
+            daoUtil.closePreparedStatement(preparedStatement);
+            daoUtil.closeConnection(connection);
         }
     }
 
     @Override
-    public User getUserByLogin(LoginInfo loginInfo) throws DAOException {
+    public User getUserByLogin(String login, String password) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             preparedStatement = connection.prepareStatement(GET_USER_BY_LOG_AND_PASS);
-            preparedStatement.setString(1, loginInfo.getUsername());
-            preparedStatement.setString(2, loginInfo.getPassword());
-            return DAOUtil.getUserFromPreparedStatement(preparedStatement);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            return daoUtil.getUserFromPreparedStatement(preparedStatement);
         } catch (SQLException e) {
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            DAOUtil.closePreparedStatement(preparedStatement);
-            DAOUtil.closeConnection(connection);
+            daoUtil.closePreparedStatement(preparedStatement);
+            daoUtil.closeConnection(connection);
         }
     }
 

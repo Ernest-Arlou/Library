@@ -1,6 +1,5 @@
 package by.jwd.library.controller.command.impl;
 
-import by.jwd.library.bean.LoginInfo;
 import by.jwd.library.bean.User;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
@@ -24,10 +23,10 @@ public class LogIn implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String login = request.getParameter(RequestParameter.LOGIN);
         String password = request.getParameter(RequestParameter.PASSWORD);
-        LoginInfo loginInfo = new LoginInfo(login, password);
+
         User user = null;
         try {
-            user = ServiceFactory.getInstance().getUserService().login(loginInfo);
+            user = ServiceFactory.getInstance().getUserService().login(login, password);
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute(SessionAttributes.LOGIN, user.getLogin());

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class MediaDisplay implements Serializable {
     private static final long serialVersionUID = -7015771668470127450L;
-    private int mediaTypeID;
+    private int mediaID;
     private String picture;
     private String materialType;
     private String title;
@@ -14,7 +14,7 @@ public class MediaDisplay implements Serializable {
     private String language;
 
     public MediaDisplay() {
-        setMediaTypeID(-1);
+        setMediaID(-1);
         setPicture("NoPicture");
         setMaterialType("NoType");
         setTitle("NoTitle");
@@ -23,8 +23,8 @@ public class MediaDisplay implements Serializable {
         setLanguage("NoLanguage");
     }
 
-    public MediaDisplay(int mediaTypeID, String picture, String materialType, String title, String summary, String publisher, String language) {
-        setMediaTypeID(mediaTypeID);
+    public MediaDisplay(int mediaID, String picture, String materialType, String title, String summary, String publisher, String language) {
+        setMediaID(mediaID);
         setPicture(picture);
         setMaterialType(materialType);
         setTitle(title);
@@ -33,12 +33,12 @@ public class MediaDisplay implements Serializable {
         setLanguage(language);
     }
 
-    public int getMediaTypeID() {
-        return mediaTypeID;
+    public int getMediaID() {
+        return mediaID;
     }
 
-    public void setMediaTypeID(int mediaTypeID) {
-        this.mediaTypeID = mediaTypeID;
+    public void setMediaID(int mediaID) {
+        this.mediaID = mediaID;
     }
 
     public String getPublisher() {
@@ -95,7 +95,7 @@ public class MediaDisplay implements Serializable {
         if (this == obj) return true;
         if ((obj.getClass() != this.getClass())) return false;
         MediaDisplay that = (MediaDisplay) obj;
-        return mediaTypeID == that.mediaTypeID &&
+        return mediaID == that.mediaID &&
                 picture.equals(that.picture) &&
                 materialType.equals(that.materialType) &&
                 title.equals(that.title) &&
@@ -106,14 +106,14 @@ public class MediaDisplay implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mediaTypeID, picture, materialType, title, summary, publisher, language);
+        return Objects.hash(mediaID, picture, materialType, title, summary, publisher, language);
     }
 
     @Override
     public String toString() {
         return getClass().getName() + "@" + Integer.toHexString(hashCode()) +
                 "MediaDisplay{" +
-                "mediaTypeID=" + mediaTypeID +
+                "mediaTypeID=" + mediaID +
                 ", picture='" + picture + '\'' +
                 ", materialType='" + materialType + '\'' +
                 ", title='" + title + '\'' +

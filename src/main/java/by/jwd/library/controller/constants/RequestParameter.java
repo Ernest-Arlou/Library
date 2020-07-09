@@ -14,13 +14,14 @@ public class RequestParameter {
     public final static String OLD_PASSWORD = "oldPassword";
     public final static String COPY_ID = "copyId";
     public final static String PASSWORD = "password";
-    public final static String MEDIA_TYPE_ID = "mediaTypeId";
+    public final static String MEDIA_ID = "mediaId";
     public final static String PAGE = "page";
     public final static String LAST_COMMAND = "lastCommand";
     public final static String LAST_PAGE = "lastPage";
-    public final static String REGISTRATION_FAIL_MSG = "RegisterErrorMsg";
-    public final static String REGISTRATION_SUCCESS_MSG = "RegistrationSuccessMsg";
-    public final static String LOGIN_FAIL_MSG = "LoginFailMsg";
+    public final static String REGISTRATION_FAIL_MSG = "registerErrorMsg";
+    public final static String REGISTRATION_SUCCESS_MSG = "registrationSuccessMsg";
+    public final static String LOGIN_FAIL_MSG = "loginFailMsg";
+    public final static String ADD_MEDIA_MSG = "addMediaMsg";
 
 
     private RequestParameter(){

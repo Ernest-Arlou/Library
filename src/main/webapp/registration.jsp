@@ -35,12 +35,12 @@
     <jsp:include page="WEB-INF/jsp/parts/css.jsp"/>
     <!-- End: Css Section -->
 
-    <script language="javascript">
+    <script>
         function validate() {
             let valid_name = /^[a-z A-Zа-яА-Я]{4,20}$/;
             let valid_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            let valid_login = /^[a-z A-Zа-яА-Я0-9_]{4,20}$/;
-            let valid_password = /^[A-Z a-z0-9]{4,20}$/;
+            let valid_login = /^[a-zA-Z0-9_-]{4,20}$/;
+            let valid_password = /^[A-Za-z0-9]{4,20}$/;
             let valid_passport = /^(?!^0+$)[a-zA-Z0-9]{14,20}$/;
 
 
@@ -120,19 +120,19 @@
                         <div class="row">
                             <div class="contact-area">
                                 <div class="container">
-                                    <c:if test="${RegistrationSuccessMsg != null}">
+                                    <c:if test="${registrationSuccessMsg != null}">
                                         <div class="container">
                                             <div class="center-content">
                                                 <h1>
-                                                    <c:out value="${RegistrationSuccessMsg}"/>
+                                                    <c:out value="${registrationSuccessMsg}"/>
                                                 </h1>
                                             </div>
                                         </div>
                                     </c:if>
-                                    <c:if test="${RegisterErrorMsg != null}">
+                                    <c:if test="${registerErrorMsg != null}">
                                         <div class="container">
                                             <div class="center-content">
-                                                <h1><c:out value="${RegisterErrorMsg}"/></h1>
+                                                <h1><c:out value="${registerErrorMsg}"/></h1>
                                             </div>
                                         </div>
                                     </c:if>

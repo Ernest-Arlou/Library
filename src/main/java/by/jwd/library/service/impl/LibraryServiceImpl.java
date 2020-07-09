@@ -39,10 +39,10 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void reserveMedia(int userId, int mediaTypeId) throws ServiceException {
+    public void reserveMedia(int userId, int mediaId) throws ServiceException {
         LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
         try {
-            libraryDAO.reserve(RESERVATION_DURATION_DAYS, userId, mediaTypeId);
+            libraryDAO.reserve(RESERVATION_DURATION_DAYS, userId, mediaId);
         } catch (DAOException e) {
             throw new ServiceException("Error during reservation", e);
         }
@@ -52,7 +52,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public MediaPage getPageItems(int page, int itemsPerPage, String search) throws ServiceException {
         try {
-            MediaPage mediaPage = DAOFactory.getInstance().getLibraryDAO().getMediaTypePage(page, itemsPerPage, search);
+            MediaPage mediaPage = DAOFactory.getInstance().getLibraryDAO().getMediaPage(page, itemsPerPage, search);
             mediaPage.setNavigationPages(Pagination.getInstance().calculateNavigationPages(mediaPage));
             int totalPages;
             if (mediaPage.getTotalItems() % mediaPage.getItemsPerPage() == 0) {
@@ -81,16 +81,16 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public boolean userReservedOrLoanedMediaType(int userId, int mediaTypeId) throws ServiceException {
-        return userLoanedMediaType(userId, mediaTypeId) || userReservedMediaType(userId, mediaTypeId);
+    public boolean userReservedOrLoanedMedia(int userId, int mediaId) throws ServiceException {
+        return userLoanedMedia(userId, mediaId) || userReservedMedia(userId, mediaId);
     }
 
     @Override
-    public boolean userReservedMediaType(int userId, int mediaTypeId) throws ServiceException {
+    public boolean userReservedMedia(int userId, int mediaId) throws ServiceException {
         List<LoanType> reservations = getUserReservations(userId);
         for (LoanType loanType :
                 reservations) {
-            if (loanType.getMediaDetail().getMediaTypeID() == mediaTypeId) {
+            if (loanType.getMediaDetail().getMediaID() == mediaId) {
                 return true;
             }
         }
@@ -98,11 +98,11 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public boolean userLoanedMediaType(int userId, int mediaTypeId) throws ServiceException {
+    public boolean userLoanedMedia(int userId, int mediaId) throws ServiceException {
         List<LoanType> loans = getUserLoans(userId);
         for (LoanType loanType :
                 loans) {
-            if (loanType.getMediaDetail().getMediaTypeID() == mediaTypeId) {
+            if (loanType.getMediaDetail().getMediaID() == mediaId) {
                 return true;
             }
         }
@@ -110,9 +110,9 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public MediaDetail getMediaDetail(int mediaTypeId) throws ServiceException {
+    public MediaDetail getMediaDetail(int mediaID) throws ServiceException {
         try {
-            return DAOFactory.getInstance().getLibraryDAO().getMediaDetail(mediaTypeId);
+            return DAOFactory.getInstance().getLibraryDAO().getMediaDetail(mediaID);
         } catch (DAOException e) {
             throw new ServiceException("Error during media details load", e);
         }

@@ -26,8 +26,8 @@ public class MediaDetail implements Command {
             String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
             request.setAttribute(RequestAttribute.LAST_PAGE,lastPage);
 
-            int mediaTypeID = Integer.parseInt(request.getParameter(RequestParameter.MEDIA_TYPE_ID));
-            by.jwd.library.bean.MediaDetail mediaDetail = ServiceFactory.getInstance().getLibraryService().getMediaDetail(mediaTypeID);
+            int mediaId = Integer.parseInt(request.getParameter(RequestParameter.MEDIA_ID));
+            by.jwd.library.bean.MediaDetail mediaDetail = ServiceFactory.getInstance().getLibraryService().getMediaDetail(mediaId);
 
             String reservationMsg = request.getParameter(RequestAttribute.RESERVATION_MSG);
             if (reservationMsg != null) {
