@@ -148,7 +148,7 @@
                                                                         data-th="Pickup Location ">
                                                                         <span class="product-detail">
                                                                                 <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${reservation.mediaDetail.mediaID}">${reservation.mediaDetail.title}</a>
-                                                                                <span><strong>${format}: </strong>${reservation.mediaDetail.materialType}</span>
+                                                                                <span><strong>${format}: </strong>${reservation.mediaDetail.format}</span>
                                                                                 <span><strong>ISBN: </strong>${reservation.mediaDetail.iSBN}</span>
                                                                         </span>
                                                                     </td>
@@ -210,7 +210,7 @@
                                                                     data-th="Pickup Location ">
                                                                         <span class="product-detail">
                                                                                 <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${loan.mediaDetail.mediaID}">${loan.mediaDetail.title}</a>
-                                                                                <span><strong>${format}: </strong>${loan.mediaDetail.materialType}</span>
+                                                                                <span><strong>${format}: </strong>${loan.mediaDetail.format}</span>
                                                                                 <span><strong>ISBN: </strong>${loan.mediaDetail.iSBN}</span>
                                                                         </span>
                                                                 </td>

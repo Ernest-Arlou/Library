@@ -33,5 +33,7 @@ public interface LibraryService {
 
     List<LoanType> getUserReservations(int userId) throws ServiceException;
 
+    int addMedia(MediaDetail mediaDetail) throws ServiceException;
+
     List<LoanType> getUserLoans(int userId) throws ServiceException;
 }

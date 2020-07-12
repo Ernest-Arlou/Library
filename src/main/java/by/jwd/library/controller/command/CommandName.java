@@ -23,6 +23,7 @@ public enum CommandName {
     DELETE_RESERVATION,
     LOAN,
     ADD_MEDIA_FORM,
+    ADD_MEDIA,
 
     WRONG_REQUEST
 }

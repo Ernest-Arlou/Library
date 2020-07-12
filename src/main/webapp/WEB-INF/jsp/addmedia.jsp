@@ -20,6 +20,8 @@
 <fmt:message bundle="${loc}" key="local.addMediaPage" var="addMediaPage" />
 <fmt:message bundle="${loc}" key="local.title" var="title" />
 <fmt:message bundle="${loc}" key="local.totalCopies" var="totalCopies" />
+<fmt:message bundle="${loc}" key="local.pictureUrl" var="pictureUrl" />
+<fmt:message bundle="${loc}" key="local.restriction" var="restriction" />
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -118,8 +120,6 @@
                                             <span class="underline left"></span>
                                             <div class="contact-fields">
 
-
-
                                                 <form action="Controller" method="post" >
                                                     <input type="hidden" name="command" value="add_media">
                                                     <div class="row">
@@ -188,6 +188,21 @@
                                                             </div>
                                                         </div>
 
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <b>${pictureUrl}</b>
+                                                                <input class="form-control" type="text" id="picture"
+                                                                       name="picture"/>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <b>${restriction}</b>
+                                                                <input class="form-control" type="text" id="restriction"
+                                                                       name="restriction"/>
+                                                            </div>
+                                                        </div>
 
                                                         <div class="col-sm-12">
                                                             <div class="form-group">
@@ -196,8 +211,6 @@
                                                                 <div class="clearfix"></div>
                                                             </div>
                                                         </div>
-
-
 
                                                         <div class="col-sm-12">
                                                             <div class="form-group form-submit">

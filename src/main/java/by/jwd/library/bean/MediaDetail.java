@@ -22,7 +22,7 @@ public class MediaDetail implements Serializable {
     private String iSBN;
     private String picture;
     private String publisher;
-    private String materialType;
+    private String format;
     private String language;
     private String restriction;
 
@@ -44,7 +44,7 @@ public class MediaDetail implements Serializable {
         setiSBN("NoISBN");
         setPicture("NoPicture");
         setPublisher("NoPublisher");
-        setMaterialType("NoMaterialType");
+        setFormat("NoMaterialType");
         setLanguage("NoLanguage");
         setRestriction("NoRestriction");
 
@@ -57,7 +57,7 @@ public class MediaDetail implements Serializable {
                        int totalCopies, int availableCopies, int reservedCopies, int loanedCopies,
                        double price,
                        String title, String summary, String iSBN, String picture,
-                       String publisher, String materialType, String language, String restriction,
+                       String publisher, String format, String language, String restriction,
                        List<Author> authors, List<Genre> genres) {
         setMediaID(mediaID);
 
@@ -73,7 +73,7 @@ public class MediaDetail implements Serializable {
         setiSBN(iSBN);
         setPicture(picture);
         setPublisher(publisher);
-        setMaterialType(materialType);
+        setFormat(format);
         setLanguage(language);
         setRestriction(restriction);
 
@@ -177,12 +177,12 @@ public class MediaDetail implements Serializable {
         this.publisher = publisher;
     }
 
-    public String getMaterialType() {
-        return materialType;
+    public String getFormat() {
+        return format;
     }
 
-    public void setMaterialType(String materialType) {
-        this.materialType = materialType;
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public String getLanguage() {
@@ -226,7 +226,7 @@ public class MediaDetail implements Serializable {
                 Objects.equals(iSBN, that.iSBN) &&
                 Objects.equals(picture, that.picture) &&
                 Objects.equals(publisher, that.publisher) &&
-                Objects.equals(materialType, that.materialType) &&
+                Objects.equals(format, that.format) &&
                 Objects.equals(language, that.language) &&
                 Objects.equals(restriction, that.restriction) &&
                 Objects.equals(authors, that.authors) &&
@@ -235,7 +235,7 @@ public class MediaDetail implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mediaID, totalCopies, availableCopies, reservedCopies, loanedCopies, price, title, summary, iSBN, picture, publisher, materialType, language, restriction, authors, genres);
+        return Objects.hash(mediaID, totalCopies, availableCopies, reservedCopies, loanedCopies, price, title, summary, iSBN, picture, publisher, format, language, restriction, authors, genres);
     }
 
     @Override
@@ -253,7 +253,7 @@ public class MediaDetail implements Serializable {
                 ", iSBN='" + iSBN + '\'' +
                 ", picture='" + picture + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", materialType='" + materialType + '\'' +
+                ", materialType='" + format + '\'' +
                 ", language='" + language + '\'' +
                 ", restriction='" + restriction + '\'' +
                 ", authors=" + authors +

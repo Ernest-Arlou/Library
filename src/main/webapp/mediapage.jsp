@@ -108,19 +108,19 @@
                                 <c:forEach var="item" items="${mediaPage.mediaDisplay}">
                                     <li>
                                         <c:choose>
-                                            <c:when test="${item.materialType=='Hardcover'}">
+                                            <c:when test="${item.materialType=='Hardcover' || item.materialType == 'Твердый переплет'}">
                                                 <div class="book-list-icon yellow-icon"></div>
                                             </c:when>
-                                            <c:when test="${item.materialType=='Magasin'}">
+                                            <c:when test="${item.materialType=='Magasin' || item.materialType == 'Журнал'}">
                                                 <div class="book-list-icon red-icon"></div>
                                             </c:when>
-                                            <c:when test="${item.materialType=='Audio CD'}">
+                                            <c:when test="${item.materialType=='Audio CD' || item.materialType == 'Аудио CD'}">
                                                 <div class="book-list-icon green-icon"></div>
                                             </c:when>
-                                            <c:when test="${item.materialType=='E Audio'}">
+                                            <c:when test="${item.materialType=='E Audio' || item.materialType == 'Цифровое аудио'}">
                                                 <div class="book-list-icon green-icon"></div>
                                             </c:when>
-                                            <c:when test="${item.materialType=='E Book'}">
+                                            <c:when test="${item.materialType=='E Book' || item.materialType == 'Цифровая книга'}">
                                                 <div class="book-list-icon light-green-icon"></div>
                                             </c:when>
                                             <c:when test="${item.materialType=='DVD'}">

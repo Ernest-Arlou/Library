@@ -22,6 +22,18 @@ public class RequestParameter {
     public final static String REGISTRATION_SUCCESS_MSG = "registrationSuccessMsg";
     public final static String LOGIN_FAIL_MSG = "loginFailMsg";
     public final static String ADD_MEDIA_MSG = "addMediaMsg";
+    public final static String TITLE = "title";
+    public final static String ISBN = "ISBN";
+    public final static String PUBLISHER = "publisher";
+    public final static String FORMAT = "format";
+    public final static String LANGUAGE = "language";
+    public final static String PRICE = "price";
+    public final static String AUTHORS = "authors";
+    public final static String GENRES = "genres";
+    public final static String COPIES = "copies";
+    public final static String SUMMARY = "summary";
+    public final static String PICTURE = "picture";
+    public final static String RESTRICTION = "restriction";
 
 
     private RequestParameter(){

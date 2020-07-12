@@ -16,6 +16,10 @@ public class QueryCoder {
 
     public static String code(String string){
 
+        if (string == null){
+            return null;
+        }
+
         Pattern patternSlash = Pattern.compile(SLASH_PATTERN);
         Pattern patternEquals = Pattern.compile(EQUALS_PATTERN);
         Pattern patternQuestion = Pattern.compile(QUESTION_PATTERN);

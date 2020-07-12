@@ -17,6 +17,7 @@ public class LibraryServiceImpl implements LibraryService {
     private final static int RESERVATION_DURATION_DAYS = 3;
     private final static int LOAN_DURATION_DAYS = 20;
     private final static int MAX_LOANS = 3;
+    private final static String NO_RESTRICTION_FIELD = "NoRestriction";
 
     @Override
     public void giveOutCopy(int userId, int copyId, int reservationId) throws ServiceException {
@@ -142,6 +143,18 @@ public class LibraryServiceImpl implements LibraryService {
             return DAOFactory.getInstance().getLibraryDAO().getUserReservations(userId);
         } catch (DAOException e) {
             throw new ServiceException("Error during user reservations load", e);
+        }
+    }
+
+    @Override
+    public int addMedia(MediaDetail mediaDetail) throws ServiceException {
+        try {
+            if (mediaDetail.getRestriction().equals(NO_RESTRICTION_FIELD)){
+                mediaDetail.setRestriction(null);
+            }
+            return DAOFactory.getInstance().getLibraryDAO().addMedia(mediaDetail);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during adding new media", e);
         }
     }
 

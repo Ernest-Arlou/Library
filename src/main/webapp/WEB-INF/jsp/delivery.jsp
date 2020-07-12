@@ -133,7 +133,7 @@
                                                                         <span class="product-detail">
                                                                                 <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.loanType.mediaDetail.mediaID}">${item.loanType.mediaDetail.title} </a>
                                                                             <div>
-                                                                            <span><strong>${format}: </strong>${item.loanType.mediaDetail.materialType}</span>
+                                                                            <span><strong>${format}: </strong>${item.loanType.mediaDetail.format}</span>
                                                                             </div>
                                                                               <div>
                                                                             <span><strong>ISBN: </strong>${item.loanType.mediaDetail.iSBN}</span>
