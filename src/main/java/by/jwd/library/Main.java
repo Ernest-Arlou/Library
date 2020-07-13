@@ -23,6 +23,13 @@ public class Main {
     public static void main(String[] args) throws DAOException, ServiceException {
         ConnectionPoolManager.getInstance().initConnectionPool();
 
+        String authors = "1;2;";
+
+        String[] authorsMas = authors.split(";");
+        for (String str :
+                authorsMas) {
+            System.out.println("A " + str+"|");
+        }
 
     }
 }

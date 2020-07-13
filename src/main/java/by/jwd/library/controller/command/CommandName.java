@@ -24,6 +24,8 @@ public enum CommandName {
     LOAN,
     ADD_MEDIA_FORM,
     ADD_MEDIA,
+    EDIT_MEDIA,
+    EDIT_MEDIA_FORM,
 
     WRONG_REQUEST
 }

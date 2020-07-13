@@ -26,6 +26,7 @@
 <fmt:message bundle="${loc}" key="local.publisher" var="publisher"/>
 <fmt:message bundle="${loc}" key="local.format" var="format"/>
 <fmt:message bundle="${loc}" key="local.available" var="available"/>
+<fmt:message bundle="${loc}" key="local.editMedia" var="editMedia"/>
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -155,8 +156,6 @@
                                         </c:forEach>
                                     </p>
                                     <br><br><br><br><br><br><br><br>
-
-
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-3 ">
@@ -206,6 +205,10 @@
                                 <h3 class="section-title"><c:out value="${reservationMsg}"/></h3>
                             </div>
                         </c:if>
+
+                        <a href="${pageContext.request.contextPath}/Controller?command=edit_media_form&mediaId=${mediaDetail.mediaID}"
+                           class="btn btn-dark-gray">${editMedia}</a>
+
                         <p><strong>${summary}: </strong>${mediaDetail.summary}</p>
                         </c:if>
                     </div>

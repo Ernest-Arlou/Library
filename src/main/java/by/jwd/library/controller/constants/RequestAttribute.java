@@ -18,7 +18,7 @@ public class RequestAttribute {
     public final static String UNVERIFIED_USERS = "unverifiedUsers";
     public final static String LAST_COMMAND = "lastCommand";
     public final static String LAST_PAGE = "lastPage";
-    public final static String ADD_MEDIA_MSG = "addMediaMsg";
+    public final static String EDIT_MEDIA_MSG = "editMediaMsg";
 
 
 

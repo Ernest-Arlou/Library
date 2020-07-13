@@ -138,6 +138,15 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    public List<LoanType> getLoansForMedia (int mediaId) throws ServiceException {
+        try {
+            return DAOFactory.getInstance().getLibraryDAO().getLoansForMedia(mediaId);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during loans load", e);
+        }
+    }
+
+    @Override
     public List<LoanType> getUserReservations(int userId) throws ServiceException {
         try {
             return DAOFactory.getInstance().getLibraryDAO().getUserReservations(userId);

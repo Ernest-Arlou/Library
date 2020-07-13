@@ -50,6 +50,18 @@ public class LibraryDAOImpl implements LibraryDAO {
             "inner join users on reservations.`user-id` = users.`user-id` \n" +
             "where reservations.status = 'Active' and copies.status != 'deleted' and users.status != 'deleted' and `passport-id` = ? ;";
 
+    private static final String GET_LOANS_FOR_MEDIA = "select * from media\n" +
+            "inner join copies on media.`media-id` = copies.`media-id`\n" +
+            "inner join loans on copies.`copy-id` = loans.`copy-id`\n" +
+            "where copies.status != 'deleted' and loans.status != 'deleted'\n" +
+            "and media.`media-id` = ?";
+
+    private static final String GET_RESERVATIONS_FOR_MEDIA = "select * from media\n" +
+            "inner join copies on media.`media-id` = copies.`media-id`\n" +
+            "inner join reservations on copies.`copy-id` = reservations.`copy-id`\n" +
+            "where copies.status != 'deleted' and reservations.status != 'deleted'\n" +
+            "and media.`media-id` = ?";
+
 
     private static final String GET_RESERVATION_BY_ID = "SELECT * FROM reservations\n" +
             "inner join copies on reservations.`copy-id` = copies.`copy-id` \n" +
@@ -84,6 +96,7 @@ public class LibraryDAOImpl implements LibraryDAO {
     private static final String GET_LANGUAGE_BY_NAME = "SELECT * FROM languages where status = 'Active' and language = ?;";
     private static final String GET_MATERIAL_TYPE_BY_NAME = "SELECT * FROM `material-types` where status = 'Active' and `material-type` = ?;";
     private static final String GET_AUTHOR_BY_NAME = "SELECT * FROM authors where status = 'Active' and `full-name` = ?;";
+    private static final String GET_GENRE_BY_NAME = "SELECT * FROM genres where status = 'Active' and genre = ?;";
 
 
     private static final String MEDIA_TITLE = "title";
@@ -124,6 +137,7 @@ public class LibraryDAOImpl implements LibraryDAO {
     private static final String LANGUAGE_ID = "language-id";
     private static final String PUBLISHER_ID = "publisher-id";
     private static final String AUTHOR_ID = "author-id";
+    private static final String GENRE_ID = "genre-id";
     private static final String MATERIAL_TYPE_ID = "material-type-id";
 
     private static final String STATUS_ACTIVE = "Active";
@@ -133,19 +147,26 @@ public class LibraryDAOImpl implements LibraryDAO {
 
     private static final String GET_LAST_MEDIA_ID = "SELECT * FROM media order by `media-id` desc;";
 
-    private static final String ADD_COPY = "insert into copies (`media-id`) values (?);";
+    private static final String GET_LAST_COPY_ID = "SELECT * FROM copies order by `copy-id` desc;";
 
-    private static final String ADD_AUTHOR_TO_MEDIA ="insert into `media-have-authors` (`media-id`, `author-id`) values (?,?); ";
+    private static final String ADD_COPY = "insert into copies (`media-id`) values (?);";
+    private static final String ADD_COPY_WITH_STATUS = "insert into copies (`media-id`, status) values (?,?);";
+
+    private static final String ADD_AUTHOR_TO_MEDIA = "insert into `media-have-authors` (`media-id`, `author-id`) values (?,?); ";
+
+    private static final String ADD_GENRE_TO_MEDIA = "insert into `media-have-genres` (`media-id`, `genre-id`) values (?,?); ";
 
     private static final String ADD_MEDIA =
             "insert into media (title, summary, price, isbn, picture, `publisher-id`, `material-type-id`, `language-id`, restriction ) values(?,?,?,?,?,?,?,?,?);";
     private static final String ADD_AUTHOR =
             "insert into authors (`full-name`) values(?)";
+    private static final String ADD_GENRE =
+            "insert into genres (genre) values(?)";
     private static final String ADD_PUBLISHER =
             "insert into publishers (publisher) values(?)";
     private static final String ADD_LANGUAGE =
             "insert into languages (language) values(?)";
-    private static final String ADD_MATERIAL_TYPE=
+    private static final String ADD_MATERIAL_TYPE =
             "insert into `material-types` (`material-type`) values(?)";
 
     private static final String ADD_RESERVATION =
@@ -163,60 +184,78 @@ public class LibraryDAOImpl implements LibraryDAO {
     private static final String UPDATE_RESERVATION_STATUS =
             "update reservations set status = ? where `reservation-id` = ?;";
 
+    private static final String UPDATE_MEDIA_STATUS = "update media set status = ? where `media-id` = ?;";
+
     private static final int INCORRECT_ID = -1;
 
-    private int getTableId(Connection connection,String statement ,String parameter, String columnName) throws SQLException {
+
+    private List<LoanType> getLoanTypesForMedia(Connection connection, int mediaId, String query, String type) throws DAOException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
-            preparedStatement = connection.prepareStatement(statement);
-            preparedStatement.setString(1, parameter);
+
+            List<LoanType> loanTypes = new ArrayList<>();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, mediaId);
+
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(columnName);
-            }else {
-                return INCORRECT_ID;
+            while (resultSet.next()) {
+                if (type.equals(LOAN_TYPE_LOAN)){
+                    loanTypes.add(buildLoan(connection,resultSet));
+                }else {
+                    loanTypes.add(buildReservation(connection,resultSet));
+                }
             }
-        } finally {
-            DAOFactory.getInstance().getDaoUtil().closeResultSet(resultSet);
-            DAOFactory.getInstance().getDaoUtil().closePreparedStatement(preparedStatement);
-        }
-    }
 
-    private void addColumn(Connection connection, String statement ,String parameter) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(statement);
-            preparedStatement.setString(1, parameter);
-            preparedStatement.executeUpdate();
-        } finally {
-            DAOFactory.getInstance().getDaoUtil().closePreparedStatement(preparedStatement);
-        }
-    }
+            return loanTypes;
 
-    private int getOrCreateTableId(Connection connection,String getStatement, String createStatement ,String parameter, String columnName) throws SQLException {
-        int tableId;
-        tableId = getTableId(connection,getStatement,parameter,columnName);
-        if (tableId == INCORRECT_ID){
-            addColumn(connection,createStatement,parameter);
+        } catch (SQLException e) {
+            throw new DAOException("SQL error", e);
+        } finally {
+            daoUtil.closeResultSet(resultSet);
+            daoUtil.closePreparedStatement(preparedStatement);
         }
-        return getTableId(connection,getStatement,parameter,columnName);
+
     }
 
     @Override
-    public int addMedia(MediaDetail mediaDetail) throws DAOException{
+    public List<LoanType> getLoansForMedia(int mediaId) throws DAOException {
+        return getLoanTypesForMedia(mediaId, GET_LOANS_FOR_MEDIA, LOAN_TYPE_LOAN);
+    }
+
+    private List<LoanType> getLoanTypesForMedia(int mediaId, String query, String type) throws DAOException {
         Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
-            connection.setAutoCommit(false);
 
-            int languageId, publisherId, materialTypeId, newMediaId;
+            return getLoanTypesForMedia(connection, mediaId, query, type);
 
-            languageId = getOrCreateTableId(connection,GET_LANGUAGE_BY_NAME,ADD_LANGUAGE,mediaDetail.getLanguage(),LANGUAGE_ID);
-            publisherId = getOrCreateTableId(connection,GET_PUBLISHER_BY_NAME,ADD_PUBLISHER,mediaDetail.getPublisher(),PUBLISHER_ID);
-            materialTypeId = getOrCreateTableId(connection,GET_MATERIAL_TYPE_BY_NAME,ADD_MATERIAL_TYPE,mediaDetail.getFormat(),MATERIAL_TYPE_ID);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeConnection(connection);
+        }
+
+    }
+
+    @Override
+    public List<LoanType> getReservationsForMedia(int mediaId) throws DAOException {
+        return getLoanTypesForMedia(mediaId, GET_RESERVATIONS_FOR_MEDIA, LOAN_TYPE_RESERVATION);
+    }
+
+    private int addMedia(Connection connection, MediaDetail mediaDetail) throws SQLException {
+
+        int languageId, publisherId, materialTypeId, newMediaId;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            languageId = getOrCreateTableId(connection, GET_LANGUAGE_BY_NAME, ADD_LANGUAGE, mediaDetail.getLanguage(), LANGUAGE_ID);
+            publisherId = getOrCreateTableId(connection, GET_PUBLISHER_BY_NAME, ADD_PUBLISHER, mediaDetail.getPublisher(), PUBLISHER_ID);
+            materialTypeId = getOrCreateTableId(connection, GET_MATERIAL_TYPE_BY_NAME, ADD_MATERIAL_TYPE, mediaDetail.getFormat(), MATERIAL_TYPE_ID);
 
             preparedStatement = connection.prepareStatement(ADD_MEDIA);
             preparedStatement.setString(1, mediaDetail.getTitle());
@@ -235,18 +274,161 @@ public class LibraryDAOImpl implements LibraryDAO {
             resultSet.next();
             newMediaId = resultSet.getInt(MEDIA_ID);
 
-            for (int i = 0; i<mediaDetail.getTotalCopies();i++){
+            for (Author author :
+                    mediaDetail.getAuthors()) {
+                int authorId = getOrCreateTableId(connection, GET_AUTHOR_BY_NAME, ADD_AUTHOR, author.getFullName(), AUTHOR_ID);
+                preparedStatement = connection.prepareStatement(ADD_AUTHOR_TO_MEDIA);
+                preparedStatement.setInt(1, newMediaId);
+                preparedStatement.setInt(2, authorId);
+                preparedStatement.executeUpdate();
+            }
+
+            for (Genre genre :
+                    mediaDetail.getGenres()) {
+                int genreId = getOrCreateTableId(connection, GET_GENRE_BY_NAME, ADD_GENRE, genre.getGenre(), GENRE_ID);
+                preparedStatement = connection.prepareStatement(ADD_GENRE_TO_MEDIA);
+                preparedStatement.setInt(1, newMediaId);
+                preparedStatement.setInt(2, genreId);
+                preparedStatement.executeUpdate();
+            }
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeResultSet(resultSet);
+            DAOFactory.getInstance().getDaoUtil().closePreparedStatement(preparedStatement);
+        }
+        return newMediaId;
+    }
+
+    public void EditMedia(MediaDetail mediaDetail) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+
+            List<LoanType> loans = getLoanTypesForMedia(connection, mediaDetail.getMediaID(), GET_LOANS_FOR_MEDIA, LOAN_TYPE_LOAN);
+            int numberOfLoans = loans.size();
+            if (numberOfLoans > mediaDetail.getTotalCopies()) {
+                throw new DAOException("There are less total copies than total loans");
+            }
+
+            connection.setAutoCommit(false);
+
+            preparedStatement = connection.prepareStatement(UPDATE_MEDIA_STATUS);
+            preparedStatement.setString(1, STATUS_DELETED);
+            preparedStatement.setInt(2, mediaDetail.getMediaID());
+
+            int newMediaId = addMedia(connection, mediaDetail);
+
+            List<LoanType> reservations = getLoanTypesForMedia(connection, mediaDetail.getMediaID(), GET_RESERVATIONS_FOR_MEDIA, LOAN_TYPE_RESERVATION);
+            int numberOfReservations = reservations.size();
+            int numberOfReservationsToDelete = numberOfReservations - (mediaDetail.getTotalCopies() - numberOfLoans);
+
+            if (numberOfReservationsToDelete > 0) {
+                for (int i = 0; i < numberOfReservationsToDelete; i++) {
+                    deleteReservation(connection,reservations.get(i).getLoanTypeId());
+                }
+            }
+
+            preparedStatement = connection.prepareStatement(GET_LAST_COPY_ID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            int lastCopy = resultSet.getInt(COPIES_COPY_ID);
+
+            preparedStatement = connection.prepareStatement(ADD_COPY_WITH_STATUS);
+            for (int i = 0; i < numberOfLoans; i++) {
+                lastCopy++;
+                preparedStatement.setInt(1, newMediaId);
+                preparedStatement.setString(2, STATUS_LOANED);
+                preparedStatement.executeUpdate();
+            }
+
+
+
+
+
+
+
+
+            for (int i = 0; i < mediaDetail.getTotalCopies(); i++) {
                 preparedStatement = connection.prepareStatement(ADD_COPY);
                 preparedStatement.setInt(1, newMediaId);
                 preparedStatement.executeUpdate();
             }
 
-            for (Author author :
-                    mediaDetail.getAuthors()) {
-                int authorId = getOrCreateTableId(connection,GET_AUTHOR_BY_NAME,ADD_AUTHOR,author.getFullName(),AUTHOR_ID);
-                preparedStatement = connection.prepareStatement(ADD_AUTHOR_TO_MEDIA);
+
+            connection.commit();
+            connection.setAutoCommit(true);
+
+
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                throw new DAOException("Impossible to rollback method addMedia", e);
+            }
+            throw new DAOException("SQLException in method addMedia", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeResultSet(resultSet);
+            DAOFactory.getInstance().getDaoUtil().closePreparedStatement(preparedStatement);
+            DAOFactory.getInstance().getDaoUtil().closeConnection(connection);
+        }
+    }
+
+    private int getTableId(Connection connection, String statement, String parameter, String columnName) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setString(1, parameter);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(columnName);
+            } else {
+                return INCORRECT_ID;
+            }
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeResultSet(resultSet);
+            DAOFactory.getInstance().getDaoUtil().closePreparedStatement(preparedStatement);
+        }
+    }
+
+    private void addColumn(Connection connection, String statement, String parameter) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setString(1, parameter);
+            preparedStatement.executeUpdate();
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closePreparedStatement(preparedStatement);
+        }
+    }
+
+    private int getOrCreateTableId(Connection connection, String getStatement, String createStatement, String parameter, String columnName) throws SQLException {
+        int tableId;
+        tableId = getTableId(connection, getStatement, parameter, columnName);
+        if (tableId == INCORRECT_ID) {
+            addColumn(connection, createStatement, parameter);
+        }
+        return getTableId(connection, getStatement, parameter, columnName);
+    }
+
+    @Override
+    public int addMedia(MediaDetail mediaDetail) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection.setAutoCommit(false);
+
+            int newMediaId = addMedia(connection, mediaDetail);
+
+            for (int i = 0; i < mediaDetail.getTotalCopies(); i++) {
+                preparedStatement = connection.prepareStatement(ADD_COPY);
                 preparedStatement.setInt(1, newMediaId);
-                preparedStatement.setInt(2, authorId);
                 preparedStatement.executeUpdate();
             }
 
@@ -259,12 +441,14 @@ public class LibraryDAOImpl implements LibraryDAO {
             try {
                 connection.rollback();
             } catch (SQLException sqlException) {
-                throw new DAOException("Impossible to rollback method deleteReservation", e);
+                throw new DAOException("Impossible to rollback method addMedia", e);
             }
-            throw new DAOException("SQLException in method deleteReservation", e);
+            throw new DAOException("SQLException in method addMedia", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
+            DAOFactory.getInstance().getDaoUtil().closeResultSet(resultSet);
+            DAOFactory.getInstance().getDaoUtil().closePreparedStatement(preparedStatement);
             DAOFactory.getInstance().getDaoUtil().closeConnection(connection);
         }
     }
@@ -368,26 +552,13 @@ public class LibraryDAOImpl implements LibraryDAO {
     @Override
     public void deleteReservation(int reservationId) throws DAOException {
         Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
 
         DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             connection.setAutoCommit(false);
 
-
-            preparedStatement = connection.prepareStatement(GET_RESERVATION_BY_ID);
-            preparedStatement.setInt(1, reservationId);
-            resultSet = preparedStatement.executeQuery();
-
-            int copyId;
-            resultSet.next();
-            copyId = resultSet.getInt(COPIES_COPY_ID);
-
-            statusUpdate(connection, UPDATE_COPY_STATUS, STATUS_ACTIVE, copyId);
-
-            statusUpdate(connection, UPDATE_RESERVATION_STATUS, STATUS_DELETED, reservationId);
+            deleteReservation(connection,reservationId);
 
             connection.commit();
             connection.setAutoCommit(true);
@@ -403,9 +574,32 @@ public class LibraryDAOImpl implements LibraryDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("ConnectionPool error", e);
         } finally {
+
+            daoUtil.closeConnection(connection);
+        }
+    }
+
+    private void deleteReservation(Connection connection, int reservationId) throws DAOException, SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
+        try {
+            preparedStatement = connection.prepareStatement(GET_RESERVATION_BY_ID);
+            preparedStatement.setInt(1, reservationId);
+            resultSet = preparedStatement.executeQuery();
+
+            int copyId;
+            resultSet.next();
+            copyId = resultSet.getInt(COPIES_COPY_ID);
+
+            statusUpdate(connection, UPDATE_COPY_STATUS, STATUS_ACTIVE, copyId);
+
+            statusUpdate(connection, UPDATE_RESERVATION_STATUS, STATUS_DELETED, reservationId);
+
+        } finally {
             daoUtil.closeResultSet(resultSet);
             daoUtil.closePreparedStatement(preparedStatement);
-            daoUtil.closeConnection(connection);
         }
     }
 
@@ -581,10 +775,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         }
     }
 
-    @Override
-    public MediaDetail getMediaDetail(int mediaId) throws DAOException {
-        Connection connection = null;
-
+    private MediaDetail getMediaDetail(Connection connection, int mediaId) throws DAOException {
         PreparedStatement mediaDetailsStatement = null;
         ResultSet mediaDetailsSet = null;
 
@@ -593,8 +784,6 @@ public class LibraryDAOImpl implements LibraryDAO {
 
         DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
-
             mediaDetailsStatement = connection.prepareStatement(GET_MEDIA_DETAILS);
             mediaDetailsStatement.setInt(1, mediaId);
             mediaDetailsSet = mediaDetailsStatement.executeQuery();
@@ -620,7 +809,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             MediaDetail mediaDetail = null;
             if (mediaDetailsSet.next()) {
-                mediaDetail = buildMediaDetail( connection, totalCopies, loanedCopies, reservedCopies, mediaDetailsSet);
+                mediaDetail = buildMediaDetail(connection, totalCopies, loanedCopies, reservedCopies, mediaDetailsSet);
 
             }
 
@@ -628,13 +817,28 @@ public class LibraryDAOImpl implements LibraryDAO {
 
         } catch (SQLException e) {
             throw new DAOException("SQL error", e);
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("ConnectionPool error", e);
         } finally {
             daoUtil.closeResultSet(copiesSet);
             daoUtil.closeResultSet(mediaDetailsSet);
             daoUtil.closePreparedStatement(mediaDetailsStatement);
             daoUtil.closePreparedStatement(copiesStatement);
+        }
+
+    }
+
+    @Override
+    public MediaDetail getMediaDetail(int mediaId) throws DAOException {
+        Connection connection = null;
+
+        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
+        try {
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+
+            return getMediaDetail(connection, mediaId);
+
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+        } finally {
             daoUtil.closeConnection(connection);
         }
 
@@ -740,7 +944,7 @@ public class LibraryDAOImpl implements LibraryDAO {
     }
 
 
-    private LoanType buildLoan(ResultSet loanSet) throws SQLException, DAOException {
+    private LoanType buildLoan(Connection connection, ResultSet loanSet) throws SQLException, DAOException {
         LoanType loanType = new LoanType();
         setLoanType(loanSet, LOANS_LOAN_ID, loanType);
         if (loanSet.getDate(LOAN_TYPE_END_DATE) == null) {
@@ -748,24 +952,51 @@ public class LibraryDAOImpl implements LibraryDAO {
         } else {
             loanType.setEndDate(loanSet.getDate(LOAN_TYPE_END_DATE).toLocalDate());
         }
-        loanType.setMediaDetail(getMediaDetail(loanSet.getInt(MEDIA_ID)));
+        loanType.setMediaDetail(getMediaDetail(connection, loanSet.getInt(MEDIA_ID)));
 
         return loanType;
     }
 
-    private LoanType buildReservation(ResultSet reservationSet) throws SQLException, DAOException {
+
+    private LoanType buildLoan(ResultSet loanSet) throws SQLException, DAOException {
+        Connection connection = null;
+        try {
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+
+            return buildLoan(connection, loanSet);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeConnection(connection);
+        }
+    }
+
+    private LoanType buildReservation(ResultSet loanSet) throws SQLException, DAOException {
+        Connection connection = null;
+        try {
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+
+            return buildReservation(connection, loanSet);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeConnection(connection);
+        }
+    }
+
+    private LoanType buildReservation(Connection connection, ResultSet reservationSet) throws SQLException, DAOException {
         LoanType loanType = new LoanType();
         setLoanType(reservationSet, RESERVATIONS_RESERVATION_ID, loanType);
         loanType.setEndDate(loanType.getStartDate().plusDays(loanType.getDuration()));
         loanType.setStatus(reservationSet.getString(FIELD_STATUS));
-        loanType.setMediaDetail(getMediaDetail(reservationSet.getInt(MEDIA_ID)));
+        loanType.setMediaDetail(getMediaDetail(connection,reservationSet.getInt(MEDIA_ID)));
 
         return loanType;
     }
 
-    private void setLoanType(ResultSet loanSet, String loansLoanId, LoanType loanType) throws SQLException {
+    private void setLoanType(ResultSet loanSet, String loanTypeId, LoanType loanType) throws SQLException {
         loanType.setUserId(loanSet.getInt(LOAN_TYPE_USER_ID));
-        loanType.setLoanTypeId(loanSet.getInt(loansLoanId));
+        loanType.setLoanTypeId(loanSet.getInt(loanTypeId));
         loanType.setCopyId(loanSet.getInt(LOAN_TYPE_COPY_ID));
         loanType.setDuration(loanSet.getInt(LOAN_TYPE_DURATION));
         loanType.setStartDate(loanSet.getDate(LOAN_TYPE_START_DATE).toLocalDate());

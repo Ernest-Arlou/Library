@@ -21,7 +21,7 @@ public class RequestParameter {
     public final static String REGISTRATION_FAIL_MSG = "registerErrorMsg";
     public final static String REGISTRATION_SUCCESS_MSG = "registrationSuccessMsg";
     public final static String LOGIN_FAIL_MSG = "loginFailMsg";
-    public final static String ADD_MEDIA_MSG = "addMediaMsg";
+    public final static String EDIT_MEDIA_MSG = "editMediaMsg";
     public final static String TITLE = "title";
     public final static String ISBN = "ISBN";
     public final static String PUBLISHER = "publisher";

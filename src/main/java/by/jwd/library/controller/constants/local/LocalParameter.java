@@ -17,6 +17,7 @@ public class LocalParameter {
     public static final String RESERVATION_MAX_LIMIT_MSG = "local.message.reservationMaxLimit";
     public static final String UNVERIFIED_USER_MSG = "local.message.unverifiedUser";
     public static final String PASSPORT_ID_CHANGED_MSG = "local.message.passportIdChanged";
+    public static final String CANT_REDUCE_COPIES_MSG = "local.message.cantReduceCopies";
 
 
 

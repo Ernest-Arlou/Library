@@ -34,6 +34,8 @@ final class CommandProvider {
         repository.put(CommandName.LOGIN_FORM, new LoginForm());
         repository.put(CommandName.ADD_MEDIA_FORM, new AddMediaForm());
         repository.put(CommandName.ADD_MEDIA, new AddMedia());
+        repository.put(CommandName.EDIT_MEDIA, new EditMedia());
+        repository.put(CommandName.EDIT_MEDIA_FORM, new EditMediaForm());
 
         repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }

@@ -13,6 +13,7 @@ public class JSPPath {
     public static final String EDIT_USER_PASSWORD_FORM = "/WEB-INF/jsp/edituserpassword.jsp";
     public static final String DELIVERY = "/WEB-INF/jsp/delivery.jsp";
     public static final String ADD_MEDIA = "/WEB-INF/jsp/addmedia.jsp";
+    public static final String EDIT_MEDIA = "/WEB-INF/jsp/editmedia.jsp";
 
 
     private JSPPath() {

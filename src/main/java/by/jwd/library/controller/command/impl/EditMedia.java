@@ -5,9 +5,13 @@ import by.jwd.library.bean.Genre;
 import by.jwd.library.bean.MediaDetail;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
-import by.jwd.library.controller.command.impl.util.SessionCheck;
+import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
 import by.jwd.library.controller.constants.CommandURL;
+import by.jwd.library.controller.constants.RequestAttribute;
 import by.jwd.library.controller.constants.RequestParameter;
+import by.jwd.library.controller.constants.SessionAttributes;
+import by.jwd.library.controller.constants.local.LocalParameter;
+import by.jwd.library.service.LibraryService;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 
@@ -17,17 +21,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddMedia implements Command {
+public class EditMedia implements Command {
     private static final String DELIMITER = ";";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
-        SessionCheck.librarianOrAdmin(request);
-
         String title = request.getParameter(RequestParameter.TITLE);
         String iSBN = request.getParameter(RequestParameter.ISBN);
-
         String publisher = request.getParameter(RequestParameter.PUBLISHER);
         String format = request.getParameter(RequestParameter.FORMAT);
         String language = request.getParameter(RequestParameter.LANGUAGE);
@@ -39,7 +40,7 @@ public class AddMedia implements Command {
         String picture = request.getParameter(RequestParameter.PICTURE);
         String restriction = request.getParameter(RequestParameter.RESTRICTION);
 
-        MediaDetail mediaDetail = new MediaDetail();
+        by.jwd.library.bean.MediaDetail mediaDetail = new MediaDetail();
 
         mediaDetail.setTitle(title);
         mediaDetail.setiSBN(iSBN);
@@ -70,10 +71,25 @@ public class AddMedia implements Command {
         }
         mediaDetail.setGenres(genreList);
 
+        mediaDetail.setMediaID(Integer.parseInt(request.getParameter(RequestParameter.MEDIA_ID)));
+
+        LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
+
         try {
-            int mediaId = ServiceFactory.getInstance().getLibraryService().addMedia(mediaDetail);
-            response.sendRedirect(CommandURL.MEDIA_DETAIL + "&" + RequestParameter.MEDIA_ID
-                    + "=" + mediaId);
+
+            int numberOfLoans = libraryService.getLoansForMedia(mediaDetail.getMediaID()).size();
+
+            if (numberOfLoans > mediaDetail.getTotalCopies() ){
+                String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
+                response.sendRedirect(CommandURL.EDIT_MEDIA_FORM + "&" + RequestParameter.MEDIA_ID + "=" + mediaDetail.getMediaID() +
+                        "&" + RequestAttribute.EDIT_MEDIA_MSG +
+                        "=" +  LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.CANT_REDUCE_COPIES_MSG + numberOfLoans));
+            }else {
+                response.sendRedirect(CommandURL.MEDIA_DETAIL + "&" + RequestParameter.MEDIA_ID
+                        + "=" + mediaDetail.getMediaID());
+            }
+
+
         } catch (ServiceException | IOException e) {
             throw new CommandException(e);
         }
