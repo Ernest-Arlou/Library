@@ -1,4 +1,4 @@
-package by.jwd.library.controller.constants;
+package by.jwd.library.controller.constant;
 
 public class RequestAttribute {
     public final static String VERIFICATION_MSG = "verificationMsg";
@@ -21,9 +21,7 @@ public class RequestAttribute {
     public final static String EDIT_MEDIA_MSG = "editMediaMsg";
 
 
-
-
-    private RequestAttribute(){
+    private RequestAttribute() {
 
     }
 }

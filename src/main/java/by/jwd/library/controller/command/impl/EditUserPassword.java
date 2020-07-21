@@ -1,15 +1,15 @@
 package by.jwd.library.controller.command.impl;
 
 import by.jwd.library.bean.User;
-import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
-import by.jwd.library.controller.command.impl.util.SessionCheck;
-import by.jwd.library.controller.constants.CommandURL;
-import by.jwd.library.controller.constants.SessionAttributes;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
-import by.jwd.library.controller.constants.RequestAttribute;
-import by.jwd.library.controller.constants.RequestParameter;
-import by.jwd.library.controller.constants.local.LocalParameter;
+import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
+import by.jwd.library.controller.command.impl.util.SessionCheck;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.RequestAttribute;
+import by.jwd.library.controller.constant.RequestParameter;
+import by.jwd.library.controller.constant.SessionAttributes;
+import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
 import by.jwd.library.service.factory.ServiceFactory;
@@ -36,10 +36,10 @@ public class EditUserPassword implements Command {
         String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
         try {
             User user = userService.getUserById(userID);
-            if (!user.getPassword().equalsIgnoreCase(oldPassword)){
+            if (!user.getPassword().equalsIgnoreCase(oldPassword)) {
                 response.sendRedirect(CommandURL.EDIT_USER_PASSWORD_FORM + "&" + RequestAttribute.EDIT_USER_PASSWORD_MSG + "="
                         + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.WRONG_OLD_PASS_MSG));
-            }else {
+            } else {
                 user.setPassword(newPassword);
                 userService.editUser(user);
                 response.sendRedirect(CommandURL.EDIT_USER_PASSWORD_FORM + "&" + RequestAttribute.EDIT_USER_PASSWORD_MSG + "="

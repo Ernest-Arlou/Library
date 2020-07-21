@@ -131,7 +131,7 @@
                                             </c:otherwise>
                                         </c:choose>
 
-                                        <figure>
+                                        <figure style="max-height: 500px;">
                                             <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.mediaID}&lastPage=${requestScope.lastCommand}"><img src="${item.picture}" alt="Book"></a>
                                             <figcaption>
                                                 <header>

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 
-public class User implements Serializable, Cloneable {
+public class User implements Serializable {
     private static final long serialVersionUID = 867171647832618785L;
     private int userId;
     private String name;
@@ -17,7 +17,7 @@ public class User implements Serializable, Cloneable {
 
 
     public User() {
-        userId = -1;
+        userId = 1;
         name = "NoName";
         email = "NoEmail";
         login = "NoLogin";
@@ -29,26 +29,17 @@ public class User implements Serializable, Cloneable {
     }
 
     public User(int userId, String name, String email, String login, String password, String passportId, String role, String status) {
-        setUserId(userId);
-        setName(name);
-        setEmail(email);
-        setLogin(login);
-        setPassword(password);
-        setRole(role);
-        setPassportId(passportId);
-        setStatus(status);
+
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.passportId = passportId;
+        this.status = status;
     }
 
-    public User(User user) {
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.login = user.getLogin();
-        this.password = user.getPassword();
-        this.role = user.getRole();
-        this.passportId = user.getPassportId();
-        this.status = user.getStatus();
-        this.userId = user.getUserId();
-    }
 
     public int getUserId() {
         return userId;
@@ -149,8 +140,4 @@ public class User implements Serializable, Cloneable {
                 '}';
     }
 
-    @Override
-    public User clone() throws CloneNotSupportedException {
-        return new User(this);
-    }
 }

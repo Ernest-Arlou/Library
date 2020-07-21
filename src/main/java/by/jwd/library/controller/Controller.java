@@ -2,7 +2,7 @@ package by.jwd.library.controller;
 
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
-import by.jwd.library.controller.constants.JSPPath;
+import by.jwd.library.controller.constant.JSPPath;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

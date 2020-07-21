@@ -4,10 +4,9 @@ import by.jwd.library.bean.MediaPage;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.QueryCoder;
-import by.jwd.library.controller.constants.CommandURL;
-import by.jwd.library.controller.constants.JSPPath;
-import by.jwd.library.controller.constants.RequestAttribute;
-import by.jwd.library.controller.constants.RequestParameter;
+import by.jwd.library.controller.constant.JSPPath;
+import by.jwd.library.controller.constant.RequestAttribute;
+import by.jwd.library.controller.constant.RequestParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Page implements Command {
-    private final static int ITEMS_PER_PAGE = 1;
+    private final static int ITEMS_PER_PAGE = 4;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

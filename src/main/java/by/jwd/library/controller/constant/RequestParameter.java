@@ -1,11 +1,11 @@
-package by.jwd.library.controller.constants;
+package by.jwd.library.controller.constant;
 
 public class RequestParameter {
     public final static String LOCAL = "local";
     public final static String USER_ID = "userId";
     public final static String PASSPORT_ID = "passportId";
     public final static String RESERVATION_ID = "reservationId";
-    public final static String FROM= "from";
+    public final static String FROM = "from";
     public final static String SEARCH = "search";
     public final static String NAME = "name";
     public final static String EMAIL = "email";
@@ -36,7 +36,7 @@ public class RequestParameter {
     public final static String RESTRICTION = "restriction";
 
 
-    private RequestParameter(){
+    private RequestParameter() {
 
     }
 }

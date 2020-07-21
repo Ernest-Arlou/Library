@@ -10,19 +10,40 @@ import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.service.LibraryService;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.util.Pagination;
+import by.jwd.library.service.validation.LibraryValidator;
+import by.jwd.library.service.validation.factory.ValidationFactory;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+
+
 
 public class LibraryServiceImpl implements LibraryService {
     private final static int RESERVATION_DURATION_DAYS = 3;
     private final static int LOAN_DURATION_DAYS = 20;
     private final static int MAX_LOANS = 3;
+    private final static double FEE_PER_DAY = 0.008;
+    private final static int DIGITS = 2;
     private final static String NO_RESTRICTION_FIELD = "NoRestriction";
 
     @Override
     public void giveOutCopy(int userId, int copyId, int reservationId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if ((!libraryValidator.validateId(userId)) ||
+                (!libraryValidator.validateId(copyId)) ||
+                (!libraryValidator.validateId(reservationId))) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         try {
-            DAOFactory.getInstance().getLibraryDAO().giveOutCopy(userId,copyId,reservationId,LOAN_DURATION_DAYS);
+            DAOFactory.getInstance().getLibraryDAO().giveOutCopy(userId, copyId, reservationId, LOAN_DURATION_DAYS);
         } catch (DAOException e) {
             throw new ServiceException("Error during media give out", e);
         }
@@ -31,8 +52,14 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void deleteReservation(int reservationId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if (!libraryValidator.validateId(reservationId)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         try {
-           DAOFactory.getInstance().getLibraryDAO().deleteReservation(reservationId);
+            DAOFactory.getInstance().getLibraryDAO().deleteReservation(reservationId);
         } catch (DAOException e) {
             throw new ServiceException("Error during reservation delete", e);
         }
@@ -41,6 +68,14 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void reserveMedia(int userId, int mediaId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if ((!libraryValidator.validateId(userId)) ||
+                (!libraryValidator.validateId(mediaId))) {
+            throw new ServiceException("Invalid parameters");
+        }
+
+
         LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
         try {
             libraryDAO.reserve(RESERVATION_DURATION_DAYS, userId, mediaId);
@@ -53,6 +88,13 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public MediaPage getPageItems(int page, int itemsPerPage, String search) throws ServiceException {
         try {
+
+            LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+            if ((!libraryValidator.validatePage(page)) ||
+                    (!libraryValidator.validateItemsPerPage(itemsPerPage))) {
+                throw new ServiceException("Invalid parameters");
+            }
+
             MediaPage mediaPage = DAOFactory.getInstance().getLibraryDAO().getMediaPage(page, itemsPerPage, search);
             mediaPage.setNavigationPages(Pagination.getInstance().calculateNavigationPages(mediaPage));
             int totalPages;
@@ -69,6 +111,12 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     private int totalLoansReservations(int userId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if (!libraryValidator.validateId(userId)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         int total = 0;
         List<LoanType> reservations = getUserReservations(userId);
         List<LoanType> loans = getUserLoans(userId);
@@ -78,16 +126,36 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public boolean canReserve(int userId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if (!libraryValidator.validateId(userId)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         return totalLoansReservations(userId) < MAX_LOANS;
     }
 
     @Override
     public boolean userReservedOrLoanedMedia(int userId, int mediaId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if ((!libraryValidator.validateId(userId)) ||
+                (!libraryValidator.validateId(mediaId))) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         return userLoanedMedia(userId, mediaId) || userReservedMedia(userId, mediaId);
     }
 
     @Override
     public boolean userReservedMedia(int userId, int mediaId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if ((!libraryValidator.validateId(userId)) ||
+                (!libraryValidator.validateId(mediaId))) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         List<LoanType> reservations = getUserReservations(userId);
         for (LoanType loanType :
                 reservations) {
@@ -100,6 +168,13 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public boolean userLoanedMedia(int userId, int mediaId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if ((!libraryValidator.validateId(userId)) ||
+                (!libraryValidator.validateId(mediaId))) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         List<LoanType> loans = getUserLoans(userId);
         for (LoanType loanType :
                 loans) {
@@ -111,11 +186,54 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public MediaDetail getMediaDetail(int mediaID) throws ServiceException {
+    public MediaDetail getMediaDetail(int mediaId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if (!libraryValidator.validateId(mediaId)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         try {
-            return DAOFactory.getInstance().getLibraryDAO().getMediaDetail(mediaID);
+            return DAOFactory.getInstance().getLibraryDAO().getMediaDetail(mediaId);
         } catch (DAOException e) {
             throw new ServiceException("Error during media details load", e);
+        }
+    }
+
+    @Override
+    public List<DeliveryType> searchLoans(String searchStr) throws ServiceException {
+        try {
+            return DAOFactory.getInstance().getLibraryDAO().searchLoans(searchStr);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during reservations load", e);
+        }
+    }
+
+    private void calculateLoanPrice(List<DeliveryType> loans){
+        for (DeliveryType deliveryType :
+                loans) {
+            LocalDate startDate = deliveryType.getLoanType().getStartDate();
+            LocalDate now = LocalDate.now();
+            long duration = DAYS.between(startDate,now);
+            double priceOfMedia = deliveryType.getLoanType().getMediaDetail().getPrice();
+            double priceForLoan = duration * FEE_PER_DAY * priceOfMedia;
+
+            BigDecimal bd = new BigDecimal(priceForLoan).setScale(DIGITS, RoundingMode.HALF_UP);
+            priceForLoan = bd.doubleValue();
+
+
+            deliveryType.getLoanType().getMediaDetail().setPrice(priceForLoan);
+        }
+    }
+
+    @Override
+    public List<DeliveryType> getAllLoans() throws ServiceException {
+        try {
+            List<DeliveryType> loans = DAOFactory.getInstance().getLibraryDAO().getAllLoans();
+            calculateLoanPrice(loans);
+            return loans;
+        } catch (DAOException e) {
+            throw new ServiceException("Error during reservations load", e);
         }
     }
 
@@ -138,7 +256,13 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<LoanType> getLoansForMedia (int mediaId) throws ServiceException {
+    public List<LoanType> getLoansForMedia(int mediaId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if (!libraryValidator.validateId(mediaId)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         try {
             return DAOFactory.getInstance().getLibraryDAO().getLoansForMedia(mediaId);
         } catch (DAOException e) {
@@ -148,6 +272,12 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public List<LoanType> getUserReservations(int userId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if (!libraryValidator.validateId(userId)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         try {
             return DAOFactory.getInstance().getLibraryDAO().getUserReservations(userId);
         } catch (DAOException e) {
@@ -157,8 +287,14 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public int addMedia(MediaDetail mediaDetail) throws ServiceException {
+
+        Set<String> validate = ValidationFactory.getInstance().getLibraryValidator().validateMediaDetail(mediaDetail);
+        if (!validate.isEmpty()) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         try {
-            if (mediaDetail.getRestriction().equals(NO_RESTRICTION_FIELD)){
+            if (mediaDetail.getRestriction().equals(NO_RESTRICTION_FIELD)) {
                 mediaDetail.setRestriction(null);
             }
             return DAOFactory.getInstance().getLibraryDAO().addMedia(mediaDetail);
@@ -168,7 +304,31 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    public void editMedia(MediaDetail mediaDetail) throws ServiceException {
+
+        Set<String> validate = ValidationFactory.getInstance().getLibraryValidator().validateMediaDetail(mediaDetail);
+        if (!validate.isEmpty()) {
+            throw new ServiceException("Invalid parameters");
+        }
+
+        try {
+            if (mediaDetail.getRestriction().equals(NO_RESTRICTION_FIELD)) {
+                mediaDetail.setRestriction(null);
+            }
+            DAOFactory.getInstance().getLibraryDAO().editMedia(mediaDetail);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during media edit", e);
+        }
+    }
+
+    @Override
     public List<LoanType> getUserLoans(int userId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if (!libraryValidator.validateId(userId)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
         try {
             return DAOFactory.getInstance().getLibraryDAO().getUserLoans(userId);
         } catch (DAOException e) {

@@ -16,26 +16,30 @@ public class LoanType implements Serializable {
     private String status;
     private MediaDetail mediaDetail;
 
-    public LoanType(){
-        setUserId(-1);
-        setLoanTypeId(-1);
-        setCopyId(-1);
-        setDuration(-1);
-        setStartDate(LocalDate.now());
-        setEndDate(LocalDate.now());
-        setStatus("NoStatus");
-        setMediaDetail(new MediaDetail());
+    public LoanType() {
+        userId = 1;
+        loanTypeId = 1;
+        copyId = 1;
+        duration = 1;
+
+        startDate = LocalDate.now();
+        endDate = LocalDate.now();
+
+        status = "NoStatus";
+
+        mediaDetail = new MediaDetail();
+
     }
 
-    public LoanType(int userId, int reservationId, int copyId, int duration, LocalDate startDate, LocalDate endDate, String status, MediaDetail mediaDetail){
-        setUserId(userId);
-        setLoanTypeId(reservationId);
-        setCopyId(copyId);
-        setDuration(duration);
-        setStartDate(startDate);
-        setEndDate(endDate);
-        setStatus(status);
-        setMediaDetail(mediaDetail);
+    public LoanType(int userId, int loanTypeId, int copyId, int duration, LocalDate startDate, LocalDate endDate, String status, MediaDetail mediaDetail) {
+        this.userId = userId;
+        this.loanTypeId = loanTypeId;
+        this.copyId = copyId;
+        this.duration = duration;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.mediaDetail = mediaDetail;
     }
 
     public int getUserId() {

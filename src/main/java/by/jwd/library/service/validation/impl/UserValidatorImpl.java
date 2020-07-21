@@ -66,7 +66,7 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     @Override
-    public boolean validateEmail(String email){
+    public boolean validateEmail(String email) {
         return email.matches(EMAIL_PATTERN);
     }
 

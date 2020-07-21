@@ -1,9 +1,9 @@
 package by.jwd.library.controller.command.impl;
 
-import by.jwd.library.controller.constants.CommandURL;
-import by.jwd.library.controller.constants.SessionAttributes;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -206,8 +206,12 @@
                             </div>
                         </c:if>
 
-                        <a href="${pageContext.request.contextPath}/Controller?command=edit_media_form&mediaId=${mediaDetail.mediaID}"
-                           class="btn btn-dark-gray">${editMedia}</a>
+
+                        <c:if test="${sessionScope.role.equals('admin')}">
+                            <a href="${pageContext.request.contextPath}/Controller?command=edit_media_form&mediaId=${mediaDetail.mediaID}"
+                               class="btn btn-dark-gray">${editMedia}</a>
+                            <br><br>
+                        </c:if>
 
                         <p><strong>${summary}: </strong>${mediaDetail.summary}</p>
                         </c:if>

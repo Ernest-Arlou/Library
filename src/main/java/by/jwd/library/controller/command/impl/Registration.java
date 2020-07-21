@@ -1,15 +1,17 @@
 package by.jwd.library.controller.command.impl;
 
 import by.jwd.library.bean.User;
-import by.jwd.library.controller.constants.local.LocalParameter;
-import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
-import by.jwd.library.controller.constants.*;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
+import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.RequestAttribute;
+import by.jwd.library.controller.constant.RequestParameter;
+import by.jwd.library.controller.constant.SessionAttributes;
+import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
 import by.jwd.library.service.factory.ServiceFactory;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,21 +44,21 @@ public class Registration implements Command {
             if (userService.emailExists(email)) {
 
                 response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_FAIL_MSG
-                        + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr,LocalParameter.EMAIL_EXISTS_MSG));
+                        + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.EMAIL_EXISTS_MSG));
 
             } else if (userService.loginExists(login)) {
                 response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_FAIL_MSG
-                        + "=" +  LocalMessageCoder.getCodedLocalizedMsg(localeStr,LocalParameter.LOGIN_EXISTS_MSG));
+                        + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.LOGIN_EXISTS_MSG));
 
             } else if (userService.passportIdExists(passportId)) {
                 response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_FAIL_MSG
-                        + "=" +  LocalMessageCoder.getCodedLocalizedMsg(localeStr,LocalParameter.PASSPORT_ID_EXISTS_MSG));
+                        + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.PASSPORT_ID_EXISTS_MSG));
 
             } else {
                 ServiceFactory.getInstance().getUserService().register(user);
 
                 response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_SUCCESS_MSG
-                        + "=" +  LocalMessageCoder.getCodedLocalizedMsg(localeStr,LocalParameter.REGISTRATION_SUCCESS_MSG));
+                        + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.REGISTRATION_SUCCESS_MSG));
             }
 
         } catch (IOException | ServiceException e) {

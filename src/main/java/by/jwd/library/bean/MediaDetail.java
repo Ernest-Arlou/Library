@@ -30,24 +30,21 @@ public class MediaDetail implements Serializable {
     private List<Genre> genres;
 
     public MediaDetail() {
-        setMediaID(-1);
+        mediaID = 1;
+        totalCopies = 0;
+        availableCopies = 0;
+        reservedCopies = 0;
+        loanedCopies = 0;
+        price = 0;
 
-        setTotalCopies(-1);
-        setAvailableCopies(-1);
-        setReservedCopies(-1);
-        setLoanedCopies(-1);
-
-        setPrice(-1);
-
-        setTitle("NoTitle");
-        setSummary("NoSummary");
-        setiSBN("NoISBN");
-        setPicture("NoPicture");
-        setPublisher("NoPublisher");
-        setFormat("NoMaterialType");
-        setLanguage("NoLanguage");
-        setRestriction("NoRestriction");
-
+        title = "NoTitle";
+        summary = "NoSummary";
+        iSBN = "NoISBN";
+        picture = "NoPicture";
+        publisher = "NoPublisher";
+        format = "NoMaterialType";
+        language = "NoLanguage";
+        restriction = "NoRestriction";
 
         authors = new ArrayList<>();
         genres = new ArrayList<>();
@@ -59,26 +56,25 @@ public class MediaDetail implements Serializable {
                        String title, String summary, String iSBN, String picture,
                        String publisher, String format, String language, String restriction,
                        List<Author> authors, List<Genre> genres) {
-        setMediaID(mediaID);
 
-        setTotalCopies(totalCopies);
-        setAvailableCopies(availableCopies);
-        setReservedCopies(reservedCopies);
-        setLoanedCopies(loanedCopies);
+        this.mediaID = mediaID;
+        this.totalCopies = totalCopies;
+        this.availableCopies = availableCopies;
+        this.reservedCopies = reservedCopies;
+        this.loanedCopies = loanedCopies;
+        this.price = price;
 
-        setPrice(price);
+        this.title = title;
+        this.summary = summary;
+        this.iSBN = iSBN;
+        this.picture = picture;
+        this.publisher = publisher;
+        this.format = format;
+        this.language = language;
+        this.restriction = restriction;
 
-        setTitle(title);
-        setSummary(summary);
-        setiSBN(iSBN);
-        setPicture(picture);
-        setPublisher(publisher);
-        setFormat(format);
-        setLanguage(language);
-        setRestriction(restriction);
-
-        setAuthors(authors);
-        setGenres(genres);
+        this.authors = authors;
+        this.genres = genres;
     }
 
     public String getRestriction() {

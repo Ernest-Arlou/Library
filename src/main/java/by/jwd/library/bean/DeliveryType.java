@@ -9,14 +9,14 @@ public class DeliveryType implements Serializable {
     private User user;
     private LoanType loanType;
 
-    public DeliveryType(){
-        setUser(new User());
-        setLoanType(new LoanType());
+    public DeliveryType() {
+        user = new User();
+        loanType = new LoanType();
     }
 
-    public DeliveryType(User user, LoanType loanType){
-        setUser(user);
-        setLoanType(loanType);
+    public DeliveryType(User user, LoanType loanType) {
+        this.user = user;
+        this.loanType = loanType;
     }
 
 

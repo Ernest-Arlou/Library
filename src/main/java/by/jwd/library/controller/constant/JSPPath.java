@@ -1,4 +1,4 @@
-package by.jwd.library.controller.constants;
+package by.jwd.library.controller.constant;
 
 public class JSPPath {
     public static final String INDEX = "index.jsp";
@@ -14,6 +14,7 @@ public class JSPPath {
     public static final String DELIVERY = "/WEB-INF/jsp/delivery.jsp";
     public static final String ADD_MEDIA = "/WEB-INF/jsp/addmedia.jsp";
     public static final String EDIT_MEDIA = "/WEB-INF/jsp/editmedia.jsp";
+    public static final String RETURN_MEDIA = "/WEB-INF/jsp/returnmedia.jsp";
 
 
     private JSPPath() {

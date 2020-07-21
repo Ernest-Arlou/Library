@@ -5,11 +5,11 @@ import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
 import by.jwd.library.controller.command.impl.util.QueryCoder;
 import by.jwd.library.controller.command.impl.util.SessionCheck;
-import by.jwd.library.controller.constants.CommandURL;
-import by.jwd.library.controller.constants.RequestAttribute;
-import by.jwd.library.controller.constants.RequestParameter;
-import by.jwd.library.controller.constants.SessionAttributes;
-import by.jwd.library.controller.constants.local.LocalParameter;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.RequestAttribute;
+import by.jwd.library.controller.constant.RequestParameter;
+import by.jwd.library.controller.constant.SessionAttributes;
+import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.LibraryService;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
@@ -38,19 +38,17 @@ public class Reserve implements Command {
         LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
         try {
 
-            if (lastCommand == null || lastCommand.isEmpty()){
+            if (lastCommand == null || lastCommand.isEmpty()) {
                 mediaDetailCallPoint = CommandURL.MEDIA_DETAIL + "&" + RequestParameter.MEDIA_ID + "=" + mediaId;
-            }
-            else {
+            } else {
                 String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
-                if (lastPage == null || lastPage.isEmpty()){
+                if (lastPage == null || lastPage.isEmpty()) {
                     mediaDetailCallPoint = CommandURL.MEDIA_DETAIL + "&" + RequestParameter.MEDIA_ID + "=" + mediaId;
-                }
-                else {
-                    lastCommand = lastCommand.substring(0,lastCommand.indexOf(RequestParameter.LAST_PAGE));
+                } else {
+                    lastCommand = lastCommand.substring(0, lastCommand.indexOf(RequestParameter.LAST_PAGE));
                     mediaDetailCallPoint = CommandURL.CONTROLLER + "?" + lastCommand
                             + "&" + RequestAttribute.LAST_PAGE + "=" + QueryCoder.code(
-                            request.getParameter(RequestParameter.LAST_PAGE) + "&" +RequestParameter.PAGE + "=" + request.getParameter(RequestParameter.PAGE) +
+                            request.getParameter(RequestParameter.LAST_PAGE) + "&" + RequestParameter.PAGE + "=" + request.getParameter(RequestParameter.PAGE) +
                                     "&" + RequestParameter.SEARCH + "=" + request.getParameter(RequestParameter.SEARCH));
 
                 }

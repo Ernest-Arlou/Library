@@ -1,4 +1,4 @@
-package by.jwd.library.controller.constants;
+package by.jwd.library.controller.constant;
 
 public class SessionAttributes {
     public static final String LOGIN = "login";
@@ -6,6 +6,6 @@ public class SessionAttributes {
     public static final String USER_ROLE = "role";
     public static final String LOCAL = "local";
 
-    private SessionAttributes(){
+    private SessionAttributes() {
     }
 }

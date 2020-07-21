@@ -1,10 +1,10 @@
 package by.jwd.library.controller.command.impl;
 
 import by.jwd.library.bean.MediaPage;
-import by.jwd.library.controller.constants.JSPPath;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
-import by.jwd.library.controller.constants.RequestAttribute;
+import by.jwd.library.controller.constant.JSPPath;
+import by.jwd.library.controller.constant.RequestAttribute;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 

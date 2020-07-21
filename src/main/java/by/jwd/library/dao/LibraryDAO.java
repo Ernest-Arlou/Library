@@ -2,9 +2,9 @@ package by.jwd.library.dao;
 
 
 import by.jwd.library.bean.DeliveryType;
+import by.jwd.library.bean.LoanType;
 import by.jwd.library.bean.MediaDetail;
 import by.jwd.library.bean.MediaPage;
-import by.jwd.library.bean.LoanType;
 
 import java.util.List;
 
@@ -15,6 +15,8 @@ public interface LibraryDAO {
     List<LoanType> getLoansForMedia(int mediaId) throws DAOException;
 
     List<LoanType> getReservationsForMedia(int mediaId) throws DAOException;
+
+    void editMedia(MediaDetail mediaDetail) throws DAOException;
 
     int addMedia(MediaDetail mediaDetail) throws DAOException;
 
@@ -27,6 +29,10 @@ public interface LibraryDAO {
     List<DeliveryType> getAllReservations() throws DAOException;
 
     List<DeliveryType> searchReservations(String searchStr) throws DAOException;
+
+    List<DeliveryType> getAllLoans() throws DAOException;
+
+    List<DeliveryType> searchLoans(String searchStr) throws DAOException;
 
     List<LoanType> getUserReservations(int userId) throws DAOException;
 

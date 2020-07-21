@@ -12,14 +12,14 @@ public class Author implements Serializable {
 
 
     public Author() {
-        setId(-1);
-        setFullName("NoName");
+        id = 1;
+        fullName = "NoName";
 
     }
 
     public Author(int id, String fullName) {
-        setId(id);
-        setFullName(fullName);
+        this.id = id;
+        this.fullName = fullName;
 
     }
 

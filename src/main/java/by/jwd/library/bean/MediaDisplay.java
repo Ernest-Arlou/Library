@@ -14,23 +14,25 @@ public class MediaDisplay implements Serializable {
     private String language;
 
     public MediaDisplay() {
-        setMediaID(-1);
-        setPicture("NoPicture");
-        setMaterialType("NoType");
-        setTitle("NoTitle");
-        setSummary("NoSummary");
-        setPublisher("NoPublisher");
-        setLanguage("NoLanguage");
+
+        mediaID = 1;
+        picture = "NoPicture";
+        materialType = "NoType";
+        title = "NoTitle";
+        summary = "NoSummary";
+        publisher = "NoPublisher";
+        language = "NoLanguage";
     }
 
     public MediaDisplay(int mediaID, String picture, String materialType, String title, String summary, String publisher, String language) {
-        setMediaID(mediaID);
-        setPicture(picture);
-        setMaterialType(materialType);
-        setTitle(title);
-        setSummary(summary);
-        setPublisher(publisher);
-        setLanguage(language);
+
+        this.mediaID = mediaID;
+        this.picture = picture;
+        this.materialType = materialType;
+        this.title = title;
+        this.summary = summary;
+        this.publisher = publisher;
+        this.language = language;
     }
 
     public int getMediaID() {

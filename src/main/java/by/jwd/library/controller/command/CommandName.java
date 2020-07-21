@@ -26,6 +26,8 @@ public enum CommandName {
     ADD_MEDIA,
     EDIT_MEDIA,
     EDIT_MEDIA_FORM,
+    RETURN_MEDIA_FORM,
+    RETURN_MEDIA,
 
     WRONG_REQUEST
 }

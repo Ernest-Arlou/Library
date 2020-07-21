@@ -14,9 +14,9 @@ public class QueryCoder {
     private static final String QUESTION_CODE = "%3f";
     private static final String AND_CODE = "%26";
 
-    public static String code(String string){
+    public static String code(String string) {
 
-        if (string == null){
+        if (string == null) {
             return null;
         }
 

@@ -19,25 +19,26 @@ public class MediaPage implements Serializable {
     private List<Integer> navigationPages;
 
     public MediaPage() {
-        setPage(-1);
-        setItemsPerPage(-1);
-        setTotalItems(-1);
-        setTotalPages(-1);
 
-        setSearch(null);
+        page = 1;
+        itemsPerPage = 1;
+        totalItems = 1;
+        totalPages = 1;
+
+        search = null;
 
         mediaDisplay = new ArrayList<>();
         navigationPages = new ArrayList<>();
     }
 
     public MediaPage(int page, int itemsPerPage, int totalItems, int totalPages, List<MediaDisplay> mediaDisplay, List<Integer> navigationPages) {
-        setPage(page);
-        setItemsPerPage(itemsPerPage);
-        setTotalItems(totalItems);
-        setTotalPages(totalPages);
-        setMediaDisplay(mediaDisplay);
-        setNavigationPages(navigationPages);
 
+        this.page = page;
+        this.itemsPerPage = itemsPerPage;
+        this.totalItems = totalItems;
+        this.totalPages = totalPages;
+        this.mediaDisplay = mediaDisplay;
+        this.navigationPages = navigationPages;
     }
 
     public String getSearch() {

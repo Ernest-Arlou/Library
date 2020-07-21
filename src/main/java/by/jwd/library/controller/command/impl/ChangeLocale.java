@@ -1,12 +1,12 @@
 package by.jwd.library.controller.command.impl;
 
-import by.jwd.library.controller.command.impl.util.QueryCoder;
-import by.jwd.library.controller.constants.CommandURL;
-import by.jwd.library.controller.constants.RequestAttribute;
-import by.jwd.library.controller.constants.SessionAttributes;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
-import by.jwd.library.controller.constants.RequestParameter;
+import by.jwd.library.controller.command.impl.util.QueryCoder;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.RequestAttribute;
+import by.jwd.library.controller.constant.RequestParameter;
+import by.jwd.library.controller.constant.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,19 +23,17 @@ public class ChangeLocale implements Command {
 
 
         try {
-            if (lastCommand == null || lastCommand.isEmpty()){
+            if (lastCommand == null || lastCommand.isEmpty()) {
                 response.sendRedirect(CommandURL.CONTROLLER);
-            }
-            else {
+            } else {
                 String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
-                if (lastPage == null || lastPage.isEmpty()){
+                if (lastPage == null || lastPage.isEmpty()) {
                     response.sendRedirect(CommandURL.CONTROLLER + "?" + lastCommand);
-                }
-                else {
-                    lastCommand = lastCommand.substring(0,lastCommand.indexOf(RequestParameter.LAST_PAGE));
+                } else {
+                    lastCommand = lastCommand.substring(0, lastCommand.indexOf(RequestParameter.LAST_PAGE));
                     response.sendRedirect(CommandURL.CONTROLLER + "?" + lastCommand
                             + "&" + RequestAttribute.LAST_PAGE + "=" + QueryCoder.code(
-                            request.getParameter(RequestParameter.LAST_PAGE) + "&" +RequestParameter.PAGE + "=" + request.getParameter(RequestParameter.PAGE) +
+                            request.getParameter(RequestParameter.LAST_PAGE) + "&" + RequestParameter.PAGE + "=" + request.getParameter(RequestParameter.PAGE) +
                                     "&" + RequestParameter.SEARCH + "=" + request.getParameter(RequestParameter.SEARCH)));
 
                 }

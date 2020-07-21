@@ -1,8 +1,8 @@
 package by.jwd.library.dao.factory;
 
 import by.jwd.library.dao.LibraryDAO;
-import by.jwd.library.dao.impl.LibraryDAOImpl;
 import by.jwd.library.dao.UserDAO;
+import by.jwd.library.dao.impl.LibraryDAOImpl;
 import by.jwd.library.dao.impl.UserDAOImpl;
 import by.jwd.library.dao.util.DAOUtil;
 import by.jwd.library.dao.util.DAOUtilImpl;

@@ -16,6 +16,7 @@
 <fmt:message bundle="${loc}" key="local.userVerification" var="userVerification"/>
 <fmt:message bundle="${loc}" key="local.navigation" var="navigation"/>
 <fmt:message bundle="${loc}" key="local.addMedia" var="addMedia"/>
+<fmt:message bundle="${loc}" key="local.returnMedia" var="returnMedia"/>
 
 <header id="header-v1" class="navbar-wrapper inner-navbar-wrapper">
     <div class="container">
@@ -90,11 +91,11 @@
                                     <a data-toggle="dropdown" class="dropdown-toggle disabled"
                                        href="${pageContext.request.contextPath}/Controller?command=page&page=1">${booksNMedia}</a>
                                 </li>
-
-                                <li class="dropdown">
-                                    <a data-toggle="dropdown" class="dropdown-toggle disabled"
-                                       href="${pageContext.request.contextPath}/Controller?command=add_media_form">${addMedia}</a>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/Controller?command=return_media_form">${returnMedia}</a>
                                 </li>
+
+
 
                                 <c:if test="${sessionScope.role == 'librarian' || sessionScope.role == 'admin'}">
                                     <li class="dropdown">
@@ -104,6 +105,12 @@
                                     <li class="dropdown">
                                         <a data-toggle="dropdown" class="dropdown-toggle disabled"
                                            href="${pageContext.request.contextPath}/Controller?command=delivery">${delivery}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${sessionScope.role == 'admin'}">
+                                    <li class="dropdown">
+                                        <a data-toggle="dropdown" class="dropdown-toggle disabled"
+                                           href="${pageContext.request.contextPath}/Controller?command=add_media_form">${addMedia}</a>
                                     </li>
                                 </c:if>
                             </ul>
@@ -161,12 +168,21 @@
                             <li>
                                 <a href="${pageContext.request.contextPath}/Controller?command=page&page=1">${booksNMedia}</a>
                             </li>
+
+
+
+
                             <c:if test="${sessionScope.role == 'librarian' || sessionScope.role == 'admin'}">
                                 <li class="dropdown">
                                     <a href="${pageContext.request.contextPath}/Controller?command=user_verification">${userVerification}</a>
                                 </li>
                                 <li class="dropdown">
                                     <a href="${pageContext.request.contextPath}/Controller?command=delivery">${delivery}</a>
+                                </li>
+                            </c:if>
+                            <c:if test="${sessionScope.role == 'admin'}">
+                                <li class="dropdown">
+                                    <a href="${pageContext.request.contextPath}/Controller?command=add_media_form">${addMedia}</a>
                                 </li>
                             </c:if>
                         </ul>

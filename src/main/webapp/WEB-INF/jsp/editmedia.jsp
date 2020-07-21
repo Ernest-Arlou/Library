@@ -25,6 +25,10 @@
 <fmt:message bundle="${loc}" key="local.editMedia" var="editMedia" />
 <fmt:message bundle="${loc}" key="local.editMediaPage" var="editMediaPage" />
 <fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails" />
+<fmt:message bundle="${loc}" key="local.priceTestMSG" var="priceTestMSG" />
+<fmt:message bundle="${loc}" key="local.copiesTestMSG" var="copiesTestMSG" />
+<fmt:message bundle="${loc}" key="local.emptyFieldTestMSG" var="emptyFieldTestMSG" />
+
 
 
 
@@ -45,36 +49,51 @@
     <jsp:include page="parts/css.jsp"/>
     <!-- End: Css Section -->
 
-    <%--    <script>--%>
-    <%--        function validate() {--%>
-    <%--            let valid_name = /^[a-z A-Zа-яА-Я]{4,20}$/;--%>
-    <%--            let valid_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;--%>
-    <%--            let valid_login = /^[a-zA-Z0-9_-]{4,20}$/;--%>
+    <script>
+        function validate() {
+            let validPrice = /^[0-9.]{1,20}$/;
+            let validTotalCopies = /^[0-9]{1,20}$/;
 
-    <%--            let name = document.getElementById("name");--%>
-    <%--            let email = document.getElementById("email");--%>
-    <%--            let login = document.getElementById("login");--%>
+            let title = document.getElementById("title");
+            let summary = document.getElementById("summary");
+            let isbn = document.getElementById("ISBN");
+            let picture = document.getElementById("picture");
+            let publisher = document.getElementById("publisher");
+            let format = document.getElementById("format");
+            let language = document.getElementById("language");
+            let authors = document.getElementById("authors");
+            let genres = document.getElementById("genres");
+            let price = document.getElementById("price");
+            let totalCopies = document.getElementById("copies");
 
-    <%--            if (!valid_name.test(name.value) || name.value === '') {--%>
-    <%--                alert("${nameTestMSG}");--%>
-    <%--                name.focus();--%>
-    <%--                name.style.background = '#f08080';--%>
-    <%--                return false;--%>
-    <%--            }--%>
-    <%--            if (!valid_email.test(email.value) || email.value === '') {--%>
-    <%--                alert("${emailTestMSG}");--%>
-    <%--                email.focus();--%>
-    <%--                email.style.background = '#f08080';--%>
-    <%--                return false;--%>
-    <%--            }--%>
-    <%--            if (!valid_login.test(login.value) || login.value === '') {--%>
-    <%--                alert("${loginTestMSG}");--%>
-    <%--                login.focus();--%>
-    <%--                login.style.background = '#f08080';--%>
-    <%--                return false;--%>
-    <%--            }--%>
-    <%--        }--%>
-    <%--    </script>--%>
+            if (empty(title) || empty(summary) || empty(isbn) || empty(picture) ||
+            empty(publisher) || empty(format) || empty(language) || empty(authors) || empty(genres)){
+                return false;
+            }
+
+            if (!validPrice.test(price.value) || price.value === '') {
+                alert("${priceTestMSG}");
+                price.focus();
+                price.style.background = '#f08080';
+                return false;
+            }
+            if (!validTotalCopies.test(totalCopies.value) || totalCopies.value === '') {
+                alert("${copiesTestMSG}");
+                totalCopies.focus();
+                totalCopies.style.background = '#f08080';
+                return false;
+            }
+        }
+        function empty(testField) {
+            if (testField.value === ''){
+                alert("${emptyFieldTestMSG}");
+                testField.focus();
+                testField.style.background = '#f08080';
+                return true;
+            }
+
+        }
+    </script>
 
 </head>
 
@@ -115,21 +134,21 @@
                         <div class="row">
                             <div class="contact-area">
                                 <div class="container">
-                                    <c:if test="${requestScope.addMediaMsg != null}">
+                                    <c:if test="${requestScope.editMediaMsg != null}">
                                         <div class="center-content">
                                             <div class="clear"></div>
                                             <br>
-                                            <h3 class="section-title"><c:out value="${addMediaMsg}"/></h3>
+                                            <h3 class="section-title"><c:out value="${editMediaMsg}"/></h3>
                                         </div>
                                     </c:if>
                                     <div class="col-md-12">
                                         <div class="contact-form bg-light margin-right">
-                                            <h2>${addMediaPage}</h2>
+                                            <h2>${editMediaPage}</h2>
                                             <span class="underline left"></span>
                                             <div class="contact-fields">
 
-                                                <form action="Controller" method="post" >
-                                                    <input type="hidden" name="command" value="add_media">
+                                                <form action="Controller" method="post" onsubmit="return validate();" >
+                                                    <input type="hidden" name="command" value="edit_media">
                                                     <input type="hidden" name="mediaId" value="${mediaDetail.mediaID}">
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6">
@@ -178,16 +197,14 @@
                                                             <div class="form-group">
                                                                 <b>${authors}</b>
                                                                 <input class="form-control" type="text" id="authors"
-                                                                       name="authors" value="<c:forEach var="item" items="${mediaDetail.authors}">${item.fullName};</c:forEach>
-                                                                 "/>
+                                                                       name="authors" value="<c:forEach var="item" items="${mediaDetail.authors}">${item.fullName};</c:forEach>"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <b>${genres}</b>
                                                                 <input class="form-control" type="text" id="genres"
-                                                                       name="genres" value="<c:forEach var="item" items="${mediaDetail.genres}">${item.genre};</c:forEach>
-                                                                "/>
+                                                                       name="genres" value="<c:forEach var="item" items="${mediaDetail.genres}">${item.genre};</c:forEach>"/>
                                                             </div>
                                                         </div>
 

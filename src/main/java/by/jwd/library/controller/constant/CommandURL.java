@@ -1,4 +1,4 @@
-package by.jwd.library.controller.constants;
+package by.jwd.library.controller.constant;
 
 public class CommandURL {
     public static final String CONTROLLER = "/Library/Controller";
@@ -13,7 +13,7 @@ public class CommandURL {
     public static final String LOGIN_FORM = CONTROLLER + "?command=login_form";
     public static final String EDIT_MEDIA_FORM = CONTROLLER + "?command=edit_media_form";
 
-    private CommandURL(){
+    private CommandURL() {
 
     }
 }

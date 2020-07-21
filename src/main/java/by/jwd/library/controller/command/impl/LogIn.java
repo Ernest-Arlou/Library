@@ -4,11 +4,11 @@ import by.jwd.library.bean.User;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
-import by.jwd.library.controller.constants.CommandURL;
-import by.jwd.library.controller.constants.RequestAttribute;
-import by.jwd.library.controller.constants.RequestParameter;
-import by.jwd.library.controller.constants.SessionAttributes;
-import by.jwd.library.controller.constants.local.LocalParameter;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.RequestAttribute;
+import by.jwd.library.controller.constant.RequestParameter;
+import by.jwd.library.controller.constant.SessionAttributes;
+import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 
@@ -18,6 +18,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LogIn implements Command {
+
+    private void loginFailRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
+        response.sendRedirect(CommandURL.LOGIN_FORM + "&" + RequestAttribute.LOGIN_FAIL_MSG
+                + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.LOGIN_FAIL_MSG));
+    }
+
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -35,13 +42,16 @@ public class LogIn implements Command {
                 response.sendRedirect(CommandURL.PROFILE);
             } else {
 
-                String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
-
-                response.sendRedirect(CommandURL.LOGIN_FORM + "&" + RequestAttribute.LOGIN_FAIL_MSG
-                        + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.LOGIN_FAIL_MSG));
+                loginFailRedirect(request, response);
 
             }
-        } catch (IOException | ServiceException e) {
+        } catch (ServiceException e) {
+            try {
+                loginFailRedirect(request, response);
+            } catch (IOException ioException) {
+                throw new CommandException(e);
+            }
+        } catch (IOException e) {
             throw new CommandException(e);
         }
     }

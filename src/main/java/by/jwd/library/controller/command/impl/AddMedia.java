@@ -6,8 +6,8 @@ import by.jwd.library.bean.MediaDetail;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.SessionCheck;
-import by.jwd.library.controller.constants.CommandURL;
-import by.jwd.library.controller.constants.RequestParameter;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.RequestParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 

@@ -27,6 +27,10 @@ public interface LibraryService {
 
     MediaDetail getMediaDetail(int mediaID) throws ServiceException;
 
+    List<DeliveryType> searchLoans(String searchStr) throws ServiceException;
+
+    List<DeliveryType> getAllLoans() throws ServiceException;
+
     List<DeliveryType> searchReservations(String searchStr) throws ServiceException;
 
     List<DeliveryType> getAllReservations() throws ServiceException;
@@ -36,6 +40,8 @@ public interface LibraryService {
     List<LoanType> getUserReservations(int userId) throws ServiceException;
 
     int addMedia(MediaDetail mediaDetail) throws ServiceException;
+
+    void editMedia(MediaDetail mediaDetail) throws ServiceException;
 
     List<LoanType> getUserLoans(int userId) throws ServiceException;
 }

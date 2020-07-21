@@ -11,13 +11,13 @@ public class Genre implements Serializable {
     private String genre;
 
     public Genre() {
-        setId(-1);
-        setGenre("NoGenre");
+        id = 1;
+        genre = "NoGenre";
     }
 
     public Genre(int id, String genre) {
-        setId(id);
-        setGenre(genre);
+        this.id = id;
+        this.genre = genre;
     }
 
     public int getId() {

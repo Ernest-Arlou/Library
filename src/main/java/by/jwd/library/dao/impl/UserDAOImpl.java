@@ -34,8 +34,6 @@ public class UserDAOImpl implements UserDAO {
     private static final String SEARCH_UNVERIFIED_USERS = "select * from users where status = 'Unverified' and login like ? or status = 'Unverified' and email like ? or status = 'Unverified' and `passport-id` like ?;";
 
 
-
-
     @Override
     public User getUserById(int userId) throws DAOException {
         return DAOFactory.getInstance().getDaoUtil().getUserById(userId);
@@ -108,7 +106,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement = connection.prepareStatement(GET_UNVERIFIED_USERS);
             resultSet = preparedStatement.executeQuery();
             List<User> users = new ArrayList<>();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 users.add(daoUtil.buildUser(resultSet));
             }
             return users;
@@ -142,7 +140,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(5, user.getName());
             preparedStatement.setString(6, user.getEmail());
             preparedStatement.setString(7, user.getPassportId());
-            preparedStatement.setInt(8,user.getUserId());
+            preparedStatement.setInt(8, user.getUserId());
             preparedStatement.executeUpdate();
 
             connection.commit();
@@ -244,7 +242,6 @@ public class UserDAOImpl implements UserDAO {
             daoUtil.closeConnection(connection);
         }
     }
-
 
 
 }

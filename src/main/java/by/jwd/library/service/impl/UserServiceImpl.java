@@ -160,7 +160,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) throws ServiceException {
-        user.setUserId(1);
         user.setRole(UserRole.USER);
         user.setStatus(UserStatus.UNVERIFIED);
 

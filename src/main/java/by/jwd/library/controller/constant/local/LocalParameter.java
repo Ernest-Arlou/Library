@@ -1,4 +1,4 @@
-package by.jwd.library.controller.constants.local;
+package by.jwd.library.controller.constant.local;
 
 public class LocalParameter {
     public static final String BUNDLE_PATH = "local/local";
@@ -20,6 +20,6 @@ public class LocalParameter {
     public static final String CANT_REDUCE_COPIES_MSG = "local.message.cantReduceCopies";
 
 
-
-    private LocalParameter(){}
+    private LocalParameter() {
+    }
 }

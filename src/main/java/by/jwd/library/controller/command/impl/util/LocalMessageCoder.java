@@ -1,6 +1,6 @@
 package by.jwd.library.controller.command.impl.util;
 
-import by.jwd.library.controller.constants.local.LocalParameter;
+import by.jwd.library.controller.constant.local.LocalParameter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -10,6 +10,9 @@ public class LocalMessageCoder {
     private static final String SPLIT_REG_EXP = "_";
     private static final String URL_CODE_PREFIX = "%";
     private static final String HEXADECIMAL_FORMAT = "%02x";
+
+    private LocalMessageCoder() {
+    }
 
     public static String getCodedLocalizedMsg(String localeStr, String parameter) {
 
@@ -35,5 +38,4 @@ public class LocalMessageCoder {
         }
         return String.valueOf(codedStr);
     }
-    private LocalMessageCoder(){}
 }

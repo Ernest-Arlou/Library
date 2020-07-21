@@ -1,8 +1,10 @@
 package by.jwd.library.controller.command.impl;
 
+import by.jwd.library.bean.DeliveryType;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.QueryCoder;
+import by.jwd.library.controller.command.impl.util.SessionCheck;
 import by.jwd.library.controller.constant.JSPPath;
 import by.jwd.library.controller.constant.RequestAttribute;
 import by.jwd.library.controller.constant.RequestParameter;
@@ -13,32 +15,35 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
-public class MediaDetail implements Command {
+public class ReturnMediaForm implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
+//        SessionCheck.librarianOrAdmin(request);
+
         request.setAttribute(RequestAttribute.LAST_COMMAND, QueryCoder.code(request.getQueryString()));
 
+        String search = request.getParameter(RequestParameter.SEARCH);
+        String deliveryMsg = request.getParameter(RequestAttribute.DELIVERY_MSG);
         try {
-
-            String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
-            request.setAttribute(RequestAttribute.LAST_PAGE, lastPage);
-
-            int mediaId = Integer.parseInt(request.getParameter(RequestParameter.MEDIA_ID));
-            by.jwd.library.bean.MediaDetail mediaDetail = ServiceFactory.getInstance().getLibraryService().getMediaDetail(mediaId);
-
-            String reservationMsg = request.getParameter(RequestAttribute.RESERVATION_MSG);
-            if (reservationMsg != null) {
-                request.setAttribute(RequestAttribute.RESERVATION_MSG, reservationMsg);
+            List<DeliveryType> deliveryTypes = null;
+            if (search != null) {
+                deliveryTypes = ServiceFactory.getInstance().getLibraryService().searchLoans(search);
+            } else {
+                deliveryTypes = ServiceFactory.getInstance().getLibraryService().getAllLoans();
             }
+            request.setAttribute(RequestAttribute.DELIVERY_RESERVATIONS, deliveryTypes);
 
-            request.setAttribute(RequestAttribute.MEDIA_DETAIL, mediaDetail);
-            request.getRequestDispatcher(JSPPath.DETAIL).forward(request, response);
-
+            if (deliveryMsg != null) {
+                request.setAttribute(RequestAttribute.DELIVERY_MSG, deliveryMsg);
+            }
+            request.getRequestDispatcher(JSPPath.RETURN_MEDIA).forward(request, response);
         } catch (ServiceException | IOException | ServletException e) {
             throw new CommandException(e);
         }
     }
+
 }

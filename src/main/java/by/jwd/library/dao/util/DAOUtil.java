@@ -10,15 +10,17 @@ import java.sql.SQLException;
 
 public interface DAOUtil {
 
-     User getUserById(int userId) throws DAOException;
+    User getUserById(Connection connection, int userId) throws DAOException;
 
-     User getUserFromPreparedStatement(PreparedStatement preparedStatement) throws SQLException;
+    User getUserById(int userId) throws DAOException;
 
-     User buildUser(ResultSet resultSet) throws SQLException;
+    User getUserFromPreparedStatement(PreparedStatement preparedStatement) throws SQLException;
 
-     void closeConnection(Connection connection);
+    User buildUser(ResultSet resultSet) throws SQLException;
 
-     void closePreparedStatement(PreparedStatement preparedStatement);
+    void closeConnection(Connection connection);
 
-     void closeResultSet(ResultSet resultSet);
+    void closePreparedStatement(PreparedStatement preparedStatement);
+
+    void closeResultSet(ResultSet resultSet);
 }

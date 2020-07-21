@@ -1,35 +1,48 @@
 package by.jwd.library;
 
-import by.jwd.library.bean.Author;
-import by.jwd.library.bean.MediaDetail;
-import by.jwd.library.controller.constants.local.LocalParameter;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
-import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 
 public class Main {
 
 
-
-
     public static void main(String[] args) throws DAOException, ServiceException {
-        ConnectionPoolManager.getInstance().initConnectionPool();
+//        ConnectionPoolManager.getInstance().initConnectionPool();
 
-        String authors = "1;2;";
+//        double a = 0.1232321412314124;
+//        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+//        String str = decimalFormat.format(a);
+//        System.out.println(str);
+//        a = Double.parseDouble(str);
 
-        String[] authorsMas = authors.split(";");
-        for (String str :
-                authorsMas) {
-            System.out.println("A " + str+"|");
-        }
+
+        double input = 3.14159265359;
+        System.out.println("double : " + input);
+
+        BigDecimal bd = new BigDecimal(input).setScale(2, RoundingMode.HALF_UP);
+        double salary = bd.doubleValue();
+
+        System.out.println("salary : " + salary);
+
+
+
+
+
+
+
+
+
+
 
     }
 }

@@ -1,9 +1,9 @@
 package by.jwd.library.controller.command.impl;
 
-import by.jwd.library.controller.constants.CommandURL;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
-import by.jwd.library.controller.constants.RequestParameter;
+import by.jwd.library.controller.constant.CommandURL;
+import by.jwd.library.controller.constant.RequestParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 
@@ -19,7 +19,7 @@ public class DeleteReservation implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
         if (request.getParameter(RequestParameter.RESERVATION_ID) == null ||
-        request.getParameter(RequestParameter.FROM ) == null){
+                request.getParameter(RequestParameter.FROM) == null) {
             throw new CommandException("No parameter");
         }
 
@@ -28,9 +28,9 @@ public class DeleteReservation implements Command {
 
         try {
             ServiceFactory.getInstance().getLibraryService().deleteReservation(reservationId);
-            if (from.equalsIgnoreCase(FROM_DELIVERY)){
+            if (from.equalsIgnoreCase(FROM_DELIVERY)) {
                 response.sendRedirect(CommandURL.DELIVERY);
-            }else if (from.equalsIgnoreCase(FROM_PROFILE)){
+            } else if (from.equalsIgnoreCase(FROM_PROFILE)) {
                 response.sendRedirect(CommandURL.PROFILE);
             }
 
