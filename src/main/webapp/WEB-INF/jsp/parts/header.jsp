@@ -91,10 +91,6 @@
                                     <a data-toggle="dropdown" class="dropdown-toggle disabled"
                                        href="${pageContext.request.contextPath}/Controller?command=page&page=1">${booksNMedia}</a>
                                 </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/Controller?command=return_media_form">${returnMedia}</a>
-                                </li>
-
 
 
                                 <c:if test="${sessionScope.role == 'librarian' || sessionScope.role == 'admin'}">
@@ -105,6 +101,9 @@
                                     <li class="dropdown">
                                         <a data-toggle="dropdown" class="dropdown-toggle disabled"
                                            href="${pageContext.request.contextPath}/Controller?command=delivery">${delivery}</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/Controller?command=return_media_form">${returnMedia}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${sessionScope.role == 'admin'}">
@@ -170,14 +169,15 @@
                             </li>
 
 
-
-
                             <c:if test="${sessionScope.role == 'librarian' || sessionScope.role == 'admin'}">
                                 <li class="dropdown">
                                     <a href="${pageContext.request.contextPath}/Controller?command=user_verification">${userVerification}</a>
                                 </li>
                                 <li class="dropdown">
                                     <a href="${pageContext.request.contextPath}/Controller?command=delivery">${delivery}</a>
+                                </li>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/Controller?command=return_media_form">${returnMedia}</a>
                                 </li>
                             </c:if>
                             <c:if test="${sessionScope.role == 'admin'}">

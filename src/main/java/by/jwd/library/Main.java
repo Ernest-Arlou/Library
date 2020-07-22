@@ -17,22 +17,13 @@ public class Main {
 
 
     public static void main(String[] args) throws DAOException, ServiceException {
-//        ConnectionPoolManager.getInstance().initConnectionPool();
-
-//        double a = 0.1232321412314124;
-//        DecimalFormat decimalFormat = new DecimalFormat("0.00");
-//        String str = decimalFormat.format(a);
-//        System.out.println(str);
-//        a = Double.parseDouble(str);
+        ConnectionPoolManager.getInstance().initConnectionPool();
 
 
-        double input = 3.14159265359;
-        System.out.println("double : " + input);
+        System.out.println(ServiceFactory.getInstance().getLibraryService().searchLoans("11111111111111"));
 
-        BigDecimal bd = new BigDecimal(input).setScale(2, RoundingMode.HALF_UP);
-        double salary = bd.doubleValue();
 
-        System.out.println("salary : " + salary);
+
 
 
 

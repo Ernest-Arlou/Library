@@ -205,10 +205,41 @@ public class LibraryDAOImpl implements LibraryDAO {
     private static final String UPDATE_RESERVATION_STATUS =
             "update reservations set status = ? where `reservation-id` = ?;";
 
+    private static final String UPDATE_LOAN_STATUS =
+            "update loans set status = ? where `loan-id` = ?;";
+
     private static final String UPDATE_MEDIA_STATUS = "update media set status = ? where `media-id` = ?;";
 
     private static final int INCORRECT_ID = -1;
 
+    @Override
+    public void returnMedia(int copyId, int loanId) throws DAOException {
+        Connection connection = null;
+        try {
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection.setAutoCommit(false);
+
+            statusUpdate(connection, UPDATE_COPY_STATUS, STATUS_ACTIVE, copyId);
+
+            statusUpdate(connection, UPDATE_LOAN_STATUS, STATUS_DELETED, loanId);
+
+            connection.commit();
+            connection.setAutoCommit(true);
+
+
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                throw new DAOException("Impossible to rollback method returnMedia", e);
+            }
+            throw new DAOException("SQLException in method returnMedia", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeConnection(connection);
+        }
+    }
 
     private List<LoanType> getLoanTypesForMedia(Connection connection, int mediaId, String query, String type) throws DAOException {
         PreparedStatement preparedStatement = null;

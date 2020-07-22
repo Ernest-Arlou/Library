@@ -12,6 +12,8 @@ public interface LibraryDAO {
 
     void deleteReservation(int reservationId) throws DAOException;
 
+    void returnMedia(int copyId, int loanId) throws DAOException;
+
     List<LoanType> getLoansForMedia(int mediaId) throws DAOException;
 
     List<LoanType> getReservationsForMedia(int mediaId) throws DAOException;

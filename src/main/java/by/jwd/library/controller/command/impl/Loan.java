@@ -28,10 +28,11 @@ public class Loan implements Command {
             int userId = Integer.parseInt(request.getParameter(RequestParameter.USER_ID));
             int copyId = Integer.parseInt(request.getParameter(RequestParameter.COPY_ID));
             int reservationId = Integer.parseInt(request.getParameter(RequestParameter.RESERVATION_ID));
+            int mediaId = Integer.parseInt(request.getParameter(RequestParameter.MEDIA_ID));
 
             String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
 
-            ServiceFactory.getInstance().getLibraryService().giveOutCopy(userId, copyId, reservationId);
+            ServiceFactory.getInstance().getLibraryService().giveOutCopy(userId, copyId, reservationId, mediaId);
 
             response.sendRedirect(CommandURL.DELIVERY + "&" + RequestAttribute.DELIVERY_MSG
                     + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.GIVE_OUT_SUCCESS_MSG));

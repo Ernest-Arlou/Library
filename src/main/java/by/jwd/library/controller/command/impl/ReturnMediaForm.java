@@ -22,12 +22,12 @@ public class ReturnMediaForm implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
-//        SessionCheck.librarianOrAdmin(request);
+        SessionCheck.librarianOrAdmin(request);
 
         request.setAttribute(RequestAttribute.LAST_COMMAND, QueryCoder.code(request.getQueryString()));
 
         String search = request.getParameter(RequestParameter.SEARCH);
-        String deliveryMsg = request.getParameter(RequestAttribute.DELIVERY_MSG);
+        String returnMediaMsg = request.getParameter(RequestAttribute.RETURN_MEDIA_MSG);
         try {
             List<DeliveryType> deliveryTypes = null;
             if (search != null) {
@@ -37,8 +37,8 @@ public class ReturnMediaForm implements Command {
             }
             request.setAttribute(RequestAttribute.DELIVERY_RESERVATIONS, deliveryTypes);
 
-            if (deliveryMsg != null) {
-                request.setAttribute(RequestAttribute.DELIVERY_MSG, deliveryMsg);
+            if (returnMediaMsg != null) {
+                request.setAttribute(RequestAttribute.RETURN_MEDIA_MSG, returnMediaMsg);
             }
             request.getRequestDispatcher(JSPPath.RETURN_MEDIA).forward(request, response);
         } catch (ServiceException | IOException | ServletException e) {

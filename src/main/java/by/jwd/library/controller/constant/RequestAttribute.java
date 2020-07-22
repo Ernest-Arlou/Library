@@ -19,6 +19,7 @@ public class RequestAttribute {
     public final static String LAST_COMMAND = "lastCommand";
     public final static String LAST_PAGE = "lastPage";
     public final static String EDIT_MEDIA_MSG = "editMediaMsg";
+    public final static String RETURN_MEDIA_MSG = "returnMediaMsg";
 
 
     private RequestAttribute() {

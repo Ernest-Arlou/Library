@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface LibraryService {
 
-    void giveOutCopy(int userId, int copyId, int reservationId) throws ServiceException;
+    void returnMedia(int copyId, int loanId) throws ServiceException;
+
+    void giveOutCopy(int userId, int copyId, int reservationId, int mediaId) throws ServiceException;
 
     void deleteReservation(int reservationId) throws ServiceException;
 

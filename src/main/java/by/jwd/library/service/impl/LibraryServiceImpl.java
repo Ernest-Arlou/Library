@@ -15,7 +15,6 @@ import by.jwd.library.service.validation.factory.ValidationFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -27,23 +26,50 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class LibraryServiceImpl implements LibraryService {
     private final static int RESERVATION_DURATION_DAYS = 3;
     private final static int LOAN_DURATION_DAYS = 20;
+    private final static int DURATION_ONE_DAY = 1;
     private final static int MAX_LOANS = 3;
-    private final static double FEE_PER_DAY = 0.008;
+    private final static double FEE_PER_DAY = 0.005;
     private final static int DIGITS = 2;
     private final static String NO_RESTRICTION_FIELD = "NoRestriction";
+    private final static String READING_ROOM_RESTRICTION = "reading room only";
 
     @Override
-    public void giveOutCopy(int userId, int copyId, int reservationId) throws ServiceException {
+    public void returnMedia(int copyId, int loanId) throws ServiceException {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
-        if ((!libraryValidator.validateId(userId)) ||
-                (!libraryValidator.validateId(copyId)) ||
-                (!libraryValidator.validateId(reservationId))) {
+        if ((!libraryValidator.validateId(copyId)) ||
+                (!libraryValidator.validateId(loanId))) {
             throw new ServiceException("Invalid parameters");
         }
 
         try {
-            DAOFactory.getInstance().getLibraryDAO().giveOutCopy(userId, copyId, reservationId, LOAN_DURATION_DAYS);
+            DAOFactory.getInstance().getLibraryDAO().returnMedia(copyId, loanId);
+        } catch (DAOException e) {
+            throw new ServiceException("Error during media give out", e);
+        }
+
+    }
+
+    @Override
+    public void giveOutCopy(int userId, int copyId, int reservationId, int mediaId) throws ServiceException {
+
+        LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
+        if ((!libraryValidator.validateId(userId)) ||
+                (!libraryValidator.validateId(copyId)) ||
+                (!libraryValidator.validateId(reservationId)) ||
+                (!libraryValidator.validateId(mediaId))) {
+            throw new ServiceException("Invalid parameters");
+        }
+
+        try {
+            MediaDetail mediaDetail = DAOFactory.getInstance().getLibraryDAO().getMediaDetail(mediaId);
+            int duration;
+            if (mediaDetail.getRestriction().equals(READING_ROOM_RESTRICTION)){
+                duration = DURATION_ONE_DAY;
+            }else {
+                duration = LOAN_DURATION_DAYS;
+            }
+            DAOFactory.getInstance().getLibraryDAO().giveOutCopy(userId, copyId, reservationId, duration);
         } catch (DAOException e) {
             throw new ServiceException("Error during media give out", e);
         }
@@ -203,26 +229,11 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public List<DeliveryType> searchLoans(String searchStr) throws ServiceException {
         try {
-            return DAOFactory.getInstance().getLibraryDAO().searchLoans(searchStr);
+            List<DeliveryType> loans = DAOFactory.getInstance().getLibraryDAO().searchLoans(searchStr);
+            calculateLoanPrice(loans);
+            return loans;
         } catch (DAOException e) {
             throw new ServiceException("Error during reservations load", e);
-        }
-    }
-
-    private void calculateLoanPrice(List<DeliveryType> loans){
-        for (DeliveryType deliveryType :
-                loans) {
-            LocalDate startDate = deliveryType.getLoanType().getStartDate();
-            LocalDate now = LocalDate.now();
-            long duration = DAYS.between(startDate,now);
-            double priceOfMedia = deliveryType.getLoanType().getMediaDetail().getPrice();
-            double priceForLoan = duration * FEE_PER_DAY * priceOfMedia;
-
-            BigDecimal bd = new BigDecimal(priceForLoan).setScale(DIGITS, RoundingMode.HALF_UP);
-            priceForLoan = bd.doubleValue();
-
-
-            deliveryType.getLoanType().getMediaDetail().setPrice(priceForLoan);
         }
     }
 
@@ -333,6 +344,23 @@ public class LibraryServiceImpl implements LibraryService {
             return DAOFactory.getInstance().getLibraryDAO().getUserLoans(userId);
         } catch (DAOException e) {
             throw new ServiceException("Error during user loans load", e);
+        }
+    }
+
+    private void calculateLoanPrice(List<DeliveryType> loans){
+        for (DeliveryType deliveryType :
+                loans) {
+            LocalDate startDate = deliveryType.getLoanType().getStartDate();
+            LocalDate now = LocalDate.now();
+            long duration = DAYS.between(startDate,now);
+            double priceOfMedia = deliveryType.getLoanType().getMediaDetail().getPrice();
+            double priceForLoan = duration * FEE_PER_DAY * priceOfMedia;
+
+            BigDecimal bd = new BigDecimal(priceForLoan).setScale(DIGITS, RoundingMode.HALF_UP);
+            priceForLoan = bd.doubleValue();
+
+
+            deliveryType.getLoanType().getMediaDetail().setPrice(priceForLoan);
         }
     }
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags"  %>
 
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="local/local" var="loc" />
@@ -155,13 +156,13 @@
                                                                     <td data-title="Price" class="product-price"
                                                                         data-th="Pickup Location ">
                                                                 <span class="bt-content">
-                                                                            <p>${reservation.startDate}</p>
+                                                                    <p><tag:dateformater date="${reservation.startDate}" local="${sessionScope.local}"></tag:dateformater></p>
                                                                 </span>
                                                                     </td>
                                                                     <td data-title="Price" class="product-price"
                                                                         data-th="Pickup Location ">
                                                                 <span class="bt-content">
-                                                                            <p>${reservation.endDate}</p>
+                                                                    <p><tag:dateformater date="${reservation.endDate}" local="${sessionScope.local}"></tag:dateformater></p>
                                                                 </span>
                                                                     </td>
                                                                     <td data-title="Price" class="product-price"
@@ -217,13 +218,13 @@
                                                                 <td data-title="Price" class="product-price"
                                                                     data-th="Pickup Location ">
                                                                 <span class="bt-content">
-                                                                            <p>${loan.startDate}</p>
+                                                                    <p><tag:dateformater date="${loan.startDate}" local="${sessionScope.local}"></tag:dateformater></p>
                                                                 </span>
                                                                 </td>
                                                                 <td data-title="Price" class="product-price"
                                                                     data-th="Pickup Location ">
                                                                 <span class="bt-content">
-                                                                            <p>${loan.endDate}</p>
+                                                                    <p><tag:dateformater date="${loan.endDate}" local="${sessionScope.local}"></tag:dateformater></p>
                                                                 </span>
                                                                 </td>
                                                             </tr>

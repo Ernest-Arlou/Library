@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags"  %>
 
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="local/local" var="loc" />
@@ -151,11 +152,11 @@
                                                                  <span class="product-detail">
                                                                      <div>
                                                                          <div><strong>${startDate}: </strong></div>
-                                                                         <div>${item.loanType.startDate}</div>
+                                                                         <div><tag:dateformater date="${item.loanType.startDate}" local="${sessionScope.local}"></tag:dateformater></div>
                                                                      </div>
                                                                      <div>
                                                                          <div><strong>${endDate}: </strong></div>
-                                                                         <div> ${item.loanType.endDate}</div>
+                                                                         <div><tag:dateformater date="${item.loanType.endDate}" local="${sessionScope.local}"></tag:dateformater></div>
                                                                  </div>
                                                                  </span>
                                                                 </td>
@@ -174,7 +175,7 @@
                                                                 </td>
                                                                 <td data-title="Price" class="product-price"
                                                                     data-th="Pickup Location ">
-                                                                    <div> <a href="${pageContext.request.contextPath}/Controller?command=loan&reservationId=${item.loanType.loanTypeId}&userId=${item.user.userId}&copyId=${item.loanType.copyId}"
+                                                                    <div> <a href="${pageContext.request.contextPath}/Controller?command=loan&reservationId=${item.loanType.loanTypeId}&userId=${item.user.userId}&copyId=${item.loanType.copyId}&mediaId=${item.loanType.mediaDetail.mediaID}"
                                                                              class="btn btn-dark-gray">${giveOut}</a></div>
                                                                     <div><br></div>
                                                                     <div><a onClick="return window.confirm('${deleteConfirmation}');"

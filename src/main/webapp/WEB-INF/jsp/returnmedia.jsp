@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags"  %>
 
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="local/local" var="loc" />
@@ -81,7 +82,7 @@
                                     <div class="form-group">
                                         <input class="form-control" placeholder="${searchByPassportId}"
                                                id="keywords" name="search" type="text">
-                                        <input type="hidden" name="command" value="delivery">
+                                        <input type="hidden" name="command" value="return_media_form">
                                     </div>
                                 </div>
 
@@ -94,11 +95,11 @@
                         </div>
                         <div class="clear"></div>
                     </section>
-                    <c:if test="${requestScope.deliveryMsg != null}">
+                    <c:if test="${requestScope.returnMediaMsg != null}">
                         <div class="center-content">
                             <div class="clear"></div>
                             <br>
-                            <h3 class="section-title"><c:out value="${deliveryMsg}"/></h3>
+                            <h3 class="section-title"><c:out value="${returnMediaMsg}"/></h3>
                         </div>
                     </c:if>
                     <div class="center-content">
@@ -154,11 +155,11 @@
                                                                  <span class="product-detail">
                                                                      <div>
                                                                          <div><strong>${startDate}: </strong></div>
-                                                                         <div>${item.loanType.startDate}</div>
+                                                                         <div><tag:dateformater date="${item.loanType.startDate}" local="${sessionScope.local}"></tag:dateformater></div>
                                                                      </div>
                                                                      <div>
                                                                          <div><strong>${endDate}: </strong></div>
-                                                                         <div> ${item.loanType.endDate}</div>
+                                                                         <div><tag:dateformater date="${item.loanType.endDate}" local="${sessionScope.local}"></tag:dateformater></div>
                                                                  </div>
                                                                  </span>
                                                         </td>
@@ -185,7 +186,7 @@
                                                         </td>
                                                         <td data-title="Price" class="product-price"
                                                             data-th="Pickup Location ">
-                                                            <div> <a href="${pageContext.request.contextPath}/Controller?command=return_media&loanId=${item.loanType.loanTypeId}&userId=${item.user.userId}&copyId=${item.loanType.copyId}"
+                                                            <div> <a href="${pageContext.request.contextPath}/Controller?command=return_media&loanId=${item.loanType.loanTypeId}&copyId=${item.loanType.copyId}"
                                                                      class="btn btn-dark-gray">${close}</a></div>
                                                             <div><br></div>
                                                         </td>

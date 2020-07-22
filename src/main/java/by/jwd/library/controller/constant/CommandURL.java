@@ -12,6 +12,7 @@ public class CommandURL {
     public static final String REGISTRATION_FORM = CONTROLLER + "?command=registration_form";
     public static final String LOGIN_FORM = CONTROLLER + "?command=login_form";
     public static final String EDIT_MEDIA_FORM = CONTROLLER + "?command=edit_media_form";
+    public static final String RETURN_MEDIA_FORM = CONTROLLER + "?command=return_media_form";
 
     private CommandURL() {
 

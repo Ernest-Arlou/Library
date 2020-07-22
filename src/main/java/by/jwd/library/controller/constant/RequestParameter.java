@@ -5,6 +5,7 @@ public class RequestParameter {
     public final static String USER_ID = "userId";
     public final static String PASSPORT_ID = "passportId";
     public final static String RESERVATION_ID = "reservationId";
+    public final static String LOAN_ID = "loanId";
     public final static String FROM = "from";
     public final static String SEARCH = "search";
     public final static String NAME = "name";
