@@ -24,13 +24,6 @@ public class Main {
 //        ServiceFactory.getInstance().getLibraryService().closeOutdatedReservations();
 
 
-        System.out.println(BCrypt.hash("Password"));
-        System.out.println(BCrypt.hash("Password1"));
-        System.out.println(BCrypt.hash("Password2"));
-        System.out.println(BCrypt.hash("Password3"));
-        System.out.println(BCrypt.hash("Password4"));
-
-
         LocalDateTime localDateTime = LocalDateTime.now();
         logger.debug("TEST {}", localDateTime);
 
