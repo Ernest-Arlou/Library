@@ -25,20 +25,23 @@ public class ChangeLocale implements Command {
         try {
             if (lastCommand == null || lastCommand.isEmpty()) {
                 response.sendRedirect(CommandURL.CONTROLLER);
-            } else {
-                String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
-                if (lastPage == null || lastPage.isEmpty()) {
-                    response.sendRedirect(CommandURL.CONTROLLER + "?" + lastCommand);
-                } else {
-                    lastCommand = lastCommand.substring(0, lastCommand.indexOf(RequestParameter.LAST_PAGE));
-                    response.sendRedirect(CommandURL.CONTROLLER + "?" + lastCommand
-                            + "&" + RequestAttribute.LAST_PAGE + "=" + QueryCoder.code(
-                            request.getParameter(RequestParameter.LAST_PAGE) + "&" + RequestParameter.PAGE + "=" + request.getParameter(RequestParameter.PAGE) +
-                                    "&" + RequestParameter.SEARCH + "=" + request.getParameter(RequestParameter.SEARCH)));
+                return;
+            }
 
-                }
+            String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
+
+            if (lastPage == null || lastPage.isEmpty()) {
+                response.sendRedirect(CommandURL.CONTROLLER + "?" + lastCommand);
+            } else {
+                lastCommand = lastCommand.substring(0, lastCommand.indexOf(RequestParameter.LAST_PAGE));
+                response.sendRedirect(CommandURL.CONTROLLER + "?" + lastCommand
+                        + "&" + RequestAttribute.LAST_PAGE + "="
+                        + QueryCoder.code(
+                        request.getParameter(RequestParameter.LAST_PAGE) + "&" + RequestParameter.PAGE + "=" + request.getParameter(RequestParameter.PAGE) +
+                                "&" + RequestParameter.SEARCH + "=" + request.getParameter(RequestParameter.SEARCH)));
 
             }
+
 
         } catch (IOException e) {
             throw new CommandException(e);

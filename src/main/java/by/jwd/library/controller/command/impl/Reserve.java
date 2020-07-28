@@ -38,41 +38,41 @@ public class Reserve implements Command {
         LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
         try {
 
-            if (lastCommand == null || lastCommand.isEmpty()) {
+
+            String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
+            if ((lastCommand == null || lastCommand.isEmpty()) || lastPage == null || lastPage.isEmpty()) {
                 mediaDetailCallPoint = CommandURL.MEDIA_DETAIL + "&" + RequestParameter.MEDIA_ID + "=" + mediaId;
             } else {
-                String lastPage = request.getParameter(RequestParameter.LAST_PAGE);
-                if (lastPage == null || lastPage.isEmpty()) {
-                    mediaDetailCallPoint = CommandURL.MEDIA_DETAIL + "&" + RequestParameter.MEDIA_ID + "=" + mediaId;
-                } else {
-                    lastCommand = lastCommand.substring(0, lastCommand.indexOf(RequestParameter.LAST_PAGE));
-                    mediaDetailCallPoint = CommandURL.CONTROLLER + "?" + lastCommand
-                            + "&" + RequestAttribute.LAST_PAGE + "=" + QueryCoder.code(
-                            request.getParameter(RequestParameter.LAST_PAGE) + "&" + RequestParameter.PAGE + "=" + request.getParameter(RequestParameter.PAGE) +
-                                    "&" + RequestParameter.SEARCH + "=" + request.getParameter(RequestParameter.SEARCH));
-
-                }
+                lastCommand = lastCommand.substring(0, lastCommand.indexOf(RequestParameter.LAST_PAGE));
+                mediaDetailCallPoint = CommandURL.CONTROLLER + "?" + lastCommand
+                        + "&" + RequestAttribute.LAST_PAGE + "=" +
+                        QueryCoder.code(request.getParameter(RequestParameter.LAST_PAGE) + "&" + RequestParameter.PAGE + "="
+                                + request.getParameter(RequestParameter.PAGE) + "&" + RequestParameter.SEARCH + "="
+                                + request.getParameter(RequestParameter.SEARCH));
             }
+
 
             if (ServiceFactory.getInstance().getUserService().checkUnverified(userId)) {
-
                 response.sendRedirect(mediaDetailCallPoint + "&" + RequestAttribute.RESERVATION_MSG + "="
                         + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.UNVERIFIED_USER_MSG));
-            } else if (!libraryService.canReserve(userId)) {
+                return;
+            }
+            if (!libraryService.canReserve(userId)) {
                 response.sendRedirect(mediaDetailCallPoint + "&" + RequestAttribute.RESERVATION_MSG + "="
                         + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.RESERVATION_MAX_LIMIT_MSG));
-
-            } else if (libraryService.userReservedOrLoanedMedia(userId, mediaId)) {
+                return;
+            }
+            if (libraryService.userReservedOrLoanedMedia(userId, mediaId)) {
                 response.sendRedirect(mediaDetailCallPoint + "&" + RequestAttribute.RESERVATION_MSG + "="
                         + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.RESERVATION_FORBIDDEN_MSG));
-
-            } else {
-                libraryService.reserveMedia(userId, mediaId);
-
-                response.sendRedirect(mediaDetailCallPoint + "&" + RequestAttribute.RESERVATION_MSG + "="
-                        + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.RESERVATION_SUCCESS_MSG));
-
+                return;
             }
+
+            libraryService.reserveMedia(userId, mediaId);
+
+            response.sendRedirect(mediaDetailCallPoint + "&" + RequestAttribute.RESERVATION_MSG + "="
+                    + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.RESERVATION_SUCCESS_MSG));
+
 
         } catch (IOException | ServiceException e) {
             throw new CommandException(e);

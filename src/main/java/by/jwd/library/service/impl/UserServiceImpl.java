@@ -6,6 +6,7 @@ import by.jwd.library.dao.UserDAO;
 import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
+import by.jwd.library.service.util.BCrypt;
 import by.jwd.library.service.validation.UserValidator;
 import by.jwd.library.service.validation.factory.ValidationFactory;
 import by.jwd.library.util.UserRole;
@@ -16,6 +17,28 @@ import java.util.Set;
 
 
 public class UserServiceImpl implements UserService {
+
+    @Override
+    public synchronized boolean changePassword(int userId, String oldPass, String newPass) throws ServiceException {
+
+        UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
+        if (!userValidator.validateUserId(userId) ||
+                !userValidator.validatePassword(oldPass) ||
+                !userValidator.validatePassword(newPass)) {
+            throw new ServiceException("Invalid parameters");
+        }
+
+        User user = getUserById(userId);
+
+        if (passIsSame(user, oldPass)) {
+            user.setPassword(BCrypt.hash(newPass));
+            editUser(user);
+            return true;
+        }
+
+        return false;
+
+    }
 
     @Override
     public User getUserByLogin(String login) throws ServiceException {
@@ -59,6 +82,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private boolean passIsSame(User user, String password) {
+        if (user == null) {
+            return false;
+        }
+
+        if (BCrypt.verifyHash(password, user.getPassword())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public User login(String login, String password) throws ServiceException {
@@ -68,15 +102,18 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Invalid parameters");
         }
 
-
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
-        User user = null;
         try {
-            user = userDAO.getUserByLogin(login, password);
+            User user = userDAO.getUserByLogin(login);
+            if (passIsSame(user, password)) {
+                return user;
+            } else {
+                return null;
+            }
+
         } catch (DAOException e) {
             throw new ServiceException("Error in login", e);
         }
-        return user;
     }
 
     @Override
@@ -145,7 +182,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUser(User user) throws ServiceException {
+    public synchronized void editUser(User user) throws ServiceException {
         Set<String> validate = ValidationFactory.getInstance().getUserValidator().validate(user);
         if (!validate.isEmpty()) {
             throw new ServiceException("Invalid parameters");
@@ -159,23 +196,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) throws ServiceException {
+    public synchronized void register(User user) throws ServiceException {
         user.setRole(UserRole.USER);
         user.setStatus(UserStatus.UNVERIFIED);
 
-        Set<String> validate = ValidationFactory.getInstance().getUserValidator().validate(user);
-        if (!validate.isEmpty()) {
+        UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
+        Set<String> validate = userValidator.validate(user);
+        if (!validate.isEmpty() || !userValidator.validatePassword(user.getPassword())) {
             throw new ServiceException("Invalid parameters");
         }
 
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         try {
-            synchronized (this) {
-                if (loginExists(user.getLogin()) || emailExists(user.getEmail()) || passportIdExists(user.getPassportId())) {
-                    throw new ServiceException("User exists");
-                }
-                userDAO.addUser(user);
+            if (loginExists(user.getLogin()) || emailExists(user.getEmail()) || passportIdExists(user.getPassportId())) {
+                throw new ServiceException("User exists");
             }
+            user.setPassword(BCrypt.hash(user.getPassword()));
+            userDAO.addUser(user);
+
         } catch (DAOException e) {
             throw new ServiceException("Error in registration", e);
         }
@@ -183,7 +221,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassportId(int userId, String passportId) throws ServiceException {
+    public synchronized void changePassportId(int userId, String passportId) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
 
         if (!userValidator.validateUserId(userId) ||
@@ -210,7 +248,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void verifyUser(int userId) throws ServiceException {
+    public synchronized void verifyUser(int userId) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateUserId(userId)) {
             throw new ServiceException("Invalid parameters");

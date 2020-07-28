@@ -42,24 +42,26 @@ public class Registration implements Command {
 
         try {
             if (userService.emailExists(email)) {
-
                 response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_FAIL_MSG
                         + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.EMAIL_EXISTS_MSG));
-
-            } else if (userService.loginExists(login)) {
+                return;
+            }
+            if (userService.loginExists(login)) {
                 response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_FAIL_MSG
                         + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.LOGIN_EXISTS_MSG));
-
-            } else if (userService.passportIdExists(passportId)) {
+                return;
+            }
+            if (userService.passportIdExists(passportId)) {
                 response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_FAIL_MSG
                         + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.PASSPORT_ID_EXISTS_MSG));
-
-            } else {
-                ServiceFactory.getInstance().getUserService().register(user);
-
-                response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_SUCCESS_MSG
-                        + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.REGISTRATION_SUCCESS_MSG));
+                return;
             }
+
+            ServiceFactory.getInstance().getUserService().register(user);
+
+            response.sendRedirect(CommandURL.REGISTRATION_FORM + "&" + RequestAttribute.REGISTRATION_SUCCESS_MSG
+                    + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.REGISTRATION_SUCCESS_MSG));
+
 
         } catch (IOException | ServiceException e) {
             throw new CommandException(e);

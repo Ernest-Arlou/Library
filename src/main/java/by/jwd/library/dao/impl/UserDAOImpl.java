@@ -221,27 +221,4 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    @Override
-    public User getUserByLogin(String login, String password) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
-        try {
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
-            preparedStatement = connection.prepareStatement(GET_USER_BY_LOG_AND_PASS);
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            return daoUtil.getUserFromPreparedStatement(preparedStatement);
-        } catch (SQLException e) {
-            throw new DAOException("SQL error", e);
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("ConnectionPool error", e);
-        } finally {
-            daoUtil.closePreparedStatement(preparedStatement);
-            daoUtil.closeConnection(connection);
-        }
-    }
-
-
 }

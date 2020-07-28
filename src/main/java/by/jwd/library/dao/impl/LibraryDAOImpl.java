@@ -1,7 +1,6 @@
 package by.jwd.library.dao.impl;
 
 import by.jwd.library.bean.*;
-import by.jwd.library.controller.command.Command;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.LibraryDAO;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
@@ -13,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,10 +168,6 @@ public class LibraryDAOImpl implements LibraryDAO {
     private static final String DELETE_AUTHORS_FROM_MEDIA = "delete  from `media-have-authors` where `media-id` = ?;";
     private static final String DELETE_GENRES_FROM_MEDIA = "delete from `media-have-genres` where `media-id` = ?;";
 
-
-//    private static final String DELETE_AUTHORS_FROM_MEDIA = "update `media-have-authors` set status = 'Deleted' where `media-id` = ?;";
-//    private static final String DELETE_GENRES_FROM_MEDIA = "update `media-have-genres` set status = 'Deleted' where `media-id` = ?;";
-
     private static final String ADD_GENRE_TO_MEDIA = "insert into `media-have-genres` (`media-id`, `genre-id`) values (?,?); ";
 
     private static final String ADD_MEDIA =
@@ -211,6 +207,46 @@ public class LibraryDAOImpl implements LibraryDAO {
     private static final String UPDATE_MEDIA_STATUS = "update media set status = ? where `media-id` = ?;";
 
     private static final int INCORRECT_ID = -1;
+
+
+    @Override
+    public void closeOutdatedReservations() throws DAOException {
+        Connection connection = null;
+        try {
+            List<DeliveryType> reservations = getAllReservations();
+            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection.setAutoCommit(false);
+
+            for (DeliveryType deliveryType :
+                    reservations) {
+                LoanType reservation = deliveryType.getLoanType();
+                LocalDate startDate = reservation.getStartDate();
+                LocalDate now = LocalDate.now();
+                int duration = reservation.getDuration();
+                LocalDate endDate = startDate.plusDays(duration);
+                if (now.isAfter(endDate)){
+                    deleteReservation(connection,reservation.getLoanTypeId());
+                    statusUpdate(connection, UPDATE_COPY_STATUS, STATUS_ACTIVE, reservation.getCopyId());
+                }
+            }
+
+            connection.commit();
+            connection.setAutoCommit(true);
+
+
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException sqlException) {
+                throw new DAOException("Impossible to rollback method closeOutdatedReservations", e);
+            }
+            throw new DAOException("SQLException in method closeOutdatedReservations", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("ConnectionPool error", e);
+        } finally {
+            DAOFactory.getInstance().getDaoUtil().closeConnection(connection);
+        }
+    }
 
     @Override
     public void returnMedia(int copyId, int loanId) throws DAOException {
@@ -843,7 +879,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         return getLoans(searchStr);
     }
 
-    private List<DeliveryType> getLoans (String searchStr) throws DAOException {
+    private List<DeliveryType> getLoans(String searchStr) throws DAOException {
         Connection connection = null;
         PreparedStatement loanTypeStatement = null;
         ResultSet loanTypeSet = null;

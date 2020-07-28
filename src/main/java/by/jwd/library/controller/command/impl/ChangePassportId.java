@@ -28,8 +28,6 @@ public class ChangePassportId implements Command {
         String passportId = request.getParameter(RequestParameter.PASSPORT_ID);
         String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
 
-        System.out.println(localeStr);
-
         UserService userService = ServiceFactory.getInstance().getUserService();
         try {
             if (userService.passportIdExists(passportId)) {
@@ -38,6 +36,7 @@ public class ChangePassportId implements Command {
                         + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.PASSPORT_ID_EXISTS_MSG));
 
             } else {
+
                 userService.changePassportId(userId, passportId);
 
                 response.sendRedirect(CommandURL.USER_VERIFICATION + "&" + RequestAttribute.VERIFICATION_MSG

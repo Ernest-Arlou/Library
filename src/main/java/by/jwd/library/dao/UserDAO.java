@@ -22,6 +22,4 @@ public interface UserDAO {
 
     void addUser(User user) throws DAOException;
 
-
-    User getUserByLogin(String login, String password) throws DAOException;
 }

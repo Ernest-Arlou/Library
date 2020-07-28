@@ -35,6 +35,7 @@ public class LogIn implements Command {
         try {
             user = ServiceFactory.getInstance().getUserService().login(login, password);
             if (user != null) {
+
                 HttpSession session = request.getSession();
                 session.setAttribute(SessionAttributes.LOGIN, user.getLogin());
                 session.setAttribute(SessionAttributes.USER_ID, user.getUserId());

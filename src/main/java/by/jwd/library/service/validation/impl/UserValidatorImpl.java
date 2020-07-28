@@ -14,7 +14,7 @@ public class UserValidatorImpl implements UserValidator {
     private static final String NAME_PATTERN = "^[a-z A-Zа-яА-Я]{4,20}$";
     private static final String EMAIL_PATTERN = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
     private static final String LOGIN_PATTERN = "^[a-zA-Z0-9_-]{4,20}$";
-    private static final String PASSWORD_PATTERN = "^[A-Za-z0-9]{4,20}$";
+    private static final String PASSWORD_PATTERN = "^[A-Za-z0-9]{4,40}$";
     private static final String PASSPORT_ID_PATTERN = "^(?!^0+$)[a-zA-Z0-9]{14,20}$";
 
     public UserValidatorImpl() {
@@ -36,11 +36,7 @@ public class UserValidatorImpl implements UserValidator {
         if (user.getLogin() == null || !validateLogin(user.getLogin())) {
             validationResult.add(String.valueOf(InvalidParameter.LOGIN));
         }
-
-        if (user.getPassword() == null || !validatePassword(user.getPassword())) {
-            validationResult.add(String.valueOf(InvalidParameter.PASSWORD));
-        }
-
+        
         if (user.getPassportId() == null || !validatePassportId(user.getPassportId())) {
             validationResult.add(String.valueOf(InvalidParameter.PASSPORT_ID));
         }

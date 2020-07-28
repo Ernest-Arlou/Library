@@ -41,25 +41,26 @@ public class EditUserInfo implements Command {
             if (user != null && user.getUserId() != userID) {
                 response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
                         LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.EMAIL_EXISTS_MSG));
-            } else {
-
-                user = userService.getUserByLogin(login);
-                if (user != null && user.getUserId() != userID) {
-                    response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
-                            LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.LOGIN_EXISTS_MSG));
-
-                } else {
-                    user = userService.getUserById(userID);
-                    user.setName(name);
-                    user.setEmail(email);
-                    user.setLogin(login);
-
-                    userService.editUser(user);
-
-                    response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
-                            LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.EDIT_SUCCESS_MSG));
-                }
+                return;
             }
+
+            user = userService.getUserByLogin(login);
+            if (user != null && user.getUserId() != userID) {
+                response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
+                        LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.LOGIN_EXISTS_MSG));
+                return;
+            }
+
+            user = userService.getUserById(userID);
+            user.setName(name);
+            user.setEmail(email);
+            user.setLogin(login);
+
+            userService.editUser(user);
+
+            response.sendRedirect(CommandURL.EDIT_USER_INFO_FORM + "&" + RequestAttribute.EDIT_USER_INFO_MSG + "=" +
+                    LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.EDIT_SUCCESS_MSG));
+
 
         } catch (IOException | ServiceException e) {
             throw new CommandException(e);

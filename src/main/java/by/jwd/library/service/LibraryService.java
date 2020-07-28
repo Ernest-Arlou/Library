@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface LibraryService {
 
+    void closeOutdatedReservations() throws ServiceException;
+
     void returnMedia(int copyId, int loanId) throws ServiceException;
 
     void giveOutCopy(int userId, int copyId, int reservationId, int mediaId) throws ServiceException;

@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class DeleteReservation implements Command {
     private static final String FROM_DELIVERY = "delivery";
-    private static final String FROM_PROFILE = "profile";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -30,7 +29,7 @@ public class DeleteReservation implements Command {
             ServiceFactory.getInstance().getLibraryService().deleteReservation(reservationId);
             if (from.equalsIgnoreCase(FROM_DELIVERY)) {
                 response.sendRedirect(CommandURL.DELIVERY);
-            } else if (from.equalsIgnoreCase(FROM_PROFILE)) {
+            } else {
                 response.sendRedirect(CommandURL.PROFILE);
             }
 

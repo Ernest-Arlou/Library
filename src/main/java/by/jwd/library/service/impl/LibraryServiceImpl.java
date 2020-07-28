@@ -22,7 +22,6 @@ import java.util.Set;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 
-
 public class LibraryServiceImpl implements LibraryService {
     private final static int RESERVATION_DURATION_DAYS = 3;
     private final static int LOAN_DURATION_DAYS = 20;
@@ -34,7 +33,18 @@ public class LibraryServiceImpl implements LibraryService {
     private final static String READING_ROOM_RESTRICTION = "reading room only";
 
     @Override
-    public void returnMedia(int copyId, int loanId) throws ServiceException {
+    public synchronized void closeOutdatedReservations() throws ServiceException {
+
+        try {
+            DAOFactory.getInstance().getLibraryDAO().closeOutdatedReservations();
+        } catch (DAOException e) {
+            throw new ServiceException("Error during reservation closing", e);
+        }
+
+    }
+
+    @Override
+    public synchronized void returnMedia(int copyId, int loanId) throws ServiceException {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(copyId)) ||
@@ -51,7 +61,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void giveOutCopy(int userId, int copyId, int reservationId, int mediaId) throws ServiceException {
+    public synchronized void giveOutCopy(int userId, int copyId, int reservationId, int mediaId) throws ServiceException {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(userId)) ||
@@ -64,9 +74,9 @@ public class LibraryServiceImpl implements LibraryService {
         try {
             MediaDetail mediaDetail = DAOFactory.getInstance().getLibraryDAO().getMediaDetail(mediaId);
             int duration;
-            if (mediaDetail.getRestriction().equals(READING_ROOM_RESTRICTION)){
+            if (mediaDetail.getRestriction().equals(READING_ROOM_RESTRICTION)) {
                 duration = DURATION_ONE_DAY;
-            }else {
+            } else {
                 duration = LOAN_DURATION_DAYS;
             }
             DAOFactory.getInstance().getLibraryDAO().giveOutCopy(userId, copyId, reservationId, duration);
@@ -77,7 +87,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void deleteReservation(int reservationId) throws ServiceException {
+    public synchronized void deleteReservation(int reservationId) throws ServiceException {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(reservationId)) {
@@ -93,7 +103,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void reserveMedia(int userId, int mediaId) throws ServiceException {
+    public synchronized void reserveMedia(int userId, int mediaId) throws ServiceException {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(userId)) ||
@@ -297,7 +307,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public int addMedia(MediaDetail mediaDetail) throws ServiceException {
+    public synchronized int addMedia(MediaDetail mediaDetail) throws ServiceException {
 
         Set<String> validate = ValidationFactory.getInstance().getLibraryValidator().validateMediaDetail(mediaDetail);
         if (!validate.isEmpty()) {
@@ -315,7 +325,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void editMedia(MediaDetail mediaDetail) throws ServiceException {
+    public synchronized void editMedia(MediaDetail mediaDetail) throws ServiceException {
 
         Set<String> validate = ValidationFactory.getInstance().getLibraryValidator().validateMediaDetail(mediaDetail);
         if (!validate.isEmpty()) {
@@ -347,12 +357,12 @@ public class LibraryServiceImpl implements LibraryService {
         }
     }
 
-    private void calculateLoanPrice(List<DeliveryType> loans){
+    private void calculateLoanPrice(List<DeliveryType> loans) {
         for (DeliveryType deliveryType :
                 loans) {
             LocalDate startDate = deliveryType.getLoanType().getStartDate();
             LocalDate now = LocalDate.now();
-            long duration = DAYS.between(startDate,now);
+            long duration = DAYS.between(startDate, now);
             double priceOfMedia = deliveryType.getLoanType().getMediaDetail().getPrice();
             double priceForLoan = duration * FEE_PER_DAY * priceOfMedia;
 

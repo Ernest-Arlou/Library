@@ -5,6 +5,8 @@ import by.jwd.library.bean.User;
 import java.util.List;
 
 public interface UserService {
+    boolean changePassword(int userId, String oldPass, String newPass) throws ServiceException;
+
     User getUserByLogin(String login) throws ServiceException;
 
     User getUserById(int userId) throws ServiceException;

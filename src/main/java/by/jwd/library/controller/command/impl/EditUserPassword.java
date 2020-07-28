@@ -1,6 +1,5 @@
 package by.jwd.library.controller.command.impl;
 
-import by.jwd.library.bean.User;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
@@ -35,13 +34,11 @@ public class EditUserPassword implements Command {
         UserService userService = ServiceFactory.getInstance().getUserService();
         String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
         try {
-            User user = userService.getUserById(userID);
-            if (!user.getPassword().equalsIgnoreCase(oldPassword)) {
+
+            if (!userService.changePassword(userID, oldPassword, newPassword)) {
                 response.sendRedirect(CommandURL.EDIT_USER_PASSWORD_FORM + "&" + RequestAttribute.EDIT_USER_PASSWORD_MSG + "="
                         + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.WRONG_OLD_PASS_MSG));
             } else {
-                user.setPassword(newPassword);
-                userService.editUser(user);
                 response.sendRedirect(CommandURL.EDIT_USER_PASSWORD_FORM + "&" + RequestAttribute.EDIT_USER_PASSWORD_MSG + "="
                         + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.NEW_PASSWORD_SET));
             }
