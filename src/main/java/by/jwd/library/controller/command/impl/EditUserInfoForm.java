@@ -10,6 +10,8 @@ import by.jwd.library.controller.constant.RequestAttribute;
 import by.jwd.library.controller.constant.SessionAttributes;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import java.io.IOException;
 
 public class EditUserInfoForm implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(EditUserInfoForm.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -42,7 +45,13 @@ public class EditUserInfoForm implements Command {
 
             request.getRequestDispatcher(JSPPath.EDIT_USER_INFO_FORM).forward(request, response);
 
-        } catch (ServiceException | ServletException | IOException e) {
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        } catch (ServletException e) {
+            logger.error("ServletException in EditUserInfoForm", e);
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in EditUserInfoForm", e);
             throw new CommandException(e);
         }
 

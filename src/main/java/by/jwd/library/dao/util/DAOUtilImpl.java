@@ -4,6 +4,8 @@ import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
 import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,17 +26,25 @@ public class DAOUtilImpl implements DAOUtil {
     private static final String USER_STATUS = "status";
     private static final String USER_USER_ID = "user-id";
 
+    private static final Logger logger = LoggerFactory.getLogger(DAOUtilImpl.class);
 
     private User getUserByIdwCon(Connection connection, int userId) throws DAOException {
         PreparedStatement preparedStatement = null;
         try {
+            logger.debug("getUserByIdwCon userId = {}",userId);
+
             preparedStatement = connection.prepareStatement(GET_USER_BY_ID);
             preparedStatement.setInt(1, userId);
-            return getUserFromPreparedStatement(preparedStatement);
+            User user = getUserFromPreparedStatement(preparedStatement);
+
+            logger.debug("getUserByIdwCon user = {}",user);
+
+            return user;
         } catch (SQLException e) {
+            logger.error("SQLException in DAOUtilImpl method getUserByIdwCon()", e);
             throw new DAOException("SQL error", e);
         } finally {
-            closePreparedStatement(preparedStatement);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement);
         }
     }
 
@@ -52,16 +62,16 @@ public class DAOUtilImpl implements DAOUtil {
             return getUserById(connection, userId);
 
         } catch (ConnectionPoolException e) {
+            logger.error("ConnectionPoolException in DAOUtilImpl method getUserById()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            closeConnection(connection);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
         }
     }
 
     @Override
     public User getUserFromPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
-        ResultSet resultSet = null;
-        resultSet = preparedStatement.executeQuery();
+        ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             return buildUser(resultSet);
         } else {
@@ -81,37 +91,4 @@ public class DAOUtilImpl implements DAOUtil {
                 resultSet.getString(USER_STATUS));
     }
 
-
-    @Override
-    public void closeConnection(Connection connection) {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            //log
-        }
-    }
-
-    @Override
-    public void closePreparedStatement(PreparedStatement preparedStatement) {
-        try {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-        } catch (SQLException e) {
-            //log
-        }
-    }
-
-    @Override
-    public void closeResultSet(ResultSet resultSet) {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-        } catch (SQLException e) {
-            //log
-        }
-    }
 }

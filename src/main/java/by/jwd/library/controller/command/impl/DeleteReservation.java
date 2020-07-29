@@ -6,6 +6,8 @@ import by.jwd.library.controller.constant.CommandURL;
 import by.jwd.library.controller.constant.RequestParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +15,8 @@ import java.io.IOException;
 
 public class DeleteReservation implements Command {
     private static final String FROM_DELIVERY = "delivery";
+
+    private static final Logger logger = LoggerFactory.getLogger(DeleteReservation.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -33,7 +37,10 @@ public class DeleteReservation implements Command {
                 response.sendRedirect(CommandURL.PROFILE);
             }
 
-        } catch (IOException | ServiceException e) {
+        } catch (IOException e) {
+            logger.error("IOException in DeleteReservation", e);
+            throw new CommandException(e);
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
     }

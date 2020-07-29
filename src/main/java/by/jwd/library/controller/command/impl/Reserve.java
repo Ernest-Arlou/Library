@@ -13,6 +13,8 @@ import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.LibraryService;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class Reserve implements Command {
+
+    private static final Logger logger = LoggerFactory.getLogger(Reserve.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -74,7 +78,10 @@ public class Reserve implements Command {
                     + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.RESERVATION_SUCCESS_MSG));
 
 
-        } catch (IOException | ServiceException e) {
+        } catch (IOException e) {
+            logger.error("IOException in Reserve", e);
+            throw new CommandException(e);
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
     }

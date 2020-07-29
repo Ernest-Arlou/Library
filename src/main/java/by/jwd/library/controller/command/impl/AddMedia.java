@@ -3,6 +3,7 @@ package by.jwd.library.controller.command.impl;
 import by.jwd.library.bean.Author;
 import by.jwd.library.bean.Genre;
 import by.jwd.library.bean.MediaDetail;
+import by.jwd.library.controller.Controller;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.SessionCheck;
@@ -10,6 +11,8 @@ import by.jwd.library.controller.constant.CommandURL;
 import by.jwd.library.controller.constant.RequestParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +22,8 @@ import java.util.List;
 
 public class AddMedia implements Command {
     private static final String DELIMITER = ";";
+
+    private static final Logger logger = LoggerFactory.getLogger(AddMedia.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -74,7 +79,10 @@ public class AddMedia implements Command {
             int mediaId = ServiceFactory.getInstance().getLibraryService().addMedia(mediaDetail);
             response.sendRedirect(CommandURL.MEDIA_DETAIL + "&" + RequestParameter.MEDIA_ID
                     + "=" + mediaId);
-        } catch (ServiceException | IOException e) {
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in AddMedia", e);
             throw new CommandException(e);
         }
     }

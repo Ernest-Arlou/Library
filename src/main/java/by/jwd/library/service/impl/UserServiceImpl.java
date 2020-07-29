@@ -11,12 +11,16 @@ import by.jwd.library.service.validation.UserValidator;
 import by.jwd.library.service.validation.factory.ValidationFactory;
 import by.jwd.library.util.UserRole;
 import by.jwd.library.util.UserStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
 
 
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public synchronized boolean changePassword(int userId, String oldPass, String newPass) throws ServiceException {
@@ -25,6 +29,7 @@ public class UserServiceImpl implements UserService {
         if (!userValidator.validateUserId(userId) ||
                 !userValidator.validatePassword(oldPass) ||
                 !userValidator.validatePassword(newPass)) {
+            logger.error("Invalid parameters in UserServiceImpl method changePassword()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -44,6 +49,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByLogin(String login) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateLogin(login)) {
+            logger.error("Invalid parameters in UserServiceImpl method getUserByLogin()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -58,6 +64,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(int userId) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateUserId(userId)) {
+            logger.error("Invalid parameters in UserServiceImpl method getUserById()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -72,6 +79,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateEmail(email)) {
+            logger.error("Invalid parameters in UserServiceImpl method getUserByEmail()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -99,6 +107,7 @@ public class UserServiceImpl implements UserService {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateLogin(login) ||
                 !userValidator.validatePassword(password)) {
+            logger.error("Invalid parameters in UserServiceImpl method login()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -120,6 +129,7 @@ public class UserServiceImpl implements UserService {
     public boolean loginExists(String login) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateLogin(login)) {
+            logger.error("Invalid parameters in UserServiceImpl method loginExists()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -135,6 +145,7 @@ public class UserServiceImpl implements UserService {
     public boolean emailExists(String email) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateEmail(email)) {
+            logger.error("Invalid parameters in UserServiceImpl method emailExists()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -150,6 +161,7 @@ public class UserServiceImpl implements UserService {
     public boolean passportIdExists(String passportId) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validatePassportId(passportId)) {
+            logger.error("Invalid parameters in UserServiceImpl method passportIdExists()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -165,6 +177,7 @@ public class UserServiceImpl implements UserService {
     public boolean checkUnverified(int userId) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateUserId(userId)) {
+            logger.error("Invalid parameters in UserServiceImpl method checkUnverified()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -185,6 +198,7 @@ public class UserServiceImpl implements UserService {
     public synchronized void editUser(User user) throws ServiceException {
         Set<String> validate = ValidationFactory.getInstance().getUserValidator().validate(user);
         if (!validate.isEmpty()) {
+            logger.error("Invalid parameters in UserServiceImpl method editUser()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -203,12 +217,14 @@ public class UserServiceImpl implements UserService {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         Set<String> validate = userValidator.validate(user);
         if (!validate.isEmpty() || !userValidator.validatePassword(user.getPassword())) {
+            logger.error("Invalid parameters in UserServiceImpl method register()");
             throw new ServiceException("Invalid parameters");
         }
 
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         try {
             if (loginExists(user.getLogin()) || emailExists(user.getEmail()) || passportIdExists(user.getPassportId())) {
+                logger.error("Error in UserServiceImpl method register() - User exists");
                 throw new ServiceException("User exists");
             }
             user.setPassword(BCrypt.hash(user.getPassword()));
@@ -226,6 +242,7 @@ public class UserServiceImpl implements UserService {
 
         if (!userValidator.validateUserId(userId) ||
                 !userValidator.validatePassportId(passportId)) {
+            logger.error("Invalid parameters in UserServiceImpl method changePassportId()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -251,6 +268,7 @@ public class UserServiceImpl implements UserService {
     public synchronized void verifyUser(int userId) throws ServiceException {
         UserValidator userValidator = ValidationFactory.getInstance().getUserValidator();
         if (!userValidator.validateUserId(userId)) {
+            logger.error("Invalid parameters in UserServiceImpl method verifyUser()");
             throw new ServiceException("Invalid parameters");
         }
 

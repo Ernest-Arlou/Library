@@ -11,12 +11,16 @@ import by.jwd.library.controller.constant.SessionAttributes;
 import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class VerifyUser implements Command {
+
+    private static final Logger logger = LoggerFactory.getLogger(VerifyUser.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -32,7 +36,10 @@ public class VerifyUser implements Command {
             response.sendRedirect(CommandURL.USER_VERIFICATION + "&" + RequestAttribute.VERIFICATION_MSG
                     + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.VERIFICATION_SUCCESS_MSG));
 
-        } catch (IOException | ServiceException e) {
+        } catch (IOException e) {
+            logger.error("IOException in VerifyUser", e);
+            throw new CommandException(e);
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
 

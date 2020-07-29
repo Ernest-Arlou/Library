@@ -14,6 +14,8 @@ import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.LibraryService;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,8 @@ import java.util.List;
 
 public class EditMedia implements Command {
     private static final String DELIMITER = ";";
+
+    private static final Logger logger = LoggerFactory.getLogger(EditMedia.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -91,7 +95,10 @@ public class EditMedia implements Command {
             }
 
 
-        } catch (ServiceException | IOException e) {
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in EditMedia", e);
             throw new CommandException(e);
         }
     }

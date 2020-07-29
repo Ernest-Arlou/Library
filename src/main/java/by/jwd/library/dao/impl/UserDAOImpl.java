@@ -1,5 +1,6 @@
 package by.jwd.library.dao.impl;
 
+import by.jwd.library.Main;
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.UserDAO;
@@ -7,6 +8,8 @@ import by.jwd.library.dao.connectionpool.ConnectionPoolException;
 import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
 import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.dao.util.DAOUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,6 +36,8 @@ public class UserDAOImpl implements UserDAO {
             "name = ?, email = ?,`passport-id` = ? where `user-id` = ?;";
     private static final String SEARCH_UNVERIFIED_USERS = "select * from users where status = 'Unverified' and login like ? or status = 'Unverified' and email like ? or status = 'Unverified' and `passport-id` like ?;";
 
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 
     @Override
     public User getUserById(int userId) throws DAOException {
@@ -66,6 +71,7 @@ public class UserDAOImpl implements UserDAO {
         DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
 
         try {
+            logger.debug("searchUnverifiedUsers searchStr = {}",searchStr);
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
             searchPrepStatement = connection.prepareStatement(SEARCH_UNVERIFIED_USERS);
@@ -80,16 +86,17 @@ public class UserDAOImpl implements UserDAO {
                 userList.add(daoUtil.buildUser(usersSet));
             }
 
+            logger.debug("searchUnverifiedUsers userList = {}",userList);
             return userList;
 
         } catch (SQLException e) {
+            logger.error("SQLException in UserDAOImpl method searchUnverifiedUsers()",e);
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
+            logger.error("ConnectionPoolException in UserDAOImpl method searchUnverifiedUsers()",e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            daoUtil.closeResultSet(usersSet);
-            daoUtil.closePreparedStatement(searchPrepStatement);
-            daoUtil.closeConnection(connection);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, searchPrepStatement, usersSet);
         }
 
     }
@@ -109,15 +116,17 @@ public class UserDAOImpl implements UserDAO {
             while (resultSet.next()) {
                 users.add(daoUtil.buildUser(resultSet));
             }
+
+            logger.debug("getUnverifiedUsers users = {}",users);
             return users;
         } catch (SQLException e) {
+            logger.error("SQLException in UserDAOImpl method getUnverifiedUsers()",e);
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
+            logger.error("ConnectionPoolException in UserDAOImpl method getUnverifiedUsers()",e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            daoUtil.closeResultSet(resultSet);
-            daoUtil.closePreparedStatement(preparedStatement);
-            daoUtil.closeConnection(connection);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
@@ -125,9 +134,9 @@ public class UserDAOImpl implements UserDAO {
     public void updateUser(User user) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-
-        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
+        
         try {
+            logger.debug("updateUser user = {}",user);
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
             connection.setAutoCommit(false);
@@ -148,16 +157,19 @@ public class UserDAOImpl implements UserDAO {
 
         } catch (SQLException e) {
             try {
+                logger.debug("updateUser trying to rollback");
                 connection.rollback();
             } catch (SQLException sqlException) {
+                logger.debug("updateUser rollback failed");
                 throw new DAOException("Impossible to rollback method updateUser", e);
             }
-            throw new DAOException("SQLException in method deleteReservation", e);
+            logger.error("SQLException in UserDAOImpl method updateUser()",e);
+            throw new DAOException("SQLException in method updateUser", e);
         } catch (ConnectionPoolException e) {
+            logger.error("ConnectionPoolException in UserDAOImpl method updateUser()",e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            daoUtil.closePreparedStatement(preparedStatement);
-            daoUtil.closeConnection(connection);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
         }
     }
 
@@ -166,8 +178,8 @@ public class UserDAOImpl implements UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
+            logger.debug("addUser user = {}",user);
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
             connection.setAutoCommit(false);
@@ -187,16 +199,19 @@ public class UserDAOImpl implements UserDAO {
 
         } catch (SQLException e) {
             try {
+                logger.debug("addUser trying to rollback");
                 connection.rollback();
             } catch (SQLException sqlException) {
+                logger.debug("addUser rollback failed");
                 throw new DAOException("Impossible to rollback method addUser", e);
             }
-            throw new DAOException("SQLException in method deleteReservation", e);
+            logger.error("SQLException in UserDAOImpl method addUser()",e);
+            throw new DAOException("SQLException in method addUser", e);
         } catch (ConnectionPoolException e) {
+            logger.error("ConnectionPoolException in UserDAOImpl method addUser()",e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            daoUtil.closePreparedStatement(preparedStatement);
-            daoUtil.closeConnection(connection);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
         }
 
     }
@@ -207,17 +222,21 @@ public class UserDAOImpl implements UserDAO {
 
         DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
+            logger.debug("getUserByStringParameter paramValue = {}; query = {} ",paramValue, query);
+
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, paramValue);
             return daoUtil.getUserFromPreparedStatement(preparedStatement);
         } catch (SQLException e) {
+            logger.error("SQLException in UserDAOImpl method getUserByStringParameter()",e);
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
+            logger.error("ConnectionPoolException in UserDAOImpl method getUserByStringParameter()",e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            daoUtil.closePreparedStatement(preparedStatement);
-            daoUtil.closeConnection(connection);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
+
         }
     }
 

@@ -1,5 +1,6 @@
 package by.jwd.library.controller.command.impl;
 
+import by.jwd.library.controller.Controller;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.LocalMessageCoder;
@@ -12,12 +13,16 @@ import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ChangePassportId implements Command {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChangePassportId.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -42,7 +47,10 @@ public class ChangePassportId implements Command {
                 response.sendRedirect(CommandURL.USER_VERIFICATION + "&" + RequestAttribute.VERIFICATION_MSG
                         + "=" + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.PASSPORT_ID_CHANGED_MSG));
             }
-        } catch (ServiceException | IOException e) {
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in ChangePassportId", e);
             throw new CommandException(e);
         }
     }

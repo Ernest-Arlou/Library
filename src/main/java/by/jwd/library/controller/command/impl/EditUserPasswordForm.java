@@ -6,6 +6,8 @@ import by.jwd.library.controller.command.impl.util.QueryCoder;
 import by.jwd.library.controller.command.impl.util.SessionCheck;
 import by.jwd.library.controller.constant.JSPPath;
 import by.jwd.library.controller.constant.RequestAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class EditUserPasswordForm implements Command {
+
+    private static final Logger logger = LoggerFactory.getLogger(EditUserPasswordForm.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -30,7 +34,11 @@ public class EditUserPasswordForm implements Command {
 
             request.getRequestDispatcher(JSPPath.EDIT_USER_PASSWORD_FORM).forward(request, response);
 
-        } catch (ServletException | IOException e) {
+        } catch (ServletException e) {
+            logger.error("ServletException in EditUserPasswordForm", e);
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in EditUserPasswordForm", e);
             throw new CommandException(e);
         }
 

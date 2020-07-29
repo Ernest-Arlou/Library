@@ -10,6 +10,8 @@ import by.jwd.library.controller.constant.RequestAttribute;
 import by.jwd.library.controller.constant.RequestParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class ReturnMediaForm implements Command {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReturnMediaForm.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -41,7 +45,13 @@ public class ReturnMediaForm implements Command {
                 request.setAttribute(RequestAttribute.RETURN_MEDIA_MSG, returnMediaMsg);
             }
             request.getRequestDispatcher(JSPPath.RETURN_MEDIA).forward(request, response);
-        } catch (ServiceException | IOException | ServletException e) {
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in ReturnMediaForm", e);
+            throw new CommandException(e);
+        } catch (ServletException e) {
+            logger.error("ServletException in ReturnMediaForm", e);
             throw new CommandException(e);
         }
     }

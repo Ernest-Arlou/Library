@@ -12,6 +12,8 @@ import by.jwd.library.controller.constant.SessionAttributes;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
 import by.jwd.library.util.UserRole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import java.util.List;
 
 public class Profile implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(Profile.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -50,7 +53,13 @@ public class Profile implements Command {
             request.getRequestDispatcher(JSPPath.PROFILE).forward(request, response);
 
 
-        } catch (ServiceException | IOException | ServletException e) {
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in Profile", e);
+            throw new CommandException(e);
+        } catch (ServletException e) {
+            logger.error("ServletException in Profile", e);
             throw new CommandException(e);
         }
     }

@@ -3,12 +3,16 @@ package by.jwd.library.controller;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandName;
 import by.jwd.library.controller.command.impl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 final class CommandProvider {
     private final Map<CommandName, Command> repository = new HashMap<>();
+
+    private static final Logger logger = LoggerFactory.getLogger(CommandProvider.class);
 
     CommandProvider() {
         repository.put(CommandName.LOGIN, new LogIn());
@@ -53,8 +57,11 @@ final class CommandProvider {
             } else
                 commandName = CommandName.valueOf(name.toUpperCase());
             command = repository.get(commandName);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            //write log
+        } catch (IllegalArgumentException e) {
+            logger.error("IllegalArgumentException in CommandProvider method getCommand()", e);
+            command = repository.get(CommandName.WRONG_REQUEST);
+        } catch (NullPointerException e) {
+            logger.error("NullPointerException in CommandProvider method getCommand()", e);
             command = repository.get(CommandName.WRONG_REQUEST);
         }
         return command;

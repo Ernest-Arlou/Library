@@ -11,6 +11,8 @@ import by.jwd.library.controller.constant.SessionAttributes;
 import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LogIn implements Command {
+
+    private static final Logger logger = LoggerFactory.getLogger(LogIn.class);
 
     private void loginFailRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String localeStr = (String) request.getSession().getAttribute(SessionAttributes.LOCAL);
@@ -53,6 +57,7 @@ public class LogIn implements Command {
                 throw new CommandException(e);
             }
         } catch (IOException e) {
+            logger.error("IOException in LogIn", e);
             throw new CommandException(e);
         }
     }

@@ -18,9 +18,9 @@ public interface DAOUtil {
 
     User buildUser(ResultSet resultSet) throws SQLException;
 
-    void closeConnection(Connection connection);
-
-    void closePreparedStatement(PreparedStatement preparedStatement);
-
-    void closeResultSet(ResultSet resultSet);
+//    void closeConnection(Connection connection);
+//
+//    void closePreparedStatement(PreparedStatement preparedStatement);
+//
+//    void closeResultSet(ResultSet resultSet);
 }

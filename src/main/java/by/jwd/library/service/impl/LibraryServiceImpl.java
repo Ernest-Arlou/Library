@@ -6,12 +6,15 @@ import by.jwd.library.bean.MediaDetail;
 import by.jwd.library.bean.MediaPage;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.LibraryDAO;
+import by.jwd.library.dao.connectionpool.ConnectionPool;
 import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.service.LibraryService;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.util.Pagination;
 import by.jwd.library.service.validation.LibraryValidator;
 import by.jwd.library.service.validation.factory.ValidationFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -32,6 +35,8 @@ public class LibraryServiceImpl implements LibraryService {
     private final static String NO_RESTRICTION_FIELD = "NoRestriction";
     private final static String READING_ROOM_RESTRICTION = "reading room only";
 
+    private static final Logger logger = LoggerFactory.getLogger(LibraryServiceImpl.class);
+
     @Override
     public synchronized void closeOutdatedReservations() throws ServiceException {
 
@@ -49,6 +54,7 @@ public class LibraryServiceImpl implements LibraryService {
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(copyId)) ||
                 (!libraryValidator.validateId(loanId))) {
+            logger.error("Invalid parameters in LibraryServiceImpl method returnMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -68,6 +74,7 @@ public class LibraryServiceImpl implements LibraryService {
                 (!libraryValidator.validateId(copyId)) ||
                 (!libraryValidator.validateId(reservationId)) ||
                 (!libraryValidator.validateId(mediaId))) {
+            logger.error("Invalid parameters in LibraryServiceImpl method giveOutCopy()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -91,6 +98,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(reservationId)) {
+            logger.error("Invalid parameters in LibraryServiceImpl method deleteReservation()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -108,6 +116,7 @@ public class LibraryServiceImpl implements LibraryService {
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(userId)) ||
                 (!libraryValidator.validateId(mediaId))) {
+            logger.error("Invalid parameters in LibraryServiceImpl method reserveMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -128,6 +137,7 @@ public class LibraryServiceImpl implements LibraryService {
             LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
             if ((!libraryValidator.validatePage(page)) ||
                     (!libraryValidator.validateItemsPerPage(itemsPerPage))) {
+                logger.error("Invalid parameters in LibraryServiceImpl method getPageItems()");
                 throw new ServiceException("Invalid parameters");
             }
 
@@ -150,6 +160,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(userId)) {
+            logger.error("Invalid parameters in LibraryServiceImpl method totalLoansReservations()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -165,6 +176,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(userId)) {
+            logger.error("Invalid parameters in LibraryServiceImpl method canReserve()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -177,6 +189,7 @@ public class LibraryServiceImpl implements LibraryService {
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(userId)) ||
                 (!libraryValidator.validateId(mediaId))) {
+            logger.error("Invalid parameters in LibraryServiceImpl method userReservedOrLoanedMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -189,6 +202,7 @@ public class LibraryServiceImpl implements LibraryService {
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(userId)) ||
                 (!libraryValidator.validateId(mediaId))) {
+            logger.error("Invalid parameters in LibraryServiceImpl method userReservedMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -208,6 +222,7 @@ public class LibraryServiceImpl implements LibraryService {
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if ((!libraryValidator.validateId(userId)) ||
                 (!libraryValidator.validateId(mediaId))) {
+            logger.error("Invalid parameters in LibraryServiceImpl method userLoanedMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -226,6 +241,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(mediaId)) {
+            logger.error("Invalid parameters in LibraryServiceImpl method getMediaDetail()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -281,6 +297,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(mediaId)) {
+            logger.error("Invalid parameters in LibraryServiceImpl method getLoansForMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -296,6 +313,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(userId)) {
+            logger.error("Invalid parameters in LibraryServiceImpl method getUserReservations()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -311,6 +329,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         Set<String> validate = ValidationFactory.getInstance().getLibraryValidator().validateMediaDetail(mediaDetail);
         if (!validate.isEmpty()) {
+            logger.error("Invalid parameters in LibraryServiceImpl method addMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -329,6 +348,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         Set<String> validate = ValidationFactory.getInstance().getLibraryValidator().validateMediaDetail(mediaDetail);
         if (!validate.isEmpty()) {
+            logger.error("Invalid parameters in LibraryServiceImpl method editMedia()");
             throw new ServiceException("Invalid parameters");
         }
 
@@ -347,6 +367,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         LibraryValidator libraryValidator = ValidationFactory.getInstance().getLibraryValidator();
         if (!libraryValidator.validateId(userId)) {
+            logger.error("Invalid parameters in LibraryServiceImpl method getUserLoans()");
             throw new ServiceException("Invalid parameters");
         }
 

@@ -12,6 +12,8 @@ import by.jwd.library.controller.constant.local.LocalParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.UserService;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,7 @@ import java.io.IOException;
 
 public class EditUserPassword implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(EditUserPassword.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -43,7 +46,10 @@ public class EditUserPassword implements Command {
                         + LocalMessageCoder.getCodedLocalizedMsg(localeStr, LocalParameter.NEW_PASSWORD_SET));
             }
 
-        } catch (IOException | ServiceException e) {
+        } catch (IOException e) {
+            logger.error("IOException in EditUserPassword", e);
+            throw new CommandException(e);
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
     }

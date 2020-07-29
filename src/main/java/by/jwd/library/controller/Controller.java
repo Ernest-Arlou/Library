@@ -3,6 +3,9 @@ package by.jwd.library.controller;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.constant.JSPPath;
+import by.jwd.library.service.impl.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,13 +20,20 @@ public class Controller extends HttpServlet {
     private final static String REQUEST_PARAM_COMMAND = "command";
     private final CommandProvider provider = new CommandProvider();
 
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processCommand(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       processCommand(request,response);
+    }
+
+    private void processCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String commandName;
         Command command;
         commandName = request.getParameter(REQUEST_PARAM_COMMAND);
@@ -32,7 +42,7 @@ public class Controller extends HttpServlet {
         try {
             command.execute(request, response);
         } catch (CommandException e) {
-            //log
+            logger.error("CommandException in Controller", e);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(JSPPath.ERROR);
             if (requestDispatcher != null) {
                 requestDispatcher.forward(request, response);

@@ -8,6 +8,8 @@ import by.jwd.library.controller.constant.RequestAttribute;
 import by.jwd.library.controller.constant.RequestParameter;
 import by.jwd.library.service.ServiceException;
 import by.jwd.library.service.factory.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class MediaDetail implements Command {
+
+    private static final Logger logger = LoggerFactory.getLogger(MediaDetail.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -37,7 +41,13 @@ public class MediaDetail implements Command {
             request.setAttribute(RequestAttribute.MEDIA_DETAIL, mediaDetail);
             request.getRequestDispatcher(JSPPath.DETAIL).forward(request, response);
 
-        } catch (ServiceException | IOException | ServletException e) {
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in MediaDetail", e);
+            throw new CommandException(e);
+        } catch (ServletException e) {
+            logger.error("ServletException in MediaDetail", e);
             throw new CommandException(e);
         }
     }
