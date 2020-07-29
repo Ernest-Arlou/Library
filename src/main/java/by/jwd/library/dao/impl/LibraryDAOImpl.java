@@ -357,10 +357,10 @@ public class LibraryDAOImpl implements LibraryDAO {
         preparedStatement.setString(9, mediaDetail.getRestriction());
     }
 
-    @Override
-    public List<LoanType> getReservationsForMedia(int mediaId) throws DAOException {
-        return getLoanTypesForMedia(mediaId, GET_RESERVATIONS_FOR_MEDIA, LOAN_TYPE_RESERVATION);
-    }
+//    @Override
+//    public List<LoanType> getReservationsForMedia(int mediaId) throws DAOException {
+//        return getLoanTypesForMedia(mediaId, GET_RESERVATIONS_FOR_MEDIA, LOAN_TYPE_RESERVATION);
+//    }
 
     private int addMedia(Connection connection, MediaDetail mediaDetail) throws SQLException {
 
@@ -1051,7 +1051,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             throw new DAOException("SQL error", e);
         } finally {
             ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(copiesStatement, copiesSet);
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, mediaDetailsStatement, mediaDetailsSet);
+            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(mediaDetailsStatement, mediaDetailsSet);
 
         }
 

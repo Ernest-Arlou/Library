@@ -22,7 +22,7 @@ public class Main {
 
 
         LocalDateTime localDateTime = LocalDateTime.now();
-        logger.debug("TEST {}", localDateTime);
+        logger.info("TEST {}", localDateTime);
 
     }
 }
