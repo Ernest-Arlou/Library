@@ -11,6 +11,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 public final class ConnectionPool {
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
     private final String driverName;
     private final String url;
     private final String user;
@@ -18,8 +19,6 @@ public final class ConnectionPool {
     private int poolsize;
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
-
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 
     public ConnectionPool() {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
@@ -87,7 +86,7 @@ public final class ConnectionPool {
         return connection;
     }
 
-    private void closeConnectionMethod(Connection connection){
+    private void closeConnectionMethod(Connection connection) {
         try {
             if (connection != null) {
                 connection.close();
@@ -97,7 +96,7 @@ public final class ConnectionPool {
         }
     }
 
-    private void closeStatementMethod(Statement statement){
+    private void closeStatementMethod(Statement statement) {
         try {
             if (statement != null) {
                 statement.close();
@@ -107,7 +106,7 @@ public final class ConnectionPool {
         }
     }
 
-    private void closeResultSetMethod(ResultSet resultSet){
+    private void closeResultSetMethod(ResultSet resultSet) {
         try {
             if (resultSet != null) {
                 resultSet.close();
@@ -119,9 +118,9 @@ public final class ConnectionPool {
 
 
     public void closeConnection(Connection connection, Statement statement, ResultSet resultSet) {
-       closeResultSetMethod(resultSet);
+        closeResultSetMethod(resultSet);
         closeStatementMethod(statement);
-       closeConnectionMethod(connection);
+        closeConnectionMethod(connection);
     }
 
     public void closeConnection(Connection connection, Statement statement) {
@@ -133,16 +132,16 @@ public final class ConnectionPool {
         closeConnectionMethod(connection);
     }
 
-    public void closeStatement(Statement statement){
+    public void closeStatement(Statement statement) {
         closeStatementMethod(statement);
     }
 
-    public void closeStatement(Statement statement, ResultSet resultSet){
+    public void closeStatement(Statement statement, ResultSet resultSet) {
         closeStatementMethod(statement);
         closeResultSetMethod(resultSet);
     }
 
-    public void closeResultSet(ResultSet resultSet){
+    public void closeResultSet(ResultSet resultSet) {
         closeResultSetMethod(resultSet);
     }
 

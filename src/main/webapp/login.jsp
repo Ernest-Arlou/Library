@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.logIn" var="logIn" />
-<fmt:message bundle="${loc}" key="local.logInProcedure" var="logInProcedure" />
-<fmt:message bundle="${loc}" key="local.loginField" var="loginField" />
-<fmt:message bundle="${loc}" key="local.password" var="password" />
-<fmt:message bundle="${loc}" key="local.enterLogin" var="enterLogin" />
-<fmt:message bundle="${loc}" key="local.enterPassword" var="enterPassword" />
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.logIn" var="logIn"/>
+<fmt:message bundle="${loc}" key="local.logInProcedure" var="logInProcedure"/>
+<fmt:message bundle="${loc}" key="local.loginField" var="loginField"/>
+<fmt:message bundle="${loc}" key="local.password" var="password"/>
+<fmt:message bundle="${loc}" key="local.enterLogin" var="enterLogin"/>
+<fmt:message bundle="${loc}" key="local.enterPassword" var="enterPassword"/>
 <html lang="zxx">
 
 <head>
@@ -19,7 +19,7 @@
     <title>..:: LIBRARIA ::..</title>
 
     <!-- Meta -->
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
 
     <!-- Start: Css Section -->
@@ -76,10 +76,10 @@
                     <div class="woocommerce">
                         <div class="woocommerce-login">
                             <div class="company-info signin-register">
-                                <c:if test = "${loginFailMsg != null}">
-                                <div class="center-content">
-                                    <h3 class="section-title"><c:out value = "${loginFailMsg}"/></h3>
-                                </div>
+                                <c:if test="${loginFailMsg != null}">
+                                    <div class="center-content">
+                                        <h3 class="section-title"><c:out value="${loginFailMsg}"/></h3>
+                                    </div>
                                 </c:if>
                                 <div class="col-md-5 col-md-offset-4">
                                     <div class="row">
@@ -88,24 +88,26 @@
                                                 <h2>${logInProcedure}</h2>
                                                 <span class="underline left"></span>
                                             </div>
-                                            <form class="login" method="post" action="Controller" name="login_form" onsubmit="return validate();">
+                                            <form class="login" method="post" action="Controller" name="login_form"
+                                                  onsubmit="return validate();">
                                                 <p class="form-row form-row-first input-required">
-                                                <label>
-                                                    <span class="first-letter">${loginField}</span>
-                                                    <span class="second-letter">*</span>
-                                                </label>
-                                                <input type="text" name="login">
+                                                    <label>
+                                                        <span class="first-letter">${loginField}</span>
+                                                        <span class="second-letter">*</span>
+                                                    </label>
+                                                    <input type="text" name="login">
                                                 </p>
                                                 <p class="form-row form-row-last input-required">
-                                                <label>
-                                                    <span class="first-letter">${password}</span>
-                                                    <span class="second-letter">*</span>
-                                                </label>
-                                                <input type="password" name="password">
+                                                    <label>
+                                                        <span class="first-letter">${password}</span>
+                                                        <span class="second-letter">*</span>
+                                                    </label>
+                                                    <input type="password" name="password">
                                                 </p>
                                                 <input type="hidden" name="command" value="login">
                                                 <div class="clear"></div>
-                                                <input type="submit" name="log_button" value="${logIn}" class="button btn btn-default">
+                                                <input type="submit" name="log_button" value="${logIn}"
+                                                       class="button btn btn-default">
                                                 <div class="clear"></div>
                                             </form>
                                         </div>

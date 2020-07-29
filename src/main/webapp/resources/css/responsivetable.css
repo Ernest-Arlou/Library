@@ -20,8 +20,8 @@ table.bt tbody td {
     vertical-align: top;
 
     /* IE 9 */
-    float: left\9;
-    width: 100%\9;
+    float: left \9;
+    width: 100% \9;
 }
 
 table.bt tfoot th::before,
@@ -35,6 +35,7 @@ table.bt tbody td::before {
     font-weight: bold;
     width: 6.5em;
 }
+
 table.cart tbody td:first-child::before,
 table.cart tbody td:last-child::before {
     content: attr(data-th) " ";
@@ -51,15 +52,18 @@ table.bt tfoot td .bt-content,
 table.bt tbody td .bt-content {
     vertical-align: top;
 }
+
 .shop_table .bt-content {
     display: block;
     width: 100%;
     vertical-align: top;
 }
+
 .shop_table .bt-content .product-thumbnail, .shop_table .bt-content .product-detail {
     display: inline-block;
     vertical-align: top;
 }
+
 .bt-wrapper.active {
     max-height: 310px;
     overflow: auto;
@@ -76,6 +80,7 @@ table.bt tbody td .bt-content {
     }
 
 }
+
 @media only screen and (max-width: 979px) {
     .phone-block {
         display: block;
@@ -123,7 +128,8 @@ table th,
 table td {
     border: none;
 }
-@media only screen and (max-width: 979px)  {
+
+@media only screen and (max-width: 979px) {
     table,
     table tr,
     table th,
@@ -185,6 +191,7 @@ table.bt tbody td .bt-content {
         padding-left: 2em;
         width: 25%;
     }
+
     .col-sm-9 {
         width: 75%;
     }
@@ -207,8 +214,8 @@ table.bt tbody td .bt-content {
         vertical-align: top;
 
         /* IE 9 */
-        float: left\9;
-        width: 100%\9;
+        float: left \9;
+        width: 100% \9;
     }
 
     #table-no-resize tbody td:before {
@@ -269,17 +276,21 @@ table.two-axis tr td:first-of-type {
 .bt-wrapper.active {
     margin-top: 1.5em;
 }
+
 .bt-wrapper.active table {
     margin: 0;
 }
+
 table {
     width: 100%;
 }
+
 .table {
     border-collapse: collapse;
     border-spacing: 0;
     empty-cells: show;
 }
+
 .table caption {
     line-height: 1;
     text-align: center;

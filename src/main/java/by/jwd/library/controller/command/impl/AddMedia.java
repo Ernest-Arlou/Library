@@ -3,7 +3,6 @@ package by.jwd.library.controller.command.impl;
 import by.jwd.library.bean.Author;
 import by.jwd.library.bean.Genre;
 import by.jwd.library.bean.MediaDetail;
-import by.jwd.library.controller.Controller;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.command.impl.util.SessionCheck;

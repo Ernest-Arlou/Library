@@ -1,18 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia" />
-<fmt:message bundle="${loc}" key="local.button.search" var="searchButton" />
-<fmt:message bundle="${loc}" key="local.searchQuestion" var="searchQuestion" />
-<fmt:message bundle="${loc}" key="local.noResults" var="noResults" />
-<fmt:message bundle="${loc}" key="local.publisher" var="publisher" />
-
-
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia"/>
+<fmt:message bundle="${loc}" key="local.button.search" var="searchButton"/>
+<fmt:message bundle="${loc}" key="local.searchQuestion" var="searchQuestion"/>
+<fmt:message bundle="${loc}" key="local.noResults" var="noResults"/>
+<fmt:message bundle="${loc}" key="local.publisher" var="publisher"/>
 
 
 <html lang="zxx">
@@ -22,7 +20,7 @@
     <title>..:: LIBRARIA ::..</title>
 
     <!-- Meta -->
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
 
     <!-- Start: Css Section -->
@@ -36,8 +34,6 @@
 <!-- Start: Header Section -->
 <jsp:include page="WEB-INF/jsp/parts/header.jsp"/>
 <!-- End: Header Section -->
-
-
 
 
 <!-- Start: Page Banner -->
@@ -58,14 +54,13 @@
 <!-- End: Page Banner -->
 
 
-
 <!-- Start: Products Section -->
 <div id="content" class="site-content">
     <div id="primary" class="content-area">
         <main id="main" class="site-main">
             <div class="books-full-width">
                 <div class="container">
-<!-- Start: Search Section -->
+                    <!-- Start: Search Section -->
                     <section class="search-filters">
                         <div class="filter-box">
                             <h3>${searchQuestion}</h3>
@@ -73,7 +68,8 @@
                             <form action="Controller" method="get">
                                 <div class="col-md-10 col-sm-6">
                                     <div class="form-group">
-                                        <input class="form-control" value="${mediaPage.search}" id="keywords" name="search" type="text">
+                                        <input class="form-control" value="${mediaPage.search}" id="keywords"
+                                               name="search" type="text">
                                         <input type="hidden" name="command" value="page">
                                         <input type="hidden" name="page" value="1">
                                     </div>
@@ -88,10 +84,10 @@
                         </div>
                         <div class="clear"></div>
                     </section>
-<!-- End: Search Section -->
+                    <!-- End: Search Section -->
 
 
-<!-- Start: Books Media Section -->
+                    <!-- Start: Books Media Section -->
                     <div class="booksmedia-fullwidth">
 
 
@@ -132,11 +128,14 @@
                                         </c:choose>
 
                                         <figure style="max-height: 500px;">
-                                            <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.mediaID}&lastPage=${requestScope.lastCommand}"><img src="${item.picture}" alt="Book"></a>
+                                            <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.mediaID}&lastPage=${requestScope.lastCommand}"><img
+                                                    src="${item.picture}" alt="Book"></a>
                                             <figcaption>
                                                 <header>
-                                                    <h4><a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.mediaID}&lastPage=${requestScope.lastCommand}">${item.title}</a></h4>
-                                                    <p><strong>${publisher}:</strong>  ${item.publisher}</p>
+                                                    <h4>
+                                                        <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${item.mediaID}&lastPage=${requestScope.lastCommand}">${item.title}</a>
+                                                    </h4>
+                                                    <p><strong>${publisher}:</strong> ${item.publisher}</p>
                                                     <br>
                                                 </header>
                                                 <p>${item.summary}</p>
@@ -147,17 +146,16 @@
                             </ul>
                         </c:if>
                     </div>
-<!-- End: Books Media Section -->
+                    <!-- End: Books Media Section -->
 
 
-
-<!-- Start: Pagination Section -->
+                    <!-- Start: Pagination Section -->
 
                     <c:if test="${mediaPage.totalPages > 1}">
                     <nav class="navigation pagination text-center">
                         <h2 class="screen-reader-text">Posts navigation</h2>
                         <div class="nav-links">
-                            <c:forEach items="${mediaPage.navigationPages}" var = "page">
+                            <c:forEach items="${mediaPage.navigationPages}" var="page">
 
 
                                 <c:if test="${page != -1 }">
@@ -167,7 +165,8 @@
                                     </c:if>
 
                                     <c:if test="${page != mediaPage.page}">
-                                    <a class="page-numbers" href="${pageContext.request.contextPath}/Controller?command=page&page=${page}&search=${mediaPage.search}">${page}</a>
+                                        <a class="page-numbers"
+                                           href="${pageContext.request.contextPath}/Controller?command=page&page=${page}&search=${mediaPage.search}">${page}</a>
                                     </c:if>
 
                                 </c:if>
@@ -178,10 +177,10 @@
 
                             </c:forEach>
                         </div>
-                    </c:if>
-                    <br>
-<!-- End: Pagination Section -->
-            </div>
+                        </c:if>
+                        <br>
+                        <!-- End: Pagination Section -->
+                </div>
             </div>
         </main>
     </div>

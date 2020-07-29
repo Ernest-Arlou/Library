@@ -1,25 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib prefix="tag" tagdir="/WEB-INF/tags"  %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.profile" var="profile" />
-<fmt:message bundle="${loc}" key="local.editProfile" var="editProfile" />
-<fmt:message bundle="${loc}" key="local.editPassword" var="editPassword" />
-<fmt:message bundle="${loc}" key="local.startDate" var="startDate" />
-<fmt:message bundle="${loc}" key="local.endDate" var="endDate" />
-<fmt:message bundle="${loc}" key="local.action" var="action" />
-<fmt:message bundle="${loc}" key="local.deleteConfirmation" var="deleteConfirmation" />
-<fmt:message bundle="${loc}" key="local.button.delete" var="deleteBtn" />
-<fmt:message bundle="${loc}" key="local.email" var="email" />
-<fmt:message bundle="${loc}" key="local.reserved" var="reserved" />
-<fmt:message bundle="${loc}" key="local.loaned" var="loaned" />
-<fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails" />
-<fmt:message bundle="${loc}" key="local.format" var="format" />
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.profile" var="profile"/>
+<fmt:message bundle="${loc}" key="local.editProfile" var="editProfile"/>
+<fmt:message bundle="${loc}" key="local.editPassword" var="editPassword"/>
+<fmt:message bundle="${loc}" key="local.startDate" var="startDate"/>
+<fmt:message bundle="${loc}" key="local.endDate" var="endDate"/>
+<fmt:message bundle="${loc}" key="local.action" var="action"/>
+<fmt:message bundle="${loc}" key="local.deleteConfirmation" var="deleteConfirmation"/>
+<fmt:message bundle="${loc}" key="local.button.delete" var="deleteBtn"/>
+<fmt:message bundle="${loc}" key="local.email" var="email"/>
+<fmt:message bundle="${loc}" key="local.reserved" var="reserved"/>
+<fmt:message bundle="${loc}" key="local.loaned" var="loaned"/>
+<fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails"/>
+<fmt:message bundle="${loc}" key="local.format" var="format"/>
 
 
 <html lang="zxx">
@@ -81,9 +81,13 @@
                                     </c:otherwise>
                                 </c:choose>
                                 <ul>
-                                    <li><a href="${pageContext.request.contextPath}/Controller?command=edit_user_info_form">${editProfile}</a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/Controller?command=edit_user_info_form">${editProfile}</a>
+                                    </li>
                                     <li class="divider">|</li>
-                                    <li><a href="${pageContext.request.contextPath}/Controller?command=edit_user_password_form">${editPassword}</a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/Controller?command=edit_user_password_form">${editPassword}</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-xs-12 col-sm-6 library-info">
@@ -99,32 +103,102 @@
                             <div class="clearfix"></div>
                         </div>
                         <c:if test="${sessionScope.role.equalsIgnoreCase('user')}">
-                        <jsp:useBean id="reservations" scope="request"
-                                     type="java.util.List<by.jwd.library.bean.LoanType>"/>
-                        <jsp:useBean id="loans" scope="request"
-                                     type="java.util.List<by.jwd.library.bean.LoanType>"/>
-                        <div class="col-md-12">
-                            <div class="page type-page status-publish hentry">
-                                <div class="entry-content">
-                                    <div class="woocommerce table-tabs r-tabs" id="responsiveTabs">
-                                        <ul class="nav nav-tabs r-tabs-nav">
-                                            <li class="r-tabs-tab r-tabs-state-active active"><b class="arrow-up"></b><a
-                                                    data-toggle="tab" href="#sectionA" class="r-tabs-anchor"
-                                                    aria-expanded="true">${reserved} (${reservations.size()})</a></li>
-                                            <li class="r-tabs-tab r-tabs-state-default"><b class="arrow-up"></b><a
-                                                    data-toggle="tab" href="#sectionB" class="r-tabs-anchor"
-                                                    aria-expanded="false">${loaned} (${loans.size()})</a></li>
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div class="r-tabs-accordion-title r-tabs-state-active"><a href="#sectionA"
-                                                                                                       class="r-tabs-anchor"></a>
-                                            </div>
-                                            <div id="sectionA"
-                                                 class="tab-pane fade r-tabs-panel r-tabs-state-active active in"
-                                                 style="display: block;">
-                                                <form method="post"
-                                                      action="${pageContext.request.contextPath}/Controller">
-                                                    <c:if test="${reservations.size()>0}">
+                            <jsp:useBean id="reservations" scope="request"
+                                         type="java.util.List<by.jwd.library.bean.LoanType>"/>
+                            <jsp:useBean id="loans" scope="request"
+                                         type="java.util.List<by.jwd.library.bean.LoanType>"/>
+                            <div class="col-md-12">
+                                <div class="page type-page status-publish hentry">
+                                    <div class="entry-content">
+                                        <div class="woocommerce table-tabs r-tabs" id="responsiveTabs">
+                                            <ul class="nav nav-tabs r-tabs-nav">
+                                                <li class="r-tabs-tab r-tabs-state-active active"><b
+                                                        class="arrow-up"></b><a
+                                                        data-toggle="tab" href="#sectionA" class="r-tabs-anchor"
+                                                        aria-expanded="true">${reserved} (${reservations.size()})</a>
+                                                </li>
+                                                <li class="r-tabs-tab r-tabs-state-default"><b class="arrow-up"></b><a
+                                                        data-toggle="tab" href="#sectionB" class="r-tabs-anchor"
+                                                        aria-expanded="false">${loaned} (${loans.size()})</a></li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="r-tabs-accordion-title r-tabs-state-active"><a
+                                                        href="#sectionA"
+                                                        class="r-tabs-anchor"></a>
+                                                </div>
+                                                <div id="sectionA"
+                                                     class="tab-pane fade r-tabs-panel r-tabs-state-active active in"
+                                                     style="display: block;">
+                                                    <form method="post"
+                                                          action="${pageContext.request.contextPath}/Controller">
+                                                        <c:if test="${reservations.size()>0}">
+                                                            <table class="table table-bordered shop_table cart">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="product-name"></th>
+                                                                    <th class="product-name">${mediaDetails}</th>
+                                                                    <th class="product-price">${startDate}</th>
+                                                                    <th class="product-price">${endDate}</th>
+                                                                    <th class="product-subtotal">${action}</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <c:forEach var="reservation" items="${reservations}">
+                                                                    <tr class="cart_item">
+                                                                        <td data-title="Product" class="product-name"
+                                                                            data-th="Title">
+                                                                            <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${reservation.mediaDetail.mediaID}"><img
+                                                                                    style="margin-right: 110px;"
+                                                                                    src="${reservation.mediaDetail.picture}"
+                                                                                    alt="cart-product-1"></a>
+                                                                        </td>
+                                                                        <td data-title="Price" class="product-price"
+                                                                            data-th="Pickup Location ">
+                                                                        <span class="product-detail">
+                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${reservation.mediaDetail.mediaID}">${reservation.mediaDetail.title}</a>
+                                                                                <span><strong>${format}: </strong>${reservation.mediaDetail.format}</span>
+                                                                                <span><strong>ISBN: </strong>${reservation.mediaDetail.iSBN}</span>
+                                                                        </span>
+                                                                        </td>
+                                                                        <td data-title="Price" class="product-price"
+                                                                            data-th="Pickup Location ">
+                                                                <span class="bt-content">
+                                                                    <p><tag:dateformater date="${reservation.startDate}"
+                                                                                         local="${sessionScope.local}"></tag:dateformater></p>
+                                                                </span>
+                                                                        </td>
+                                                                        <td data-title="Price" class="product-price"
+                                                                            data-th="Pickup Location ">
+                                                                <span class="bt-content">
+                                                                    <p><tag:dateformater date="${reservation.endDate}"
+                                                                                         local="${sessionScope.local}"></tag:dateformater></p>
+                                                                </span>
+                                                                        </td>
+                                                                        <td data-title="Price" class="product-price"
+                                                                            data-th="Pickup Location ">
+                                                                <span class="bt-content">
+                                                                          <div><a onClick="return window.confirm('${deleteConfirmation}');"
+                                                                                  href="${pageContext.request.contextPath}/Controller?command=delete_reservation&reservationId=${reservation.loanTypeId}&from=profile"
+                                                                                  class="btn btn-dark-gray">${deleteBtn}</a></div>
+                                                                </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                                </tbody>
+                                                            </table>
+                                                        </c:if>
+                                                    </form>
+                                                </div>
+
+                                                <div class="r-tabs-accordion-title r-tabs-state-default"><a
+                                                        href="#sectionB"
+                                                        class="r-tabs-anchor"></a>
+                                                </div>
+                                                <div id="sectionB"
+                                                     class="tab-pane fade r-tabs-panel r-tabs-state-default"
+                                                     style="display: none;">
+
+                                                    <c:if test="${loans.size()>0}">
                                                         <table class="table table-bordered shop_table cart">
                                                             <thead>
                                                             <tr>
@@ -132,45 +206,38 @@
                                                                 <th class="product-name">${mediaDetails}</th>
                                                                 <th class="product-price">${startDate}</th>
                                                                 <th class="product-price">${endDate}</th>
-                                                                <th class="product-subtotal">${action}</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <c:forEach var="reservation" items="${reservations}">
+                                                            <c:forEach var="loan" items="${loans}">
                                                                 <tr class="cart_item">
                                                                     <td data-title="Product" class="product-name"
                                                                         data-th="Title">
-                                                                        <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${reservation.mediaDetail.mediaID}"><img
+                                                                        <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${loan.mediaDetail.mediaID}"><img
                                                                                 style="margin-right: 110px;"
-                                                                                src="${reservation.mediaDetail.picture}"
+                                                                                src="${loan.mediaDetail.picture}"
                                                                                 alt="cart-product-1"></a>
                                                                     </td>
                                                                     <td data-title="Price" class="product-price"
                                                                         data-th="Pickup Location ">
                                                                         <span class="product-detail">
-                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${reservation.mediaDetail.mediaID}">${reservation.mediaDetail.title}</a>
-                                                                                <span><strong>${format}: </strong>${reservation.mediaDetail.format}</span>
-                                                                                <span><strong>ISBN: </strong>${reservation.mediaDetail.iSBN}</span>
+                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${loan.mediaDetail.mediaID}">${loan.mediaDetail.title}</a>
+                                                                                <span><strong>${format}: </strong>${loan.mediaDetail.format}</span>
+                                                                                <span><strong>ISBN: </strong>${loan.mediaDetail.iSBN}</span>
                                                                         </span>
                                                                     </td>
                                                                     <td data-title="Price" class="product-price"
                                                                         data-th="Pickup Location ">
                                                                 <span class="bt-content">
-                                                                    <p><tag:dateformater date="${reservation.startDate}" local="${sessionScope.local}"></tag:dateformater></p>
+                                                                    <p><tag:dateformater date="${loan.startDate}"
+                                                                                         local="${sessionScope.local}"></tag:dateformater></p>
                                                                 </span>
                                                                     </td>
                                                                     <td data-title="Price" class="product-price"
                                                                         data-th="Pickup Location ">
                                                                 <span class="bt-content">
-                                                                    <p><tag:dateformater date="${reservation.endDate}" local="${sessionScope.local}"></tag:dateformater></p>
-                                                                </span>
-                                                                    </td>
-                                                                    <td data-title="Price" class="product-price"
-                                                                        data-th="Pickup Location ">
-                                                                <span class="bt-content">
-                                                                          <div><a onClick="return window.confirm('${deleteConfirmation}');"
-                                                                                  href="${pageContext.request.contextPath}/Controller?command=delete_reservation&reservationId=${reservation.loanTypeId}&from=profile"
-                                                                                  class="btn btn-dark-gray">${deleteBtn}</a></div>
+                                                                    <p><tag:dateformater date="${loan.endDate}"
+                                                                                         local="${sessionScope.local}"></tag:dateformater></p>
                                                                 </span>
                                                                     </td>
                                                                 </tr>
@@ -178,66 +245,12 @@
                                                             </tbody>
                                                         </table>
                                                     </c:if>
-                                                </form>
-                                            </div>
-
-                                            <div class="r-tabs-accordion-title r-tabs-state-default"><a href="#sectionB"
-                                                                                                        class="r-tabs-anchor"></a>
-                                            </div>
-                                            <div id="sectionB" class="tab-pane fade r-tabs-panel r-tabs-state-default"
-                                                 style="display: none;">
-
-                                                <c:if test="${loans.size()>0}">
-                                                    <table class="table table-bordered shop_table cart">
-                                                        <thead>
-                                                        <tr>
-                                                            <th class="product-name"></th>
-                                                            <th class="product-name">${mediaDetails}</th>
-                                                            <th class="product-price">${startDate}</th>
-                                                            <th class="product-price">${endDate}</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <c:forEach var="loan" items="${loans}">
-                                                            <tr class="cart_item">
-                                                                <td data-title="Product" class="product-name"
-                                                                    data-th="Title">
-                                                                    <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${loan.mediaDetail.mediaID}"><img
-                                                                            style="margin-right: 110px;"
-                                                                            src="${loan.mediaDetail.picture}"
-                                                                            alt="cart-product-1"></a>
-                                                                </td>
-                                                                <td data-title="Price" class="product-price"
-                                                                    data-th="Pickup Location ">
-                                                                        <span class="product-detail">
-                                                                                <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${loan.mediaDetail.mediaID}">${loan.mediaDetail.title}</a>
-                                                                                <span><strong>${format}: </strong>${loan.mediaDetail.format}</span>
-                                                                                <span><strong>ISBN: </strong>${loan.mediaDetail.iSBN}</span>
-                                                                        </span>
-                                                                </td>
-                                                                <td data-title="Price" class="product-price"
-                                                                    data-th="Pickup Location ">
-                                                                <span class="bt-content">
-                                                                    <p><tag:dateformater date="${loan.startDate}" local="${sessionScope.local}"></tag:dateformater></p>
-                                                                </span>
-                                                                </td>
-                                                                <td data-title="Price" class="product-price"
-                                                                    data-th="Pickup Location ">
-                                                                <span class="bt-content">
-                                                                    <p><tag:dateformater date="${loan.endDate}" local="${sessionScope.local}"></tag:dateformater></p>
-                                                                </span>
-                                                                </td>
-                                                            </tr>
-                                                        </c:forEach>
-                                                        </tbody>
-                                                    </table>
-                                                </c:if>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         </c:if>
                     </div>
                 </div>

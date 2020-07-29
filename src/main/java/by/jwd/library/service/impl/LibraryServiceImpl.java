@@ -6,7 +6,6 @@ import by.jwd.library.bean.MediaDetail;
 import by.jwd.library.bean.MediaPage;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.LibraryDAO;
-import by.jwd.library.dao.connectionpool.ConnectionPool;
 import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.service.LibraryService;
 import by.jwd.library.service.ServiceException;

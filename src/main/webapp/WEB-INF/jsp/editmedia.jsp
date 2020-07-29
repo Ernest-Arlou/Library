@@ -1,35 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.language" var="language" />
-<fmt:message bundle="${loc}" key="local.price" var="price" />
-<fmt:message bundle="${loc}" key="local.restriction" var="restriction" />
-<fmt:message bundle="${loc}" key="local.author" var="author" />
-<fmt:message bundle="${loc}" key="local.authors" var="authors" />
-<fmt:message bundle="${loc}" key="local.genres" var="genres" />
-<fmt:message bundle="${loc}" key="local.summary" var="summary" />
-<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia" />
-<fmt:message bundle="${loc}" key="local.publisher" var="publisher" />
-<fmt:message bundle="${loc}" key="local.format" var="format" />
-<fmt:message bundle="${loc}" key="local.addMedia" var="addMedia" />
-<fmt:message bundle="${loc}" key="local.addMediaPage" var="addMediaPage" />
-<fmt:message bundle="${loc}" key="local.title" var="title" />
-<fmt:message bundle="${loc}" key="local.totalCopies" var="totalCopies" />
-<fmt:message bundle="${loc}" key="local.pictureUrl" var="pictureUrl" />
-<fmt:message bundle="${loc}" key="local.restriction" var="restriction" />
-<fmt:message bundle="${loc}" key="local.editMedia" var="editMedia" />
-<fmt:message bundle="${loc}" key="local.editMediaPage" var="editMediaPage" />
-<fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails" />
-<fmt:message bundle="${loc}" key="local.priceTestMSG" var="priceTestMSG" />
-<fmt:message bundle="${loc}" key="local.copiesTestMSG" var="copiesTestMSG" />
-<fmt:message bundle="${loc}" key="local.emptyFieldTestMSG" var="emptyFieldTestMSG" />
-
-
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.language" var="language"/>
+<fmt:message bundle="${loc}" key="local.price" var="price"/>
+<fmt:message bundle="${loc}" key="local.restriction" var="restriction"/>
+<fmt:message bundle="${loc}" key="local.author" var="author"/>
+<fmt:message bundle="${loc}" key="local.authors" var="authors"/>
+<fmt:message bundle="${loc}" key="local.genres" var="genres"/>
+<fmt:message bundle="${loc}" key="local.summary" var="summary"/>
+<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia"/>
+<fmt:message bundle="${loc}" key="local.publisher" var="publisher"/>
+<fmt:message bundle="${loc}" key="local.format" var="format"/>
+<fmt:message bundle="${loc}" key="local.addMedia" var="addMedia"/>
+<fmt:message bundle="${loc}" key="local.addMediaPage" var="addMediaPage"/>
+<fmt:message bundle="${loc}" key="local.title" var="title"/>
+<fmt:message bundle="${loc}" key="local.totalCopies" var="totalCopies"/>
+<fmt:message bundle="${loc}" key="local.pictureUrl" var="pictureUrl"/>
+<fmt:message bundle="${loc}" key="local.restriction" var="restriction"/>
+<fmt:message bundle="${loc}" key="local.editMedia" var="editMedia"/>
+<fmt:message bundle="${loc}" key="local.editMediaPage" var="editMediaPage"/>
+<fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails"/>
+<fmt:message bundle="${loc}" key="local.priceTestMSG" var="priceTestMSG"/>
+<fmt:message bundle="${loc}" key="local.copiesTestMSG" var="copiesTestMSG"/>
+<fmt:message bundle="${loc}" key="local.emptyFieldTestMSG" var="emptyFieldTestMSG"/>
 
 
 <!DOCTYPE html>
@@ -67,7 +65,7 @@
             let totalCopies = document.getElementById("copies");
 
             if (empty(title) || empty(summary) || empty(isbn) || empty(picture) ||
-            empty(publisher) || empty(format) || empty(language) || empty(authors) || empty(genres)){
+                empty(publisher) || empty(format) || empty(language) || empty(authors) || empty(genres)) {
                 return false;
             }
 
@@ -84,8 +82,9 @@
                 return false;
             }
         }
+
         function empty(testField) {
-            if (testField.value === ''){
+            if (testField.value === '') {
                 alert("${emptyFieldTestMSG}");
                 testField.focus();
                 testField.style.background = '#f08080';
@@ -116,7 +115,9 @@
         <div class="breadcrumb">
             <ul>
                 <li><a href="${pageContext.request.contextPath}/Controller">${home}</a></li>
-                <li><a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${mediaDetail.mediaID}">${mediaDetails}</a></li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/Controller?command=media_detail&mediaId=${mediaDetail.mediaID}">${mediaDetails}</a>
+                </li>
                 <li>${editMediaPage}</li>
             </ul>
         </div>
@@ -147,7 +148,7 @@
                                             <span class="underline left"></span>
                                             <div class="contact-fields">
 
-                                                <form action="Controller" method="post" onsubmit="return validate();" >
+                                                <form action="Controller" method="post" onsubmit="return validate();">
                                                     <input type="hidden" name="command" value="edit_media">
                                                     <input type="hidden" name="mediaId" value="${mediaDetail.mediaID}">
                                                     <div class="row">
@@ -169,7 +170,8 @@
                                                             <div class="form-group">
                                                                 <b>${publisher}</b>
                                                                 <input class="form-control" type="text" id="publisher"
-                                                                       name="publisher" value="${mediaDetail.publisher}"/>
+                                                                       name="publisher"
+                                                                       value="${mediaDetail.publisher}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
@@ -197,14 +199,16 @@
                                                             <div class="form-group">
                                                                 <b>${authors}</b>
                                                                 <input class="form-control" type="text" id="authors"
-                                                                       name="authors" value="<c:forEach var="item" items="${mediaDetail.authors}">${item.fullName};</c:forEach>"/>
+                                                                       name="authors"
+                                                                       value="<c:forEach var="item" items="${mediaDetail.authors}">${item.fullName};</c:forEach>"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <b>${genres}</b>
                                                                 <input class="form-control" type="text" id="genres"
-                                                                       name="genres" value="<c:forEach var="item" items="${mediaDetail.genres}">${item.genre};</c:forEach>"/>
+                                                                       name="genres"
+                                                                       value="<c:forEach var="item" items="${mediaDetail.genres}">${item.genre};</c:forEach>"/>
                                                             </div>
                                                         </div>
 
@@ -212,7 +216,8 @@
                                                             <div class="form-group">
                                                                 <b>${totalCopies}</b>
                                                                 <input class="form-control" type="text" id="copies"
-                                                                       name="copies" value="${mediaDetail.totalCopies}"/>
+                                                                       name="copies"
+                                                                       value="${mediaDetail.totalCopies}"/>
                                                             </div>
                                                         </div>
 
@@ -229,9 +234,9 @@
                                                                 <b>${restriction}</b>
                                                                 <input class="form-control" type="text" id="restriction"
                                                                        name="restriction"
-                                                                       <c:if test="${not empty mediaDetail.restriction}">
-                                                                             value="${mediaDetail.restriction}"
-                                                                       </c:if>
+                                                                        <c:if test="${not empty mediaDetail.restriction}">
+                                                                            value="${mediaDetail.restriction}"
+                                                                        </c:if>
                                                                 />
                                                             </div>
                                                         </div>
@@ -239,7 +244,9 @@
                                                         <div class="col-sm-12">
                                                             <div class="form-group">
                                                                 <b>${summary}</b>
-                                                                <textarea class="form-control" name="summary" id="summary" style="height: 300px">${mediaDetail.summary}</textarea>
+                                                                <textarea class="form-control" name="summary"
+                                                                          id="summary"
+                                                                          style="height: 300px">${mediaDetail.summary}</textarea>
                                                                 <div class="clearfix"></div>
                                                             </div>
                                                         </div>

@@ -1,6 +1,5 @@
 package by.jwd.library.dao.impl;
 
-import by.jwd.library.Main;
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.UserDAO;
@@ -71,7 +70,7 @@ public class UserDAOImpl implements UserDAO {
         DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
 
         try {
-            logger.debug("searchUnverifiedUsers searchStr = {}",searchStr);
+            logger.debug("searchUnverifiedUsers searchStr = {}", searchStr);
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
             searchPrepStatement = connection.prepareStatement(SEARCH_UNVERIFIED_USERS);
@@ -86,14 +85,14 @@ public class UserDAOImpl implements UserDAO {
                 userList.add(daoUtil.buildUser(usersSet));
             }
 
-            logger.debug("searchUnverifiedUsers userList = {}",userList);
+            logger.debug("searchUnverifiedUsers userList = {}", userList);
             return userList;
 
         } catch (SQLException e) {
-            logger.error("SQLException in UserDAOImpl method searchUnverifiedUsers()",e);
+            logger.error("SQLException in UserDAOImpl method searchUnverifiedUsers()", e);
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
-            logger.error("ConnectionPoolException in UserDAOImpl method searchUnverifiedUsers()",e);
+            logger.error("ConnectionPoolException in UserDAOImpl method searchUnverifiedUsers()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
             ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, searchPrepStatement, usersSet);
@@ -117,13 +116,13 @@ public class UserDAOImpl implements UserDAO {
                 users.add(daoUtil.buildUser(resultSet));
             }
 
-            logger.debug("getUnverifiedUsers users = {}",users);
+            logger.debug("getUnverifiedUsers users = {}", users);
             return users;
         } catch (SQLException e) {
-            logger.error("SQLException in UserDAOImpl method getUnverifiedUsers()",e);
+            logger.error("SQLException in UserDAOImpl method getUnverifiedUsers()", e);
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
-            logger.error("ConnectionPoolException in UserDAOImpl method getUnverifiedUsers()",e);
+            logger.error("ConnectionPoolException in UserDAOImpl method getUnverifiedUsers()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
             ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
@@ -134,9 +133,9 @@ public class UserDAOImpl implements UserDAO {
     public void updateUser(User user) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        
+
         try {
-            logger.debug("updateUser user = {}",user);
+            logger.debug("updateUser user = {}", user);
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
             connection.setAutoCommit(false);
@@ -163,10 +162,10 @@ public class UserDAOImpl implements UserDAO {
                 logger.debug("updateUser rollback failed");
                 throw new DAOException("Impossible to rollback method updateUser", e);
             }
-            logger.error("SQLException in UserDAOImpl method updateUser()",e);
+            logger.error("SQLException in UserDAOImpl method updateUser()", e);
             throw new DAOException("SQLException in method updateUser", e);
         } catch (ConnectionPoolException e) {
-            logger.error("ConnectionPoolException in UserDAOImpl method updateUser()",e);
+            logger.error("ConnectionPoolException in UserDAOImpl method updateUser()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
             ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
@@ -179,7 +178,7 @@ public class UserDAOImpl implements UserDAO {
         PreparedStatement preparedStatement = null;
 
         try {
-            logger.debug("addUser user = {}",user);
+            logger.debug("addUser user = {}", user);
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
 
             connection.setAutoCommit(false);
@@ -205,10 +204,10 @@ public class UserDAOImpl implements UserDAO {
                 logger.debug("addUser rollback failed");
                 throw new DAOException("Impossible to rollback method addUser", e);
             }
-            logger.error("SQLException in UserDAOImpl method addUser()",e);
+            logger.error("SQLException in UserDAOImpl method addUser()", e);
             throw new DAOException("SQLException in method addUser", e);
         } catch (ConnectionPoolException e) {
-            logger.error("ConnectionPoolException in UserDAOImpl method addUser()",e);
+            logger.error("ConnectionPoolException in UserDAOImpl method addUser()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
             ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
@@ -222,17 +221,17 @@ public class UserDAOImpl implements UserDAO {
 
         DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
-            logger.debug("getUserByStringParameter paramValue = {}; query = {} ",paramValue, query);
+            logger.debug("getUserByStringParameter paramValue = {}; query = {} ", paramValue, query);
 
             connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, paramValue);
             return daoUtil.getUserFromPreparedStatement(preparedStatement);
         } catch (SQLException e) {
-            logger.error("SQLException in UserDAOImpl method getUserByStringParameter()",e);
+            logger.error("SQLException in UserDAOImpl method getUserByStringParameter()", e);
             throw new DAOException("SQL error", e);
         } catch (ConnectionPoolException e) {
-            logger.error("ConnectionPoolException in UserDAOImpl method getUserByStringParameter()",e);
+            logger.error("ConnectionPoolException in UserDAOImpl method getUserByStringParameter()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
             ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);

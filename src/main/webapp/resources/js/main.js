@@ -267,13 +267,13 @@ $(function () {
     //--------------------------------------------------------
     var requiredFieldObj = $('.input-required');
 
-    requiredFieldObj.find('input').on('focus',function(){
-        if(!$(this).parent(requiredFieldObj).find('label').hasClass('hide')){
+    requiredFieldObj.find('input').on('focus', function () {
+        if (!$(this).parent(requiredFieldObj).find('label').hasClass('hide')) {
             $(this).parent(requiredFieldObj).find('label').addClass('hide');
         }
     });
-    requiredFieldObj.find('input').on('blur',function(){
-        if($(this).val() === '' && $(this).parent(requiredFieldObj).find('label').hasClass('hide')){
+    requiredFieldObj.find('input').on('blur', function () {
+        if ($(this).val() === '' && $(this).parent(requiredFieldObj).find('label').hasClass('hide')) {
             $(this).parent(requiredFieldObj).find('label').removeClass('hide');
         }
     });
@@ -297,17 +297,17 @@ $(function () {
     var popularWidthD1 = 370;
     var popularMarginD1 = 54;
 
-    if($(window).width() <= 1199) {
+    if ($(window).width() <= 1199) {
         popularSlidesD1 = 2;
         popularWidthD1 = 330;
         popularMarginD1 = 37;
     }
-    if($(window).width() <= 991) {
+    if ($(window).width() <= 991) {
         popularSlidesD1 = 2;
         popularWidthD1 = 350;
         popularMarginD1 = 20;
     }
-    if($(window).width() <= 767) {
+    if ($(window).width() <= 767) {
         popularSlidesD1 = 1;
         popularWidthD1 = 320;
         popularMarginD1 = 0;
@@ -332,17 +332,17 @@ $(function () {
     var popularWidthD2 = 360;
     var popularMarginD2 = 30;
 
-    if($(window).width() <= 1199) {
+    if ($(window).width() <= 1199) {
         popularSlidesD2 = 3;
         popularWidthD2 = 300;
         popularMarginD2 = 20;
     }
-    if($(window).width() <= 991) {
+    if ($(window).width() <= 991) {
         popularSlidesD2 = 2;
         popularWidthD2 = 350;
         popularMarginD2 = 20;
     }
-    if($(window).width() <= 767) {
+    if ($(window).width() <= 767) {
         popularSlidesD2 = 1;
         popularWidthD2 = 320;
         popularMarginD2 = 0;
@@ -376,6 +376,7 @@ $(function () {
 
     contactFormObj.on('click', function () {
         var emailaddress = emailFieldObj.val();
+
         function validateEmail(emailaddress) {
             var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
             if (filter.test(emailaddress)) {
@@ -422,7 +423,7 @@ $(function () {
     });
 });
 
-$( window ).load(function() {
+$(window).load(function () {
     //Masonry
     //--------------------------------------------------------
     var girdFieldObj = $('.grid');

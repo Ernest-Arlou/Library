@@ -1,32 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib prefix="tag" tagdir="/WEB-INF/tags"  %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.returnMedia" var="returnMedia" />
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.returnMedia" var="returnMedia"/>
 <fmt:message bundle="${loc}" key="local.searchByPassportId" var="searchByPassportId"/>
-<fmt:message bundle="${loc}" key="local.button.search" var="search" />
-<fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails" />
-<fmt:message bundle="${loc}" key="local.loanDescription" var="loanDescription" />
-<fmt:message bundle="${loc}" key="local.userDetails" var="userDetails" />
-<fmt:message bundle="${loc}" key="local.action" var="action" />
-<fmt:message bundle="${loc}" key="local.format" var="format" />
-<fmt:message bundle="${loc}" key="local.startDate" var="startDate" />
-<fmt:message bundle="${loc}" key="local.endDate" var="endDate" />
-<fmt:message bundle="${loc}" key="local.name" var="name" />
-<fmt:message bundle="${loc}" key="local.email" var="email" />
-<fmt:message bundle="${loc}" key="local.passportId" var="passportId" />
-<fmt:message bundle="${loc}" key="local.giveOut" var="giveOut" />
-<fmt:message bundle="${loc}" key="local.button.delete" var="delete" />
-<fmt:message bundle="${loc}" key="local.deleteConfirmation" var="deleteConfirmation" />
-<fmt:message bundle="${loc}" key="local.userSearch" var="userSearch" />
-<fmt:message bundle="${loc}" key="local.restriction" var="restriction" />
-<fmt:message bundle="${loc}" key="local.price" var="price" />
-<fmt:message bundle="${loc}" key="local.close" var="close" />
+<fmt:message bundle="${loc}" key="local.button.search" var="search"/>
+<fmt:message bundle="${loc}" key="local.mediaDetails" var="mediaDetails"/>
+<fmt:message bundle="${loc}" key="local.loanDescription" var="loanDescription"/>
+<fmt:message bundle="${loc}" key="local.userDetails" var="userDetails"/>
+<fmt:message bundle="${loc}" key="local.action" var="action"/>
+<fmt:message bundle="${loc}" key="local.format" var="format"/>
+<fmt:message bundle="${loc}" key="local.startDate" var="startDate"/>
+<fmt:message bundle="${loc}" key="local.endDate" var="endDate"/>
+<fmt:message bundle="${loc}" key="local.name" var="name"/>
+<fmt:message bundle="${loc}" key="local.email" var="email"/>
+<fmt:message bundle="${loc}" key="local.passportId" var="passportId"/>
+<fmt:message bundle="${loc}" key="local.giveOut" var="giveOut"/>
+<fmt:message bundle="${loc}" key="local.button.delete" var="delete"/>
+<fmt:message bundle="${loc}" key="local.deleteConfirmation" var="deleteConfirmation"/>
+<fmt:message bundle="${loc}" key="local.userSearch" var="userSearch"/>
+<fmt:message bundle="${loc}" key="local.restriction" var="restriction"/>
+<fmt:message bundle="${loc}" key="local.price" var="price"/>
+<fmt:message bundle="${loc}" key="local.close" var="close"/>
 
 
 <html lang="zxx">
@@ -155,11 +155,15 @@
                                                                  <span class="product-detail">
                                                                      <div>
                                                                          <div><strong>${startDate}: </strong></div>
-                                                                         <div><tag:dateformater date="${item.loanType.startDate}" local="${sessionScope.local}"></tag:dateformater></div>
+                                                                         <div><tag:dateformater
+                                                                                 date="${item.loanType.startDate}"
+                                                                                 local="${sessionScope.local}"></tag:dateformater></div>
                                                                      </div>
                                                                      <div>
                                                                          <div><strong>${endDate}: </strong></div>
-                                                                         <div><tag:dateformater date="${item.loanType.endDate}" local="${sessionScope.local}"></tag:dateformater></div>
+                                                                         <div><tag:dateformater
+                                                                                 date="${item.loanType.endDate}"
+                                                                                 local="${sessionScope.local}"></tag:dateformater></div>
                                                                  </div>
                                                                  </span>
                                                         </td>
@@ -186,8 +190,9 @@
                                                         </td>
                                                         <td data-title="Price" class="product-price"
                                                             data-th="Pickup Location ">
-                                                            <div> <a href="${pageContext.request.contextPath}/Controller?command=return_media&loanId=${item.loanType.loanTypeId}&copyId=${item.loanType.copyId}"
-                                                                     class="btn btn-dark-gray">${close}</a></div>
+                                                            <div>
+                                                                <a href="${pageContext.request.contextPath}/Controller?command=return_media&loanId=${item.loanType.loanTypeId}&copyId=${item.loanType.copyId}"
+                                                                   class="btn btn-dark-gray">${close}</a></div>
                                                             <div><br></div>
                                                         </td>
                                                     </tr>

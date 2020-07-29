@@ -10,9 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 final class CommandProvider {
-    private final Map<CommandName, Command> repository = new HashMap<>();
-
     private static final Logger logger = LoggerFactory.getLogger(CommandProvider.class);
+    private final Map<CommandName, Command> repository = new HashMap<>();
 
     CommandProvider() {
         repository.put(CommandName.LOGIN, new LogIn());

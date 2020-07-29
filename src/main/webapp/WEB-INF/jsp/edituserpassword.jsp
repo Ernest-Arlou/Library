@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.profile" var="profile" />
-<fmt:message bundle="${loc}" key="local.passwordTestMSG" var="passwordTestMSG" />
-<fmt:message bundle="${loc}" key="local.newPassword" var="newPassword" />
-<fmt:message bundle="${loc}" key="local.oldPassword" var="oldPassword" />
-<fmt:message bundle="${loc}" key="local.oldPasswordNotMatch" var="oldPasswordNotMatch" />
-<fmt:message bundle="${loc}" key="local.editPasswordPage" var="editPasswordPage" />
-<fmt:message bundle="${loc}" key="local.edit" var="edit" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.profile" var="profile"/>
+<fmt:message bundle="${loc}" key="local.passwordTestMSG" var="passwordTestMSG"/>
+<fmt:message bundle="${loc}" key="local.newPassword" var="newPassword"/>
+<fmt:message bundle="${loc}" key="local.oldPassword" var="oldPassword"/>
+<fmt:message bundle="${loc}" key="local.oldPasswordNotMatch" var="oldPasswordNotMatch"/>
+<fmt:message bundle="${loc}" key="local.editPasswordPage" var="editPasswordPage"/>
+<fmt:message bundle="${loc}" key="local.edit" var="edit"/>
 
 
 <!DOCTYPE html>
@@ -39,7 +39,7 @@
             let oldPassword = document.getElementById("old_password");
             let oldPassword1 = document.getElementById("old_password1");
 
-            if (oldPassword.value !== oldPassword1.value){
+            if (oldPassword.value !== oldPassword1.value) {
                 alert("${oldPasswordNotMatch}");
                 return false;
             }
@@ -108,22 +108,25 @@
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <b>${oldPassword}</b>
-                                                                <input class="form-control" type="password" id="old_password"
-                                                                        name="oldPassword" />
+                                                                <input class="form-control" type="password"
+                                                                       id="old_password"
+                                                                       name="oldPassword"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <b>${oldPassword}</b>
-                                                                <input class="form-control" type="password" id="old_password1"
-                                                                        name="oldPassword1" />
+                                                                <input class="form-control" type="password"
+                                                                       id="old_password1"
+                                                                       name="oldPassword1"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <b>${newPassword}</b>
-                                                                <input class="form-control" type="password" id="new_password"
-                                                                        name="newPassword" />
+                                                                <input class="form-control" type="password"
+                                                                       id="new_password"
+                                                                       name="newPassword"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-12">

@@ -1,20 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.profile" var="profile" />
-<fmt:message bundle="${loc}" key="local.editProfilePage" var="editProfilePage" />
-<fmt:message bundle="${loc}" key="local.nameTestMSG" var="nameTestMSG" />
-<fmt:message bundle="${loc}" key="local.emailTestMSG" var="emailTestMSG" />
-<fmt:message bundle="${loc}" key="local.loginTestMSG" var="loginTestMSG" />
-<fmt:message bundle="${loc}" key="local.name" var="name" />
-<fmt:message bundle="${loc}" key="local.email" var="email" />
-<fmt:message bundle="${loc}" key="local.loginField" var="loginField" />
-<fmt:message bundle="${loc}" key="local.editProfile" var="editProfile" />
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.profile" var="profile"/>
+<fmt:message bundle="${loc}" key="local.editProfilePage" var="editProfilePage"/>
+<fmt:message bundle="${loc}" key="local.nameTestMSG" var="nameTestMSG"/>
+<fmt:message bundle="${loc}" key="local.emailTestMSG" var="emailTestMSG"/>
+<fmt:message bundle="${loc}" key="local.loginTestMSG" var="loginTestMSG"/>
+<fmt:message bundle="${loc}" key="local.name" var="name"/>
+<fmt:message bundle="${loc}" key="local.email" var="email"/>
+<fmt:message bundle="${loc}" key="local.loginField" var="loginField"/>
+<fmt:message bundle="${loc}" key="local.editProfile" var="editProfile"/>
 
 
 <!DOCTYPE html>
@@ -136,7 +136,7 @@
                                                             <div class="form-group">
                                                                 <b>${loginField}</b>
                                                                 <input class="form-control" type="text" id="login"
-                                                                        name="login" value="${user.login}"/>
+                                                                       name="login" value="${user.login}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-12">

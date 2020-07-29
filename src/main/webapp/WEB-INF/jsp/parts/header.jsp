@@ -159,7 +159,7 @@
                                     </li>
                                 </c:otherwise>
                             </c:choose>
-                            
+
                             <li>
                                 <a href="${pageContext.request.contextPath}/Controller">${home}</a>
                             </li>

@@ -3,7 +3,6 @@ package by.jwd.library.controller;
 import by.jwd.library.controller.command.Command;
 import by.jwd.library.controller.command.CommandException;
 import by.jwd.library.controller.constant.JSPPath;
-import by.jwd.library.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,18 +17,17 @@ public class Controller extends HttpServlet {
 
     private static final long serialVersionUID = 1708654178823021864L;
     private final static String REQUEST_PARAM_COMMAND = "command";
-    private final CommandProvider provider = new CommandProvider();
-
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+    private final CommandProvider provider = new CommandProvider();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processCommand(request,response);
+        processCommand(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       processCommand(request,response);
+        processCommand(request, response);
     }
 
     private void processCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

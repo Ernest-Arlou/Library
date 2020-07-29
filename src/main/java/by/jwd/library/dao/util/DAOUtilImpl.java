@@ -31,13 +31,13 @@ public class DAOUtilImpl implements DAOUtil {
     private User getUserByIdwCon(Connection connection, int userId) throws DAOException {
         PreparedStatement preparedStatement = null;
         try {
-            logger.debug("getUserByIdwCon userId = {}",userId);
+            logger.debug("getUserByIdwCon userId = {}", userId);
 
             preparedStatement = connection.prepareStatement(GET_USER_BY_ID);
             preparedStatement.setInt(1, userId);
             User user = getUserFromPreparedStatement(preparedStatement);
 
-            logger.debug("getUserByIdwCon user = {}",user);
+            logger.debug("getUserByIdwCon user = {}", user);
 
             return user;
         } catch (SQLException e) {

@@ -1,24 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.verify" var="verify" />
-<fmt:message bundle="${loc}" key="local.userVerification" var="userVerification" />
-<fmt:message bundle="${loc}" key="local.name" var="name" />
-<fmt:message bundle="${loc}" key="local.email" var="email" />
-<fmt:message bundle="${loc}" key="local.passportId" var="passportId" />
-<fmt:message bundle="${loc}" key="local.loginField" var="loginField" />
-<fmt:message bundle="${loc}" key="local.action" var="action" />
-<fmt:message bundle="${loc}" key="local.editPassportId" var="editPassportId" />
-<fmt:message bundle="${loc}" key="local.verificationSearch" var="verificationSearch" />
-<fmt:message bundle="${loc}" key="local.button.search" var="search" />
-<fmt:message bundle="${loc}" key="local.userSearch" var="userSearch" />
-
-
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.verify" var="verify"/>
+<fmt:message bundle="${loc}" key="local.userVerification" var="userVerification"/>
+<fmt:message bundle="${loc}" key="local.name" var="name"/>
+<fmt:message bundle="${loc}" key="local.email" var="email"/>
+<fmt:message bundle="${loc}" key="local.passportId" var="passportId"/>
+<fmt:message bundle="${loc}" key="local.loginField" var="loginField"/>
+<fmt:message bundle="${loc}" key="local.action" var="action"/>
+<fmt:message bundle="${loc}" key="local.editPassportId" var="editPassportId"/>
+<fmt:message bundle="${loc}" key="local.verificationSearch" var="verificationSearch"/>
+<fmt:message bundle="${loc}" key="local.button.search" var="search"/>
+<fmt:message bundle="${loc}" key="local.userSearch" var="userSearch"/>
 
 
 <html lang="zxx">

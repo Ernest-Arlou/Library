@@ -36,7 +36,7 @@ public class UserValidatorImpl implements UserValidator {
         if (user.getLogin() == null || !validateLogin(user.getLogin())) {
             validationResult.add(String.valueOf(InvalidParameter.LOGIN));
         }
-        
+
         if (user.getPassportId() == null || !validatePassportId(user.getPassportId())) {
             validationResult.add(String.valueOf(InvalidParameter.PASSPORT_ID));
         }

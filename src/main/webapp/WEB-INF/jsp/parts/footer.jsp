@@ -7,7 +7,8 @@
                         <h3 class="footer-widget-title">About Libraria</h3>
                         <span class="underline left"></span>
                         <div class="textwidget">
-                            It is a long established fact that a reader will be distracted by the readable content of a page when looking.
+                            It is a long established fact that a reader will be distracted by the readable content of a
+                            page when looking.
                         </div>
                         <address>
                             <div class="info">
@@ -65,10 +66,12 @@
                         <div id="twitter-feed">
                             <ul>
                                 <li>
-                                    <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a></p>
+                                    <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error
+                                        sit voluptatem. <a href="#">template-libraria.com</a></p>
                                 </li>
                                 <li>
-                                    <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a></p>
+                                    <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error
+                                        sit voluptatem. <a href="#">template-libraria.com</a></p>
                                 </li>
                             </ul>
                         </div>

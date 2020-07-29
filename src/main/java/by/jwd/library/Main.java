@@ -1,10 +1,7 @@
 package by.jwd.library;
 
 import by.jwd.library.dao.DAOException;
-import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
 import by.jwd.library.service.ServiceException;
-import by.jwd.library.service.factory.ServiceFactory;
-import by.jwd.library.service.util.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -6,7 +6,6 @@ import by.jwd.library.dao.LibraryDAO;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
 import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
 import by.jwd.library.dao.factory.DAOFactory;
-import by.jwd.library.dao.util.DAOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

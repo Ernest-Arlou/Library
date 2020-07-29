@@ -1,30 +1,30 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.language" var="language" />
-<fmt:message bundle="${loc}" key="local.price" var="price" />
-<fmt:message bundle="${loc}" key="local.restriction" var="restriction" />
-<fmt:message bundle="${loc}" key="local.author" var="author" />
-<fmt:message bundle="${loc}" key="local.authors" var="authors" />
-<fmt:message bundle="${loc}" key="local.genres" var="genres" />
-<fmt:message bundle="${loc}" key="local.summary" var="summary" />
-<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia" />
-<fmt:message bundle="${loc}" key="local.publisher" var="publisher" />
-<fmt:message bundle="${loc}" key="local.format" var="format" />
-<fmt:message bundle="${loc}" key="local.addMedia" var="addMedia" />
-<fmt:message bundle="${loc}" key="local.addMediaPage" var="addMediaPage" />
-<fmt:message bundle="${loc}" key="local.title" var="title" />
-<fmt:message bundle="${loc}" key="local.totalCopies" var="totalCopies" />
-<fmt:message bundle="${loc}" key="local.pictureUrl" var="pictureUrl" />
-<fmt:message bundle="${loc}" key="local.restriction" var="restriction" />
-<fmt:message bundle="${loc}" key="local.priceTestMSG" var="priceTestMSG" />
-<fmt:message bundle="${loc}" key="local.copiesTestMSG" var="copiesTestMSG" />
-<fmt:message bundle="${loc}" key="local.emptyFieldTestMSG" var="emptyFieldTestMSG" />
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.language" var="language"/>
+<fmt:message bundle="${loc}" key="local.price" var="price"/>
+<fmt:message bundle="${loc}" key="local.restriction" var="restriction"/>
+<fmt:message bundle="${loc}" key="local.author" var="author"/>
+<fmt:message bundle="${loc}" key="local.authors" var="authors"/>
+<fmt:message bundle="${loc}" key="local.genres" var="genres"/>
+<fmt:message bundle="${loc}" key="local.summary" var="summary"/>
+<fmt:message bundle="${loc}" key="local.booksNMedia" var="booksNMedia"/>
+<fmt:message bundle="${loc}" key="local.publisher" var="publisher"/>
+<fmt:message bundle="${loc}" key="local.format" var="format"/>
+<fmt:message bundle="${loc}" key="local.addMedia" var="addMedia"/>
+<fmt:message bundle="${loc}" key="local.addMediaPage" var="addMediaPage"/>
+<fmt:message bundle="${loc}" key="local.title" var="title"/>
+<fmt:message bundle="${loc}" key="local.totalCopies" var="totalCopies"/>
+<fmt:message bundle="${loc}" key="local.pictureUrl" var="pictureUrl"/>
+<fmt:message bundle="${loc}" key="local.restriction" var="restriction"/>
+<fmt:message bundle="${loc}" key="local.priceTestMSG" var="priceTestMSG"/>
+<fmt:message bundle="${loc}" key="local.copiesTestMSG" var="copiesTestMSG"/>
+<fmt:message bundle="${loc}" key="local.emptyFieldTestMSG" var="emptyFieldTestMSG"/>
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -61,7 +61,7 @@
             let totalCopies = document.getElementById("copies");
 
             if (empty(title) || empty(summary) || empty(isbn) || empty(picture) ||
-                empty(publisher) || empty(format) || empty(language) || empty(authors) || empty(genres)){
+                empty(publisher) || empty(format) || empty(language) || empty(authors) || empty(genres)) {
                 return false;
             }
 
@@ -78,8 +78,9 @@
                 return false;
             }
         }
+
         function empty(testField) {
-            if (testField.value === ''){
+            if (testField.value === '') {
                 alert("${emptyFieldTestMSG}");
                 testField.focus();
                 testField.style.background = '#f08080';
@@ -225,7 +226,8 @@
                                                         <div class="col-sm-12">
                                                             <div class="form-group">
                                                                 <b>${summary}</b>
-                                                                <textarea class="form-control" name="summary"  id="summary" style="height: 300px"></textarea>
+                                                                <textarea class="form-control" name="summary"
+                                                                          id="summary" style="height: 300px"></textarea>
                                                                 <div class="clearfix"></div>
                                                             </div>
                                                         </div>

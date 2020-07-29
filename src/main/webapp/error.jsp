@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="local/local" var="loc" />
+<fmt:setLocale value="${sessionScope.local}"/>
+<fmt:setBundle basename="local/local" var="loc"/>
 
-<fmt:message bundle="${loc}" key="local.home" var="home" />
-<fmt:message bundle="${loc}" key="local.error404" var="error404" />
-<fmt:message bundle="${loc}" key="local.oops" var="oops" />
-<fmt:message bundle="${loc}" key="local.pageNotFound" var="pageNotFound" />
-<fmt:message bundle="${loc}" key="local.page404Text" var="page404Text" />
+<fmt:message bundle="${loc}" key="local.home" var="home"/>
+<fmt:message bundle="${loc}" key="local.error404" var="error404"/>
+<fmt:message bundle="${loc}" key="local.oops" var="oops"/>
+<fmt:message bundle="${loc}" key="local.pageNotFound" var="pageNotFound"/>
+<fmt:message bundle="${loc}" key="local.page404Text" var="page404Text"/>
 
 
 <html lang="zxx">
@@ -19,7 +19,7 @@
     <title>..:: LIBRARIA ::..</title>
 
     <!-- Meta -->
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
 
     <!-- Start: Css Section -->
@@ -71,11 +71,12 @@
                             <div class="col-md-5  ">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="error-info bg-light margin-right text-center" >
+                                        <div class="error-info bg-light margin-right text-center">
                                             <br><br><br>
                                             <h2>${oops} <small>${pageNotFound}!</small></h2>
                                             <span>${page404Text}.</span>
-                                            <a href="${pageContext.request.contextPath}/Controller" class="btn btn-dark-gray">${home}</a>
+                                            <a href="${pageContext.request.contextPath}/Controller"
+                                               class="btn btn-dark-gray">${home}</a>
                                             <br><br><br>
                                         </div>
                                     </div>

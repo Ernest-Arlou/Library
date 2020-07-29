@@ -9,10 +9,8 @@ import java.sql.SQLException;
 
 public final class ConnectionPoolManager {
     private static final ConnectionPoolManager instance = new ConnectionPoolManager();
-
-    private final ConnectionPool connectionPool = new ConnectionPool();
-
     private static final Logger logger = LoggerFactory.getLogger(ConnectionPoolManager.class);
+    private final ConnectionPool connectionPool = new ConnectionPool();
 
     private ConnectionPoolManager() {
     }

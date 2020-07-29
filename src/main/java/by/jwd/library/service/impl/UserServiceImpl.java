@@ -95,11 +95,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        if (BCrypt.verifyHash(password, user.getPassword())) {
-            return true;
-        } else {
-            return false;
-        }
+        return BCrypt.verifyHash(password, user.getPassword());
     }
 
     @Override

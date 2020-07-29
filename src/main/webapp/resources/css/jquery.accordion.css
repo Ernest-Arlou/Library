@@ -18,6 +18,7 @@
 .open [data-content] .open[data-accordion]:last-child h5 {
     margin-bottom: 30px;
 }
+
 /* Basic Style */
 
 [data-accordion] [data-control] {
@@ -37,7 +38,7 @@
 }
 
 [data-accordion].open > [data-control]:after {
-    -webkit-transform: rotate(-180deg); 
-    -ms-transform: rotate(-180deg); 
-    transform: rotate(-180deg); 
+    -webkit-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    transform: rotate(-180deg);
 }
