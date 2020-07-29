@@ -212,10 +212,6 @@ public class MediaDetail implements Serializable {
         if ((obj.getClass() != this.getClass())) return false;
         MediaDetail that = (MediaDetail) obj;
         return mediaID == that.mediaID &&
-                totalCopies == that.totalCopies &&
-                availableCopies == that.availableCopies &&
-                reservedCopies == that.reservedCopies &&
-                loanedCopies == that.loanedCopies &&
                 Double.compare(that.price, price) == 0 &&
                 title.equals(that.title) &&
                 summary.equals(that.summary) &&
@@ -231,7 +227,7 @@ public class MediaDetail implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mediaID, totalCopies, availableCopies, reservedCopies, loanedCopies, price, title, summary, iSBN, picture, publisher, format, language, restriction, authors, genres);
+        return Objects.hash(mediaID, price, title, summary, iSBN, picture, publisher, format, language, restriction, authors, genres);
     }
 
     @Override
