@@ -18,15 +18,13 @@ public interface LibraryDAO {
 
     List<LoanType> getLoansForMedia(int mediaId) throws DAOException;
 
-//    List<LoanType> getReservationsForMedia(int mediaId) throws DAOException;
-
     void editMedia(MediaDetail mediaDetail) throws DAOException;
 
     int addMedia(MediaDetail mediaDetail) throws DAOException;
 
     void giveOutCopy(int userId, int copyId, int reservationId, int daysDuration) throws DAOException;
 
-    void reserve(int daysDuration, int userId, int copyId) throws DAOException;
+    void reserve(int daysDuration, int userId, int mediaId) throws DAOException;
 
     MediaPage getMediaPage(int page, int itemsPerPage, String search) throws DAOException;
 

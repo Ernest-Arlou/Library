@@ -2,8 +2,9 @@ package by.jwd.library.dao.util;
 
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
+import by.jwd.library.dao.connectionpool.ConnectionPool;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
-import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
+import by.jwd.library.dao.connectionpool.factory.ConnectionPoolFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAOUtilImpl implements DAOUtil {
+
+    private final ConnectionPoolFactory connectionPoolFactory = ConnectionPoolFactory.getInstance();
+    private final ConnectionPool connectionPool = connectionPoolFactory.getConnectionPool();
 
     private static final String GET_USER_BY_ID =
             "select * from users where `user-id`=? and status !='deleted'";
@@ -44,7 +48,7 @@ public class DAOUtilImpl implements DAOUtil {
             logger.error("SQLException in DAOUtilImpl method getUserByIdwCon()", e);
             throw new DAOException("SQL error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement);
+            connectionPool.closeStatement(preparedStatement);
         }
     }
 
@@ -58,14 +62,14 @@ public class DAOUtilImpl implements DAOUtil {
         Connection connection = null;
 
         try {
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             return getUserById(connection, userId);
 
         } catch (ConnectionPoolException e) {
             logger.error("ConnectionPoolException in DAOUtilImpl method getUserById()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
     }
 

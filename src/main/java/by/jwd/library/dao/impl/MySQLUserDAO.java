@@ -3,8 +3,9 @@ package by.jwd.library.dao.impl;
 import by.jwd.library.bean.User;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.UserDAO;
+import by.jwd.library.dao.connectionpool.ConnectionPool;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
-import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
+import by.jwd.library.dao.connectionpool.factory.ConnectionPoolFactory;
 import by.jwd.library.dao.factory.DAOFactory;
 import by.jwd.library.dao.util.DAOUtil;
 import org.slf4j.Logger;
@@ -17,8 +18,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
-    // TODO: 22.06.2020 refactor
+public class MySQLUserDAO implements UserDAO {
+
+    private final ConnectionPoolFactory connectionPoolFactory = ConnectionPoolFactory.getInstance();
+    private final ConnectionPool connectionPool = connectionPoolFactory.getConnectionPool();
+
     private static final String ADD_USER =
             "insert into users(name,email,login,password,`passport-id`,role, status) values(?,?,?,?,?,?,?)";
     private static final String GET_USER_BY_LOG_AND_PASS =
@@ -36,7 +40,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String SEARCH_UNVERIFIED_USERS = "select * from users where status = 'Unverified' and login like ? or status = 'Unverified' and email like ? or status = 'Unverified' and `passport-id` like ?;";
 
 
-    private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MySQLUserDAO.class);
 
     @Override
     public User getUserById(int userId) throws DAOException {
@@ -71,7 +75,7 @@ public class UserDAOImpl implements UserDAO {
 
         try {
             logger.debug("searchUnverifiedUsers searchStr = {}", searchStr);
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             searchPrepStatement = connection.prepareStatement(SEARCH_UNVERIFIED_USERS);
             searchPrepStatement.setString(1, "%" + searchStr + "%");
@@ -95,7 +99,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error("ConnectionPoolException in UserDAOImpl method searchUnverifiedUsers()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, searchPrepStatement, usersSet);
+            connectionPool.closeConnection(connection, searchPrepStatement, usersSet);
         }
 
     }
@@ -108,7 +112,7 @@ public class UserDAOImpl implements UserDAO {
 
         DAOUtil daoUtil = DAOFactory.getInstance().getDaoUtil();
         try {
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             preparedStatement = connection.prepareStatement(GET_UNVERIFIED_USERS);
             resultSet = preparedStatement.executeQuery();
             List<User> users = new ArrayList<>();
@@ -125,7 +129,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error("ConnectionPoolException in UserDAOImpl method getUnverifiedUsers()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
@@ -136,7 +140,7 @@ public class UserDAOImpl implements UserDAO {
 
         try {
             logger.debug("updateUser user = {}", user);
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             connection.setAutoCommit(false);
 
@@ -168,7 +172,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error("ConnectionPoolException in UserDAOImpl method updateUser()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
+            connectionPool.closeConnection(connection, preparedStatement);
         }
     }
 
@@ -179,7 +183,7 @@ public class UserDAOImpl implements UserDAO {
 
         try {
             logger.debug("addUser user = {}", user);
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             connection.setAutoCommit(false);
 
@@ -210,7 +214,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error("ConnectionPoolException in UserDAOImpl method addUser()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
+            connectionPool.closeConnection(connection, preparedStatement);
         }
 
     }
@@ -223,7 +227,7 @@ public class UserDAOImpl implements UserDAO {
         try {
             logger.debug("getUserByStringParameter paramValue = {}; query = {} ", paramValue, query);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, paramValue);
             return daoUtil.getUserFromPreparedStatement(preparedStatement);
@@ -234,8 +238,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error("ConnectionPoolException in UserDAOImpl method getUserByStringParameter()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
-
+            connectionPool.closeConnection(connection, preparedStatement);
         }
     }
 

@@ -3,8 +3,9 @@ package by.jwd.library.dao.impl;
 import by.jwd.library.bean.*;
 import by.jwd.library.dao.DAOException;
 import by.jwd.library.dao.LibraryDAO;
+import by.jwd.library.dao.connectionpool.ConnectionPool;
 import by.jwd.library.dao.connectionpool.ConnectionPoolException;
-import by.jwd.library.dao.connectionpool.ConnectionPoolManager;
+import by.jwd.library.dao.connectionpool.factory.ConnectionPoolFactory;
 import by.jwd.library.dao.factory.DAOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LibraryDAOImpl implements LibraryDAO {
-    // TODO: 22.06.2020 refactor
+public class MySQLLibraryDAO implements LibraryDAO {
+
+    private final ConnectionPoolFactory connectionPoolFactory = ConnectionPoolFactory.getInstance();
+    private final ConnectionPool connectionPool = connectionPoolFactory.getConnectionPool();
+
     private static final String GET_MEDIA_TYPES_PAGE = "SELECT * FROM `media`\n" +
             "inner join `material-types` on media.`material-type-id` = `material-types`.`material-type-id` \n" +
             "inner join languages on media.`language-id` = languages.`language-id`\n" +
@@ -74,9 +78,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             "and media.`media-id` = ?";
 
 
-    private static final String GET_RESERVATION_BY_ID = "SELECT * FROM reservations\n" +
-            "inner join copies on reservations.`copy-id` = copies.`copy-id` \n" +
-            "where reservations.status = 'Active' and copies.status != 'deleted' and `reservation-id`  = ?;";
+    private static final String GET_RESERVATION_BY_ID = "SELECT * FROM reservations inner join copies on reservations.`copy-id` = copies.`copy-id` where reservations.status = 'Active' and copies.status != 'deleted' and `reservation-id` = ? ";
 
     private static final String GET_RESERVATIONS_BY_USER_ID = "SELECT * FROM reservations\n" +
             "inner join copies on reservations.`copy-id` = copies.`copy-id` \n" +
@@ -203,14 +205,14 @@ public class LibraryDAOImpl implements LibraryDAO {
 
     private static final int INCORRECT_ID = -1;
 
-    private static final Logger logger = LoggerFactory.getLogger(LibraryDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MySQLLibraryDAO.class);
 
     @Override
     public void closeOutdatedReservations() throws DAOException {
         Connection connection = null;
         try {
             List<DeliveryType> reservations = getAllReservations();
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             connection.setAutoCommit(false);
 
             for (DeliveryType deliveryType :
@@ -245,7 +247,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method closeOutdatedReservations()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
     }
 
@@ -255,7 +257,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         try {
             logger.debug("returnMedia copyId = {} loanId = {}", copyId, loanId);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             connection.setAutoCommit(false);
 
             statusUpdate(connection, UPDATE_COPY_STATUS, STATUS_ACTIVE, copyId);
@@ -280,7 +282,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method returnMedia()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
     }
 
@@ -313,7 +315,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("SQLException in LibraryDAOImpl method getLoanTypesForMedia()", e);
             throw new DAOException("SQL error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement, resultSet);
+            connectionPool.closeStatement(preparedStatement, resultSet);
         }
 
     }
@@ -327,7 +329,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         Connection connection = null;
 
         try {
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             return getLoanTypesForMedia(connection, mediaId, query, type);
 
@@ -335,7 +337,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method getLoanTypesForMedia()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
 
     }
@@ -356,11 +358,6 @@ public class LibraryDAOImpl implements LibraryDAO {
         preparedStatement.setInt(8, languageId);
         preparedStatement.setString(9, mediaDetail.getRestriction());
     }
-
-//    @Override
-//    public List<LoanType> getReservationsForMedia(int mediaId) throws DAOException {
-//        return getLoanTypesForMedia(mediaId, GET_RESERVATIONS_FOR_MEDIA, LOAN_TYPE_RESERVATION);
-//    }
 
     private int addMedia(Connection connection, MediaDetail mediaDetail) throws SQLException {
 
@@ -393,7 +390,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
 
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement, resultSet);
+            connectionPool.closeStatement(preparedStatement, resultSet);
         }
         return newMediaId;
     }
@@ -407,7 +404,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("editMedia mediaDetail = {}", mediaDetail);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection =connectionPool.takeConnection();
 
             int targetTotalCopies = mediaDetail.getTotalCopies();
 
@@ -497,7 +494,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method editMedia()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
@@ -513,7 +510,7 @@ public class LibraryDAOImpl implements LibraryDAO {
                 preparedStatement.executeUpdate();
             }
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement);
+            connectionPool.closeStatement(preparedStatement);
         }
     }
 
@@ -529,7 +526,7 @@ public class LibraryDAOImpl implements LibraryDAO {
                 preparedStatement.executeUpdate();
             }
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement);
+            connectionPool.closeStatement(preparedStatement);
         }
     }
 
@@ -547,7 +544,7 @@ public class LibraryDAOImpl implements LibraryDAO {
                 return INCORRECT_ID;
             }
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement, resultSet);
+            connectionPool.closeStatement(preparedStatement, resultSet);
         }
     }
 
@@ -558,7 +555,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             preparedStatement.setString(1, parameter);
             preparedStatement.executeUpdate();
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement);
+            connectionPool.closeStatement(preparedStatement);
         }
     }
 
@@ -579,7 +576,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("addMedia mediaDetail = {}", mediaDetail);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             connection.setAutoCommit(false);
 
             int newMediaId = addMedia(connection, mediaDetail);
@@ -609,7 +606,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method addMedia()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement);
+            connectionPool.closeConnection(connection, preparedStatement);
         }
     }
 
@@ -619,7 +616,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         preparedStatement.setString(1, status);
         preparedStatement.setInt(2, itemId);
         preparedStatement.executeUpdate();
-        ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement);
+        connectionPool.closeStatement(preparedStatement);
 
     }
 
@@ -630,7 +627,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         preparedStatement.setInt(3, userId);
         preparedStatement.setInt(4, copyId);
         preparedStatement.executeUpdate();
-        ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement);
+        connectionPool.closeStatement(preparedStatement);
 
     }
 
@@ -641,7 +638,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("giveOutCopy userId = {} copyId = {} reservationId = {} daysDuration = {}", userId, copyId, reservationId, daysDuration);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             connection.setAutoCommit(false);
 
             statusUpdate(connection, UPDATE_COPY_STATUS, STATUS_LOANED, copyId);
@@ -668,7 +665,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method giveOutCopy()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
+            connectionPool.closeConnection(connection);
 
         }
     }
@@ -683,7 +680,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("reserve userId = {} mediaId = {} daysDuration = {}", userId, mediaId, daysDuration);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             preparedStatement = connection.prepareStatement(GET_AVAILABLE_COPIES_FOR_MEDIA);
             preparedStatement.setInt(1, mediaId);
@@ -720,7 +717,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method reserve()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
@@ -730,7 +727,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
         try {
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
             connection.setAutoCommit(false);
 
             deleteReservation(connection, reservationId);
@@ -753,7 +750,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method deleteReservation()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
     }
 
@@ -770,6 +767,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             resultSet = preparedStatement.executeQuery();
 
             int copyId;
+
             resultSet.next();
             copyId = resultSet.getInt(COPIES_COPY_ID);
 
@@ -778,7 +776,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             statusUpdate(connection, UPDATE_RESERVATION_STATUS, STATUS_DELETED, reservationId);
 
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(preparedStatement, resultSet);
+            connectionPool.closeStatement(preparedStatement, resultSet);
         }
     }
 
@@ -793,7 +791,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("getMediaPage page = {} itemsPerPage = {} search = {}", page, itemsPerPage, search);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             if (search == null) {
                 preparedStatement = connection.prepareStatement(GET_MEDIA_TOTAL_ITEMS);
@@ -847,7 +845,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method getMediaPage()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
@@ -871,7 +869,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("getReservations  searchStr = {}", searchStr);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             List<DeliveryType> deliveryTypes = new ArrayList<>();
 
@@ -897,7 +895,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method getReservations()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
 
     }
@@ -921,7 +919,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("getLoans  searchStr = {}", searchStr);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             List<DeliveryType> deliveryTypes = new ArrayList<>();
 
@@ -947,7 +945,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method getLoans()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
 
     }
@@ -972,7 +970,7 @@ public class LibraryDAOImpl implements LibraryDAO {
 
             logger.debug("getUserLoanTypes  userId = {} type = {}", userId, type);
 
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection = connectionPool.takeConnection();
 
             List<LoanType> loanTypes = new ArrayList<>();
 
@@ -1000,7 +998,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method getUserLoanTypes()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection, preparedStatement, resultSet);
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
@@ -1050,8 +1048,8 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("SQLException in LibraryDAOImpl method getMediaDetail()", e);
             throw new DAOException("SQL error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(copiesStatement, copiesSet);
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(mediaDetailsStatement, mediaDetailsSet);
+            connectionPool.closeStatement(copiesStatement, copiesSet);
+            connectionPool.closeStatement(mediaDetailsStatement, mediaDetailsSet);
 
         }
 
@@ -1062,7 +1060,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         Connection connection = null;
 
         try {
-            connection = ConnectionPoolManager.getInstance().getConnectionPool().takeConnection();
+            connection =connectionPool.takeConnection();
 
             return getMediaDetail(connection, mediaId);
 
@@ -1070,7 +1068,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("ConnectionPoolException in LibraryDAOImpl method getMediaDetail()", e);
             throw new DAOException("ConnectionPool error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
 
     }
@@ -1099,7 +1097,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("SQLException in LibraryDAOImpl method getAuthorsByMediaID()", e);
             throw new DAOException("SQL error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(authorPreparedStatement, authorResultSet);
+            connectionPool.closeStatement(authorPreparedStatement, authorResultSet);
         }
     }
 
@@ -1127,7 +1125,7 @@ public class LibraryDAOImpl implements LibraryDAO {
             logger.error("SQLException in LibraryDAOImpl method getGenresByMediaID()", e);
             throw new DAOException("SQL error", e);
         } finally {
-            ConnectionPoolManager.getInstance().getConnectionPool().closeStatement(genrePreparedStatement, genreResultSet);
+            connectionPool.closeStatement(genrePreparedStatement, genreResultSet);
         }
     }
 
