@@ -18,6 +18,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * The type My sql user dao.
+ */
 public class MySQLUserDAO implements UserDAO {
 
     private final ConnectionPoolFactory connectionPoolFactory = ConnectionPoolFactory.getInstance();

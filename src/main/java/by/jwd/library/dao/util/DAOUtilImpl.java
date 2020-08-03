@@ -13,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The type Dao util.
+ */
 public class DAOUtilImpl implements DAOUtil {
 
     private final ConnectionPoolFactory connectionPoolFactory = ConnectionPoolFactory.getInstance();

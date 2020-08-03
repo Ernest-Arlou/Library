@@ -31,7 +31,10 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>by.jwd.library.controller.listener.LibraryRequestListener</listener-class>
+        <listener-class>by.jwd.library.controller.listener.ConnectionPoolListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>by.jwd.library.controller.listener.OutdatedReservationsListener</listener-class>
     </listener>
 
     <session-config>

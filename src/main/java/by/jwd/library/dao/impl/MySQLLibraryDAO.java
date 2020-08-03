@@ -18,6 +18,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type My sql library dao.
+ */
 public class MySQLLibraryDAO implements LibraryDAO {
 
     private final ConnectionPoolFactory connectionPoolFactory = ConnectionPoolFactory.getInstance();

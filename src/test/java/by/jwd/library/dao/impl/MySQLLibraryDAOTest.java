@@ -109,20 +109,21 @@ public class MySQLLibraryDAOTest {
 
     @Test
     public synchronized void editMedia() throws DAOException {
+        String sameTitle = "AAAAAA";
+
         MediaDetail mediaDetail1 = getMedia1Detail();
         int newMediaId = libraryDAO.addMedia(mediaDetail1);
 
         MediaDetail mediaForEdit = libraryDAO.getMediaDetail(newMediaId);
 
-        mediaDetail1.setTitle("AAAAAA");
-        mediaForEdit.setTitle("AAAAAA");
+        mediaDetail1.setTitle(sameTitle);
+        mediaForEdit.setTitle(sameTitle);
 
         libraryDAO.editMedia(mediaForEdit);
 
         MediaDetail mediaDetail =  libraryDAO.getMediaDetail(newMediaId);
         mediaDetail.setMediaID(1);
         Assert.assertEquals(mediaDetail1, mediaDetail);
-
 
     }
 
