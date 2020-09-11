@@ -78,9 +78,10 @@ public class LibraryServiceImpl implements LibraryService {
         }
 
         try {
+
             MediaDetail mediaDetail = DAOFactory.getInstance().getLibraryDAO().getMediaDetail(mediaId);
             int duration;
-            if (mediaDetail.getRestriction().equals(READING_ROOM_RESTRICTION)) {
+            if (mediaDetail.getRestriction()!= null && mediaDetail.getRestriction().equals(READING_ROOM_RESTRICTION)) {
                 duration = DURATION_ONE_DAY;
             } else {
                 duration = LOAN_DURATION_DAYS;

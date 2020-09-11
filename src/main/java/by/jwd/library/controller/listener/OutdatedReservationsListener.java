@@ -38,8 +38,6 @@ public class OutdatedReservationsListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime next = now.withHour(4).withMinute(0).withSecond(0);
-        System.out.println(now);
-        System.out.println(next);
         if (now.compareTo(next) > 0) {
             next = next.plusDays(1);
         }

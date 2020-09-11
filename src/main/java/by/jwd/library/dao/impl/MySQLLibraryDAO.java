@@ -449,7 +449,7 @@ public class MySQLLibraryDAO implements LibraryDAO {
 
             preparedStatement = connection.prepareStatement(GET_COPIES_FOR_MEDIA_COUNT);
             preparedStatement.setInt(1, mediaDetail.getMediaID());
-            resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery(); 
             resultSet.next();
             int totalCopies = resultSet.getInt(TOTAL_ITEMS);
 

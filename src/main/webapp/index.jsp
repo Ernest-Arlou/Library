@@ -95,7 +95,7 @@
                                             <h2 class="section-title">${welcomeTo} libraria</h2>
                                             <span class="underline left"></span>
                                             <p>${aboutMessage}</p>
-                                            <a class="btn btn-dark-gray" href="#">${readMore}</a>
+<%--                                            <a class="btn btn-dark-gray" href="#">${readMore}</a>--%>
                                         </div>
                                     </div>
                                 </div>

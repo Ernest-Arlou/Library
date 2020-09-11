@@ -37,7 +37,7 @@ public class UserValidatorImpl implements UserValidator {
             validationResult.add(String.valueOf(InvalidParameter.LOGIN));
         }
 
-        if (user.getPassportId() == null || !validatePassportId(user.getPassportId())) {
+        if (validatePassportId(user.getPassportId())) {
             validationResult.add(String.valueOf(InvalidParameter.PASSPORT_ID));
         }
 
@@ -78,6 +78,9 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public boolean validatePassportId(String passportId) {
+        if (passportId == null){
+            return false;
+        }
         return passportId.matches(PASSPORT_ID_PATTERN);
     }
 
