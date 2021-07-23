@@ -1,7 +1,5 @@
-
-# Java Web Development final project
-
-## Library
+# Library
+Java Web Development final project
 
 ### About The Project
 User can book, take and return books. 
